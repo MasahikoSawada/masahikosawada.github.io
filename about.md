@@ -13,4 +13,4 @@ permalink: /about/
   * DB、主にPostgreSQLをやっています
   * 連絡等はTwitterのDMからお願いします
 
-github, twitter, linkedinへはページ被のアイコンから行けます。
+github, twitter, linkedinへはページ下のアイコンから行けます。
