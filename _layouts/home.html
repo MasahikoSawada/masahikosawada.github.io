@@ -1,0 +1,46 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  {{ content }}
+
+  <ul class="post-list">
+    {% for post in paginator.posts %}
+
+      <li lang="jp">
+	<header class="post-header">
+	  <h1 class="post-title">
+	    <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
+	  </h1>
+
+	  <p class="post-meta">{{ post.date | date: "%Y/%m/%d" }}{% if post.tags != empty %}{% include tags.html tags=post.tags %}{% endif %}</p>
+	</header>
+
+	<div class="post-content">
+	  {{ post.excerpt }}
+	</div>
+
+	{% if post.content contains site.excerpt_separator %}
+        <p class="post-continue">
+	  <a href="{{ post.url | relative_url }}"> Read more &rarr;</a>
+	</p>
+	{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if paginator.total_pages > 1 %}
+    <div class="pagination">
+      {% if paginaotor.next_page %}
+        <a class="previous" href="{{ paginator.next_page_path | relative_url }}">&laquo; Older </a>
+      {% endif %}
+
+      {% if paginator.previous_page %}
+	<a class="next" href="{{ paginator.previous_page_path | relative_url }}">Newer &raquo;</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>

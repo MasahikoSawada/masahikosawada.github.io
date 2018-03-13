@@ -1,0 +1,11 @@
+{% if include.tags != empty %}
+  {% for tag in include.tags %}
+    {% assign no_comma = forloop.last %}
+    {% for archive in site.archives %}
+{{ site.archives }}
+      {% if archive.type == "tag" and archive.title == tag %}
+        <a href="{{ arcihve.url | relative_url }}">{{ archive.title | escape }}</a>{% unless no_comma %}, {% endunless %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

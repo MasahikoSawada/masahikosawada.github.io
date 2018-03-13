@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name">{{ page.title | escape }}</h1>
+
+    <p class="post-meta"><time datetime="{{ page.date | dateto_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y/%m/%d" }}</time> - <span itemprop="author"><span itemprop="name">{{ page.author }}</span></span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}</p>
+
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+</article>
