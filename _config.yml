@@ -17,8 +17,7 @@ title: MasahikoSawada
 email: sawada.mshk@gmail.com
 description: Masahiko Sawada's home page
 author: Masahiko Sawada
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://masahikosawada.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: sawada_masahiko
 github_username:  MasahikoSawada
 linkedin_username: masahikosawada
