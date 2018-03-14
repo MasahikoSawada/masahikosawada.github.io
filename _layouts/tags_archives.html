@@ -5,11 +5,11 @@ layout: default
 
   <h1 class="page-heading"> Archive of {{ page.type }} '{{page.title | escape }}'</h1>
 
-  {% capture site_lang %}{{ site.lang | default: "jp" }}{% endcapture %}
+  {% capture site_lang %}{{ site.lang | default: "ja" }}{% endcapture %}
 
   <ul class="post-archives">
     {% for post in page.posts %}
-      {% capture site_lang %}{{ site.lang | default: "jp" }}{% endcapture %}
+      {% capture site_lang %}{{ site.lang | default: "ja" }}{% endcapture %}
 
       <li>
 	<span class="post-meta">
@@ -20,7 +20,7 @@ layout: default
 	</span>
 
 	<h2>
-	  <a class="post-link" href="{{ post.url | relative_url }}" lang="jp">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
+	  <a class="post-link" href="{{ post.url | relative_url }}" lang="ja">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
 	</h2>
       </li>
     {% endfor %}
