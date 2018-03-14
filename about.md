@@ -13,4 +13,3 @@ permalink: /about/
   * 連絡等はTwitterのDM等からお願いします
 
 github, twitter, linkedinへはページ下のアイコンから行けます。
-本ホームページのコードは[こちら](https://github.com/MasahikoSawada/masahikosawada.github.io)。
