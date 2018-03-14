@@ -15,7 +15,7 @@ layout: default
 	    <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
 	  </h1>
 
-	  <p class="post-meta">{{ post.date | date: "%Y/%m/%d" }}{% if post.tags != empty %}{% include tags.html tags=post.tags %}{% endif %}</p>
+	  <p class="post-meta">{{ post.date | date: "%Y/%m/%d" }}{% include tags.html tags=post.tags %}</p>
 	</header>
 
 	<div class="post-content">

@@ -36,12 +36,12 @@ permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
 paginate: 5
 
-jekyll-archives:
-  enabled:
-    - tags
-  layout: tags_archives
-  permalinks:
-    tag: /tags/:name/
+#jekyll-archives:
+#  enabled:
+#    - tags
+#  layout: tags_archives
+#  permalinks:
+#    tag: /tags/:name/
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
