@@ -49,6 +49,6 @@ Logical Decodingには、`filter_by_origin_cb`コールバックがあり、Publ
 * PubB: `ORIGIN-A`からの変更なので、ID=`ORIGIN-AのID`
 * PubC: `ORIGIN-B`からの変更なので、ID=`ORIGIN-BのID`
 
-このように変更元を区別することができるので、下流のサーバに流す、長さないをLogical Decodingのプラグインが決めることができます。なかなか考えられて作られていて素晴らしいですね。
+このように変更元を区別することができるので、下流のサーバに流す、流さないをLogical Decodingのプラグインが決めることができます。なかなか考えられて作られていて素晴らしいですね。
 
 Replication Originの作成や確認、Replication Origin IDの設定なども色々あるのですが、その辺りはまた時間がある時にまとめたいと思います。
