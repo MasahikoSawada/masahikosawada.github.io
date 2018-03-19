@@ -12,6 +12,7 @@ tags:
   * insert, update, delete, lock_tuple, multi_insert, prone, scan(beginscan, endscan, etc), MVCCなど
 # ストレージフォーマット
 * タプルヘッダも小さい
+  * t_ctid、t_choice(t_heapにはxmin, xmaxがある)がない
 
 ```c
 struct HeapTupleHeaderData
@@ -64,7 +65,7 @@ typedef struct ZHeapTupleHeaderData
     * xid_epochはxidの周回を判断するために必要。
 * 上記は`Transaction Slot`と呼ばれ、UNDO領域を使う前には必ず確保している必要がある。
 * 上記の情報を、要素4の配列で持っている。
-  * 1スロット＝1トランザクションに対応している
+  * 1スロット＝1トランザクション（1XID)に対応している
   * スロットを使い切っている場合は、少し(10ms)待って再度挑戦
 * ページごとにUNDOへのポインタがあるということは、一つのページにアクセス（変更できる）Txの上限があるということ
   * 例えば、ロングトランザクションが複数いて、transaction slotを使い切っている場合は、他のトランザクションはINSERTできない
@@ -99,6 +100,13 @@ typedef struct ZHeapPageOpaqueData
 * DELETE: テーブルのレコードには削除フラグ（ZHEAP_DELETED)を付ける。削除前のレコードをUNDOログに記録する。ABORTの場合の場合は、UNDOログからmemcpyでもってくる。
 * INPLACE-UPDATE: 同ページ内で「置き換えUPDATE」ができる場合は、新しいレコードをテーブルに書く。古いレコードはUNDOに入れて、ABORTの時にUNDOログから取ってくる
 * UPDATE: UPDATEでタプルが動く場合は、UNDO_UPDATE＋UNDO_INSERTみたいになる。つまり、テーブル内の旧タプルを削除して削除したレコードをUNDOに入れる＋新しいレコードを別ページに追加して対応する（そのタプルを削除する）UNDOを入れる。ABORT時は、旧タプルをUNDOから復元し、新タプルをUNDOによって削除する。
+
+更に、
+* ページのSpecialAreaにあるUNDOログへのポインタは、古いなかでも最新のレコードへつながっている。つまり、UNDOログを入れるときは、UNDOログ-chainの後ろに行くほど、古いレコードになる。
+
+### ROLLBACKするとき
+* UNDOログの再生は、同じトランザクション内で行う。そのため、AbortTransactionのときにはすでにUNDO済み
+* 
 
 ## 具体的なコード
 例えばINSERTの時・・・
