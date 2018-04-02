@@ -7,6 +7,7 @@ permalink: /slides/
 # 最近の発表
 
 ## 2018年
+* [Vacuumとzheap](https://www.slideshare.net/masahikosawada98/vacuumzheap-92589428)
 * [アーキテクチャから理解するPostgreSQLのレプリケーション](https://www.slideshare.net/masahikosawada98/postgresql-86891271)
 
 ## 2017年
