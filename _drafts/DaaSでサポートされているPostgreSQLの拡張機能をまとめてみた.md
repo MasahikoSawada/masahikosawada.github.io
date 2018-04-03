@@ -9,7 +9,7 @@ tags:
 ---
 
 |Extension|Amazon RDS for PostgreSQL|Google Cloud SQL for PostgreSQL|Azure Database for PostgreSQL|
-|--------------------|----|----|
+|--------------------|----|----|-------|
 |address_standardizer|○||○|
 |address_standardizer_data_us|○||○|
 |ブルーム|○|||
