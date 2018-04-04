@@ -1,4 +1,8 @@
 {% for tag in include.tags %}
   {% capture tag_name %}{{ tag }}{% endcapture %}
-  <a href="/tag/{{ tag_name }}">{{ tag_name }}</a>
+  {% if forloop.last %}
+    <a href="/tag/{{ tag_name }}">{{ tag_name }}</a>
+  {% else %}
+    <a href="/tag/{{ tag_name }}">{{ tag_name }}</a>,
+  {% endif %}
 {% endfor %}
