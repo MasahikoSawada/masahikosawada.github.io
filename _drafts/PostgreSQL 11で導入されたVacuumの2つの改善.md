@@ -8,7 +8,7 @@ tag:
 
 先日リリースされた[PostgreSQL 11](https://www.postgresql.org/about/news/1855/)でVacuum関連機能の改善がいくつかあったのでその中から2つ紹介します。
 
-# Update the free space map during vacuum (Claudio Freire)
+## Update the free space map during vacuum (Claudio Freire)
 
 > Vacuum中にFree Space Map(FSM)が更新されるようになりました。
 
@@ -19,21 +19,18 @@ PostgreSQL 11ではこの機能により、Vacuum実行中にもFSMが更新さ�
 
 (※)FSMはテーブルの空き領域を管理しているマップです。INSERTやUPDATEの際は、このFSMを参照してテーブルにないので空いている箇所に新しいタプルを挿入します。なので、FSMが更新されていないと、「本当は空き領域があるのに使ってくれない」という状況になってしまいまいます。
 
-# Allow vacuum to avoid unnecesary index scans (Masahiko Sawada, Alexander Korotkov)
+## Allow vacuum to avoid unnecesary index scans (Masahiko Sawada, Alexander Korotkov)
 
 > Vacuumが不必要なIndex scanを回避するようになりました。
 
 Vacuumはテーブルとインデックス（複数）の両方をVacuumを掃除する必要があるのですが、インデックスについては**一回のVacuum実行つき、最低1回は実行する必要がありました**。
-そのため、例えばテーブルに複数インデックスが付与されている場合では、テーブルが全く汚れていなくても、全てのインデックスについてVacuumは処理しないといけないのでとても時間がかかっていました（※）。この、「テーブルが汚れていなくても（テーブルにゴミがなくても）実行されるインデックスへのVacuum」はドキュメント上では`Cleanup stage`と呼ばれており、インデックスの統計情報の更新や、インデックスにあるゴミ掃除を目的として実行されます。
+そのため、例えばテーブルに複数インデックスが付与されている場合では、テーブルが全く汚れていなくても、全てのインデックスについてVacuumは処理しないといけないのでとても時間がかかっていました（※）。この、「テーブルが汚れていなくても（テーブルにゴミがなくても）実行されるインデックスへのVacuum」はドキュメント上では`Cleanup Stage`と呼ばれており、インデックスの統計情報の更新や、インデックスにあるゴミ掃除を目的として実行されます。
 
 （※）ちなみに、テーブルが全く変更されていない状況では、テーブルへのVacuum処理はスキップされ一瞬で終わることができます。
 
 PostgreSQL 10以前では、以下のように1行を挿入しただけでも、cleanup stageが実行されるため、Vacuumに時間がかかっています。
 
 ```sql
-=# VACUUM test;
-VACUUM
-Time: 36921.580 ms (00:36.922)
 =# INSERT INTO test VALUES(1);
 INSERT 0 1
 Time: 15.207 ms
@@ -50,7 +47,7 @@ Skipped 0 pages due to buffer pins, 0 frozen pages.
 0 pages are entirely empty.
 CPU: user: 0.12 s, system: 2.29 s, elapsed: 5.58 s.
 VACUUM
-
+Time: 6725.698 ms (00:06.726) -- 6秒の内のほとんど(5.5秒)がインデックスVacuum(cleanup stage)によるもの
 ```
 
 そこで、「前回のVacuumからテーブルが大きく状況が変わっていなければ、cleanup　stageはスキップしてもいいよね」というアイディアのもと、[`vacuum_cleanup_index_scale_factor`](https://www.postgresql.org/docs/devel/static/runtime-config-resource.html#RUNTIME-CONFIG-INDEX-VACUUM)という新しいGUCパラメータが追加されました。
@@ -65,9 +62,6 @@ VACUUM
 PostgreSQL 11では以下のようになります。
 
 ```sql
-=# VACUUM test;
-VACUUM
-Time: 39399.669 ms (00:39.400)
 =# INSERT INTO test VALUES (1);
 INSERT 0 1
 Time: 24.499 ms
@@ -80,5 +74,5 @@ Skipped 0 pages due to buffer pins, 0 frozen pages.
 0 pages are entirely empty.
 CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s.
 VACUUM
-Time: 182.686 ms
+Time: 182.686 ms -- インデックスVacuum(cleanup stage)が実行されていないのですぐ終わる
 ```
