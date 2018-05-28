@@ -6,7 +6,8 @@ tag:
   - Vacuum
 ---
 
-[PGCon](https://www.pgcon.org/2018/)に向う途中ですが、搭乗まで時間があるので、先日リリースされた[PostgreSQL 11](https://www.postgresql.org/about/news/1855/)でVacuum機能の改善がいくつかあったのでその中から2つ紹介します。
+[PGCon](https://www.pgcon.org/2018/)に向う途中です。
+搭乗まで時間があるので、先日リリースされた[PostgreSQL 11](https://www.postgresql.org/about/news/1855/)でVacuum機能の改善がいくつかあったのでその中から2つ紹介します。
 
 ## 一つ目: Update the free space map during vacuum (Claudio Freire)
 
