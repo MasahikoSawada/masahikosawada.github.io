@@ -9,6 +9,7 @@ permalink: /slides/
 ## 2018年
 * [Vacuumとzheap](https://www.slideshare.net/masahikosawada98/vacuumzheap-92589428)
 * [アーキテクチャから理解するPostgreSQLのレプリケーション](https://www.slideshare.net/masahikosawada98/postgresql-86891271)
+* [Vacuum more efficient than ever](https://www.slideshare.net/masahikosawada98/vacuum-more-efficient-than-ever-99916671)
 
 ## 2017年
 * [PostgreSQL10徹底解説](https://www.slideshare.net/masahikosawada98/postgresql10)
