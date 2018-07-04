@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SoftwareDesign 5月号に寄稿させていただきました"
-tag:
+tags:
   - PostgreSQL
   - MySQL
 ---

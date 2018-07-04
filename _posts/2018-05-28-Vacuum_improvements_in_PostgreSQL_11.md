@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PostgreSQL 11で導入されたVacuumの2つの改善
-tag:
+tags:
   - PostgreSQL
   - Vacuum
 ---
