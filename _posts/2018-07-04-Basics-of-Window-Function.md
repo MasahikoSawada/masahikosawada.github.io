@@ -89,7 +89,7 @@ Window関数ではWindow Frame（以下、フレームと呼びます）と呼�
 
 ## パーティション分割をする（`PARTITION BY`句）
 
-``PARTITION BY`句でテーブルを論理的に分割します。例えば、Window関数で`OVER (PARTITION BY color)`を指定すると以下のように分割されます。
+`PARTITION BY`句でテーブルを論理的に分割します。例えば、Window関数で`OVER (PARTITION BY color)`を指定すると以下のように分割されます。
 
 **※見やすくするために各行の間に追加で境界線を入れています**
 
@@ -131,7 +131,7 @@ SELECT *, sum(value) OVER (
 * フレームの始まりはパーティションの先頭(UNBOUND PRECEIDING)で、
 * フレームの終わりは現在の行(CURRENT ROW)
 
-RANGEモードとROWSモードの違いは、同一行（ソートした時の同じ値）をフレームの境界にするかどうかです。ROWSモードでは境界にして、RANGEモードでは境界にしません。
+RANGEモードとROWSモードの違いは、同一行をフレームの境界にするかどうかです。ROWSモードでは境界にして、RANGEモードでは境界にしません。
 'red'のパーティションに注目してフレームの動きを見てみると以下のようになります。
 
 **※わかりやすくするためにcolor列の'red'を'red(1)', 'red(2)', 'red(3)'に分けています。**
@@ -155,7 +155,7 @@ RANGEモードとROWSモードの違いは、同一行（ソートした時の�
 
 通常のスキャンと同じように一行ずつ処理をしていきます。現在の行が`red(1)`の時、(1)の箇所がフレームになります。そして、次の行(`red(2)`)の時のフレームは`(2)`です。フレームの指定が`RANGE UNBOUNDED PRECEDING AND **CURRENT ROW**`なので、このように現在の行が進むにつれて、フレームも広がっていきます。そしてその結果、処理対象のデータも変わるので、`sum()`を使うと、120 -> 240 -> 490と増えていきます。
 
-例えば、フレーム境界のを常にパーティションの先頭・末尾に指定する(`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`)と、各行を処理しているときのフレームは以下のようになります。
+例えば、フレーム境界を常にパーティションの先頭・末尾に指定する(`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`)と、各行を処理しているときのフレームは以下のようになります。
 
 ```
  color  | value | sum
