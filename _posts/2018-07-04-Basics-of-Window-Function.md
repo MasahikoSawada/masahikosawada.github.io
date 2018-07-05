@@ -179,3 +179,14 @@ RANGEモードとROWSモードの違いは、同一行をフレームの境界�
 # まとめ
 まずはパーティションやフレームの概念について説明しました。
 パーティションやフレームが理解できれば、Window関数を使いこなす準備はできていると思います。
+
+---
+
+これまでにまとめた記事もあわせてどうぞ。
+
+{% assign posts_list = site.posts | sort: 'date', 'last' %}
+{% for post in posts_list %}
+	{% if post.title contains 'Window' and post.title != page.title %}
+* [{{ post.title }} ({{post.date | date: "%Y/%m/%d"}})]({{ post.url }})
+	{% endif %}
+{% endfor %}

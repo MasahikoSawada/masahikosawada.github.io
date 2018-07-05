@@ -6,6 +6,10 @@ tags:
   - Window Function
 ---
 
+
+
+
+
 今回は、Window関数について、また集約関数をWindow関数として使う方法についてまとめます。
 
 # Window関数は特定の関数ではなく一つの機能
@@ -133,3 +137,14 @@ color |       v
 
 # まとめ
 Window関数、集約関数についてまとめました。この辺の違いを理解してると、ドキュメント等を読むときの助けになるので良いですね。ざっくりWindow関数について説明したので、次はフレーム指定方法とかを解説しようかな。
+
+---
+
+こまでにまとめた記事もあわせてどうぞ。
+
+{% assign posts_list = site.posts | sort: 'date', 'last' %}
+{% for post in posts_list %}
+	{% if post.title contains 'Window' and post.title != page.title %}
+* [{{ post.title }} ({{post.date | date: "%Y/%m/%d"}})]({{ post.url }})
+	{% endif %}
+{% endfor %}
