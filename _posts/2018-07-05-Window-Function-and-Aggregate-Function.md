@@ -103,7 +103,7 @@ SELECT salary, sum(salary) OVER (ORDER BY salary) FROM empsalary;
 
 ```sql
 -- テーブルの中味
-=# SELECT *, jsonb_agg(v->'val') FROM jb;
+=# SELECT *  FROM jb;
 
 color |       v
 -------+---------------
