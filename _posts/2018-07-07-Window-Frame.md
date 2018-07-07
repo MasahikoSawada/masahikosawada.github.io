@@ -52,7 +52,7 @@ frame_start and frame_end:
   * MySQL 8.0でも使える
 * `GROUPS`モード
   * SQL:2011の新機能[^sql2011]
-  * PostgreSQL 11で導入された新入り。
+  * PostgreSQL 11で導入された新入り
   * `GROUPS`モードを実装しているのは今の所PostgreSQL 11だけのよう[^groups]
 
 [^groups]: https://modern-sql.com/blog/2018-04/mysql-8.0
@@ -95,7 +95,7 @@ frame_start and frame_end:
 ## ROWSモード
 ROWSモードでの`CURRENT ROW`の考え方は非常に単純で、その名の通り「現在の行」がCURRENT ROWになります。
 
-**※わかりやすくするためにcolor列の'red'を'blue(1)','blue(2)'...に分けています。**
+**※わかりやすくするためにcolor列の'red'を'red(1)','red(2)'...に分けています。**
 
 ```
 =# SELECT *,
