@@ -31,7 +31,7 @@ frame_start and frame_end:
 	offset PRECEDING |
 	CURRENT ROW |
 	offset FOLLOWING |
-	UNBOUNDED FOLLOWING |
+	UNBOUNDED FOLLOWING
 }
 ```
 
