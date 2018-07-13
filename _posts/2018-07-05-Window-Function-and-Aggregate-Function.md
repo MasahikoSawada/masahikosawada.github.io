@@ -140,7 +140,7 @@ Window関数、集約関数についてまとめました。この辺の違い�
 
 ---
 
-こまでにまとめた記事もあわせてどうぞ。
+これまでにまとめた記事もあわせてどうぞ。
 
 {% assign posts_list = site.posts | sort: 'date', 'last' %}
 {% for post in posts_list %}

@@ -33,6 +33,14 @@ frame_start and frame_end:
 	offset FOLLOWING |
 	UNBOUNDED FOLLOWING
 }
+
+frame_exclusion:
+{
+	EXCLUDE CURRENT ROW |
+	EXCLUDE GROUP |
+	EXCLUDE TIES |
+	EXCLUDE NO OTHERS
+}
 ```
 
 フレームの指定は、`RANGE`、`ROWS`、`GROUPS`の中から一つモードを選び、その後にフレームの境界を指定します。*frame_start*だけを指定した場合は、*frame_end*は`CURRENT ROW`になります。
@@ -275,7 +283,7 @@ ROWSモードはその名の通り、行をベースにしてオフセットを�
 
 ---
 
-こまでにまとめた記事もあわせてどうぞ。
+これまでにまとめた記事もあわせてどうぞ。
 
 {% assign posts_list = site.posts | sort: 'date', 'last' %}
 {% for post in posts_list %}
