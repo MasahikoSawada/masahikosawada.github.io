@@ -105,7 +105,7 @@ SELECT salary, sum(salary) OVER (ORDER BY salary) FROM empsalary;
 -- テーブルの中味
 =# SELECT * FROM jb;
 
-color |       v
+ color |       v
 -------+---------------
  red   | {"val": 300}
  red   | {"val": 400}
