@@ -6,8 +6,28 @@ tags:
   - Deadlock
 ---
 
+# デッドロックの必要条件
+以下の4つを全て満たしている場合、システムはデッドロック状態になっている。
+
+* Mutual Exclusion
+  * 一度に1つのプロセスのみが資源を使用できる
+* Hold and Wait
+  * なにか一つの資源を*保持したまま*他の資源を待つ
+* No preemption
+  * 資源の横取りができない
+* Circular wait
+  * 資源の保持待ちが循環している。あるP1がP2によって保持されている資源を待ち、P2がP3に保持されている資源を待ち・・・が循環する。
+
+# デッドロック対策
+大きく分けて3つの対策方針がある。
+* Deadlock Prevention
+* Deadlock Avaidance
+* Deadlock Detection
+
+以下1つずつ解説。
+
 # Deadlock Prevention
-Deadlock Preventionは、以下の条件(Coffman Condition)の内少なくとも1つが真でないことを保証することでDeadLockの発生を防ぐこと。
+Deadlock Preventionは、デッドロックの4つの必要条件をの内少なくとも1つが真でないことを保証することでDeadLockno発生自体を防ぐ事。
 * Mutual Exclusion
   * 排他制御をなくす
   * 「一方が使っている間は他方は使えない」という状況（排他制御）がなければ、そもそもロック待ちが発生しないので、Deadlockも発生しない。
@@ -29,8 +49,8 @@ Deadlock Preventionは、以下の条件(Coffman Condition)の内少なくとも
 * Deadlockは、Circular waitが解消できない状況でのみ発生する
 * Circular waitは他の3つの条件が満たされているときに「解消できなくなる」
 
-## Wait-die, Wound-wait
-これは、タイムスタンプをベースに「No preemption」の条件を排除するスキーム
+## Wait-die, Wound-wait、No-wait
+Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption」の条件を排除するスキーム
 
 基本的なアイディアは、「プロセウスが他のプロセスが使用しているリソースの待機をブロックしようとしているとき、より大きなタイムスタンプ（つまり若い）を持つかどうかをチェックする」
 
@@ -59,6 +79,9 @@ Deadlock Preventionは、以下の条件(Coffman Condition)の内少なくとも
 
 Stravationが発生しないように、再実行時に**同じタイムスタンプを使う**ところに注意。
 
+### No-wait
+ロックを取得した際にロックが取れなかったらアボートする。
+
 ## アルゴリズム
 * Banker's algorithm
 * Preventiong recursive locks
@@ -70,8 +93,9 @@ deadlockを**起こすかもしれない**要求をしない。
 
 # Deadlock Detection
 Deadlockが発生するのは許容するが、それを検知する戦略。検知した後は、recovery algorithmを実行する。
+PostgreSQLはDeadlock Detection。
 
-* 定期的にWFGを作り、循環があるかどうかを検査する
+* 定期的にwait-for-graphを作り、循環があるかどうかを検査する
   * 循環があるかどうかを確認するには、O(N^2)かかる
 
 * Recovery Algorithm
@@ -86,6 +110,7 @@ Deadlockが発生するのは許容するが、それを検知する戦略。検
 * [System Deadlocks](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)
   * Coffman Condition
 * [Deadlock Prevention And Avoidance](https://www.geeksforgeeks.org/deadlock-prevention/)
+* [Deadlock Detection And Recovery](https://www.geeksforgeeks.org/deadlock-detection-recovery/)
 * [Deadlock Prevention, Avoidance, Detection and Recovery in Operating Systems](https://javajee.com/deadlock-prevention-avoidance-detection-and-recovery-in-operating-systems)
-* [Concurrency Control in Distributed Database Systems](https://people.eecs.berkeley.edu/~kubitron/cs262/handouts/papers/concurrency-distributed-databases.pdf)
 * [Deadlock Prevention](http://www.cs.colostate.edu/~cs551/CourseNotes/Deadlock/WaitWoundDie.html)
+* [デッドロック対策](https://qiita.com/kumagi/items/1b45352160c101928d7e)
