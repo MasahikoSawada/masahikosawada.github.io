@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deadlock
+title: DeadlockとDeadLock対策のメモ
 tags:
   - Database
   - Deadlock
@@ -82,17 +82,15 @@ Stravationが発生しないように、再実行時に**同じタイムスタ�
 ### No-wait
 ロックを取得した際にロックが取れなかったらアボートする。
 
-## アルゴリズム
-* Banker's algorithm
-* Preventiong recursive locks
-
 # Deadlock Avoidance
-deadlockを**起こすかもしれない**要求をしない。
+ロックを取得する前に、デッドロックが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、資源の要求をしないことでデッドロックを回避する。
+Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがある。
+安全な状態とは、ある順序で資源を確保すればデッドロックにならない、という状態。
 
-## Banker&s Algorithm
+[^bankers_algorithm]: https://ja.wikipedia.org/wiki/%E9%8A%80%E8%A1%8C%E5%AE%B6%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0
 
 # Deadlock Detection
-Deadlockが発生するのは許容するが、それを検知する戦略。検知した後は、recovery algorithmを実行する。
+Deadlockが発生するのは許容するがそれを検知する、という戦略。検知した後は、recovery algorithmを実行する。
 PostgreSQLはDeadlock Detection。
 
 * 定期的にwait-for-graphを作り、循環があるかどうかを検査する
