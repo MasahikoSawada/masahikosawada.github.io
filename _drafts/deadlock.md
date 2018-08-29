@@ -6,9 +6,9 @@ tags:
   - Deadlock
 ---
 
-簡単に調べたのでメモ。「デッドロックとは？」は色んなところで解説されているのでここでは割愛。
+簡単に調べたのでメモ。「Deadlockとは？」は色んなところで解説されているのでここでは割愛。
 
-# デッドロックの必要条件(Coffman conditions)
+# Deadlockの必要条件(Coffman conditions)
 * Mutual Exclusion
   * 一度に1つのプロセスのみがリソースを使用できる
 * Hold and Wait
@@ -21,7 +21,7 @@ tags:
 ※Deadlockは、Circular waitが解消できない状況でのみ発生する
 ※Circular waitは他の3つの条件が満たされているときに「解消できなくなる」
 
-# デッドロック対策
+# Deadlock対策
 大きく分けて3つの対策がある。
 * Deadlock Prevention
 * Deadlock Avaidance
@@ -30,7 +30,7 @@ tags:
 以下1つずつ解説。
 
 # Deadlock Prevention
-Deadlock Preventionは、デッドロックの4つの必要条件をの内少なくとも1つが真でないことを保証することでDeadLockno発生自体を防ぐ事。
+Deadlock Preventionは、Deadlockの4つの必要条件をの内少なくとも1つが真でないことを保証することでDeadLockno発生自体を防ぐ事。
 * Mutual Exclusion
   * 排他制御をなくす
   * 例えば、「一方が使っている間は他方は使えない」という状況（排他制御）がなければ、そもそもロック待ちが発生しないので、Deadlockも発生しない。
@@ -88,9 +88,9 @@ Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption�
 ロックを取得した際にロックが取れなかったらアボートする。
 
 # Deadlock Avoidance
-ロックを取得する前に、デッドロックが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、リソースのリソースをしないことでデッドロックを回避する。
+ロックを取得する前に、Deadlockが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、リソースのリソースをしないことでDeadlockを回避する。
 Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがある。
-安全な状態とは、ある順序で資源を確保すればデッドロックにならない、という状態。
+安全な状態とは、ある順序で資源を確保すればDeadlockにならない、という状態。
 
 アルゴリズムの詳細はあとでよく読んでおく。
 
@@ -120,4 +120,4 @@ PostgreSQLやMySQLはDeadlock Detectionを採用。
 * [Deadlock Prevention](http://www.cs.colostate.edu/~cs551/CourseNotes/Deadlock/WaitWoundDie.html)
 * [デッドロック対策](https://qiita.com/kumagi/items/1b45352160c101928d7e)
 
-次は分散デッドロックを調べよう。
+次は分散Deadlockを調べよう。
