@@ -81,7 +81,7 @@ Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption�
 
 一般にWound-Waitのほうが良いスキームだと言われているらしい。Google SpannerはWound-Waitらしい[^spanner]。
 
-両方共、Stravationが発生しないように、再実行時に**同じタイムスタンプを使う**ところに注意。
+両方共、Starvationが発生しないように、再実行時に**同じタイムスタンプを使う**ところに注意。
 
 [^spanner]:https://cloud.google.com/spanner/docs/whitepapers/life-of-reads-and-writes
 
