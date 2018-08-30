@@ -25,7 +25,7 @@ tags:
 # Deadlock対策
 大きく分けて3つの対策がある。
 * Deadlock Prevention
-* Deadlock Avaidance
+* Deadlock Avoidance
 * Deadlock Detection
 
 以下1つずつ解説。
