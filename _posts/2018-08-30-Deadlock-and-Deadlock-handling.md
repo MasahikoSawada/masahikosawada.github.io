@@ -89,7 +89,7 @@ Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption�
 ロックを取得した際にロックが取れなかったらアボートする。
 
 # Deadlock Avoidance
-ロックを取得する前に、Deadlockが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、リソースのリソースをしないことでDeadlockを回避する。
+ロックを取得する前に、Deadlockが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、リソースの要求を拒絶するか遅延することでDeadlockを回避する。
 Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがある。
 安全な状態とは、ある順序で資源を確保すればDeadlockにならない、という状態。
 
@@ -99,7 +99,7 @@ Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがあ
 
 # Deadlock Detection
 Deadlockが発生するのは許容するがそれを検知する、という戦略。検知した後は、recovery algorithmを実行する。
-PostgreSQLやMySQLはDeadlock Detectionを採用。
+PostgreSQLやMySQLはDeadlock Detectionを採用[^deadlock_detection]。
 
 * 定期的にwait-for-graphを作り、循環があるかどうかを検査する
   * 循環があるかどうかを確認するには、O(N^2)かかる
@@ -112,6 +112,8 @@ PostgreSQLやMySQLはDeadlock Detectionを採用。
     * プロセスが使ったリソース数
     * どれくらいのプロセスを終了する必要があるかどうか
 
+[^deadlock_detection] MySQLにはWFGの作成にはコストがかかるのでtimeoutを設定できる機能もあるとのことです（おそらくPostgreSQLでも同様の設定ができる）
+
 # 参考
 全部は見切れていないのであとで勉強する。
 * [System Deadlocks](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)
@@ -122,3 +124,5 @@ PostgreSQLやMySQLはDeadlock Detectionを採用。
 * [デッドロック対策](https://qiita.com/kumagi/items/1b45352160c101928d7e)
 
 次は分散Deadlockを調べよう。
+
+(2018-08-30) Twitter上でご指摘頂いた点（typo、MySQLのDeadlock検知）について修正しました。
