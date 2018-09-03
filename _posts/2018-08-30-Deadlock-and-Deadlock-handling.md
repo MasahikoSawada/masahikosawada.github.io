@@ -101,8 +101,9 @@ Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがあ
 Deadlockが発生するのは許容するがそれを検知する、という戦略。検知した後は、recovery algorithmを実行する。
 PostgreSQLやMySQLはDeadlock Detectionを採用[^deadlock_detection]。
 
-* 定期的にwait-for-graphを作り、循環があるかどうかを検査する
-  * 循環があるかどうかを確認するには、O(N^2)かかる
+例えば、PostgreSQLでは定期的にwait-for-graphを作り、循環があるかどうかを検査している。(循環があるかどうかを確認するには、O(N^2)かかる)
+
+Recovery algorithmも様々ある。
 
 * Recovery Algorithm
   * DeadlockのすべてのプロセスをAbortする
@@ -112,7 +113,9 @@ PostgreSQLやMySQLはDeadlock Detectionを採用[^deadlock_detection]。
     * プロセスが使ったリソース数
     * どれくらいのプロセスを終了する必要があるかどうか
 
-[^deadlock_detection] MySQLにはWFGの作成にはコストがかかるのでtimeoutを設定できる機能もあるとのことです（おそらくPostgreSQLでも同様の設定ができる）
+あと、DraedlockというDeadlock検知の手法もあるらしい。
+
+[^deadlock_detection]: MySQLにはWFGの作成にはコストがかかるのでtimeoutを設定できる機能もあるとのことです（おそらくPostgreSQLでも同様の設定ができる）
 
 # 参考
 全部は見切れていないのであとで勉強する。
