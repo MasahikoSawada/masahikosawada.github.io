@@ -1,5 +1,7 @@
 require 'yaml'
 
+BASE_DIR="masahikosawada.github.io"
+UTIL_DIR="utils"
 FORMATTER_LINE = "---\n"
 TAGPAGE_TEMPLATE = "---
 layout: tagpage
@@ -52,6 +54,17 @@ def generate_tagpage(tagname)
   rescue
   end
   puts "generated a tag page for \"%s\"" % [tagname]
+end
+
+# Check where we're executing at
+pwd = Dir.pwd.split('/')
+current_dir = pwd[pwd.length - 1]
+upper_dir = pwd[pwd.length - 2]
+
+if upper_dir != BASE_DIR or current_dir != UTIL_DIR then
+  puts "error: gentags.rb must be executed on the utils directory"
+  puts "hint: change directory to \"utils\" and then execute \"ruby gentags.rb\""
+  exit
 end
 
 # Collect all tags in existing posts
