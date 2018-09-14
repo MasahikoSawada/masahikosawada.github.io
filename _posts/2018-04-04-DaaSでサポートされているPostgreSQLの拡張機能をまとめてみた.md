@@ -1,6 +1,7 @@
 ---
 layout: post
 title: DaaSでサポートされているPostgreSQLの拡張機能をまとめてみた
+description: DaaSでサポートされているPostgreSQLの拡張機能（EXTENSION）のまとめ
 tags:
   - PostgreSQL
   - "Azure Database"

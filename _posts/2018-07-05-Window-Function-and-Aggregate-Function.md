@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Window関数と集約関数
+description: Window関数と集約関数について解説
 tags:
   - PostgreSQL
   - Window Function

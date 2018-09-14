@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Window関数のフレームを極める(EXCLUDEオプション編)
+description: Window関数のフレームのEXCLUDEオプションを徹底解説
 tags:
   - PostgreSQL
   - Window Function

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: トランザクションIDへのロックと行ロック
+description: トランザクションIDへのロックと行ロックの関係について解説します
 tags:
   - PostgreSQL
   - Lock

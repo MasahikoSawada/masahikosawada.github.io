@@ -1,6 +1,7 @@
 ---
 layout: post
 title: DeadlockとDeadLock対策のメモ
+description: DeadlockとDeadlock対策のメモ
 tags:
   - Database
   - Deadlock

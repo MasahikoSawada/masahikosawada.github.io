@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Window関数の基本
+description: Window関数の基本を解説
 tags:
   - PostgreSQL
   - Window Function

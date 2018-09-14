@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Window関数のフレームを極める
+description: Window関数のフレームを徹底解説
 tags:
   - PostgreSQL
   - Window Function
