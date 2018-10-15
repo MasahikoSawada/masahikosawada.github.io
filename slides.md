@@ -7,6 +7,7 @@ permalink: /slides/
 # 最近の発表
 
 ## 2018年
+* [今秋リリース予定のPostgreSQL11を設定解説@関西DB勉強会](https://www.slideshare.net/masahikosawada98/postgresql11)
 * [Vacuum more efficient than ever@PGCon2018](https://www.slideshare.net/masahikosawada98/vacuum-more-efficient-than-ever-99916671)
 * [Vacuumとzheap@BDI勉強会](https://www.slideshare.net/masahikosawada98/vacuumzheap-92589428)
 * [アーキテクチャから理解するPostgreSQLのレプリケーション@OSSコンソーシアムセミナ](https://www.slideshare.net/masahikosawada98/postgresql-86891271)
