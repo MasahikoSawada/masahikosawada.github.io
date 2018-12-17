@@ -46,10 +46,12 @@ SELECT * FROM test ORDER BY a, b;
 
 ```sql
 =# SELECT a, b,
-	string_agg(b::text, ',') OVER (
-		PARTITION BY a ORDER BY a,b
+	string_agg(b::text, ',')
+	OVER (
+		PARTITION BY a
+		ORDER BY a,b
 	)
-	FROM test;
+   FROM test;
 
 　a | b | string_agg
  ---+---+------------
@@ -72,8 +74,10 @@ SELECT * FROM test ORDER BY a, b;
 	string_agg(b::text, ',')
 	FILTER (WHERE b != 2)         -- 追加した行
 	OVER (
-		PARTITION BY a ORDER BY a,b
-	) FROM test;
+		PARTITION BY a
+		ORDER BY a,b
+	)
+   FROM test;
 
   a | b | string_agg
  ---+---+------------
@@ -105,9 +109,10 @@ FILTER句では、入力行に対してある条件を指定することがで�
        string_agg(b::text, ',')
        FILTER (WHERE b != 2)
        OVER (
-       PARTITION BY a ORDER BY a,b
+       	    PARTITION BY a
+       	    ORDER BY a,b
        )
-    FROM test;
+   FROM test;
 
  a | b | string_agg
 ---+---+------------
@@ -125,10 +130,13 @@ FILTER句では、入力行に対してある条件を指定することがで�
 
 ```sql
 =#  SELECT a, b,
-		string_agg(b::text, ',')
+	string_agg(b::text, ',')
         OVER (
-        PARTITION BY a ORDER BY a,b
-        ) FROM test WHERE b != 2;
+        PARTITION BY a
+	ORDER BY a,b
+        )
+   FROM test
+   WHERE b != 2;
 
  a | b | string_agg
 ---+---+------------
@@ -148,11 +156,13 @@ FILTER句は「集約関数にその値を渡すかどうか」に影響し、�
 
 ```sql
 =# EXPLAIN (analyze on, costs off) SELECT a, b,
-  string_agg(b::text, ',')
-  FILTER (WHERE b != 2)
-  OVER (
-      PARTITION BY a ORDER BY a,b
-  ) FROM test;
+   	   string_agg(b::text, ',')
+	   FILTER (WHERE b != 2)
+	   OVER (
+	         PARTITION BY a
+		 ORDER BY a,b
+  )
+  FROM test;
                                QUERY PLAN
 ------------------------------------------------------------------------
  WindowAgg (actual time=0.045..0.064 rows=7 loops=1)
@@ -169,10 +179,13 @@ FILTER句は「集約関数にその値を渡すかどうか」に影響し、�
 
 ```sql
 =# EXPLAIN (analyze on, costs off) SELECT a, b,
-  string_agg(b::text, ',')
-  OVER (
-      PARTITION BY a ORDER BY a,b
-  ) FROM test WHERE b != 2;
+   	   string_agg(b::text, ',')
+	   OVER (
+	   	PARTITION BY a
+		ORDER BY a,b
+   )
+   FROM test
+   WHERE b != 2;
                                QUERY PLAN
 ------------------------------------------------------------------------
  WindowAgg (actual time=0.053..0.069 rows=5 loops=1)
@@ -195,8 +208,9 @@ FILTER句はWindow関数特有のものではなく、全ての集約関数に�
 ```sql
 =# SELECT
      string_agg(b::text, ',')
-     FILTER (WHERE b != 2) FROM test
-	 GROUP BY a;
+     FILTER (WHERE b != 2)
+   FROM test
+   GROUP BY a;
  string_agg
 ------------
   3,1,4
