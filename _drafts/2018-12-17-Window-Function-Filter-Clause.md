@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Window関数のFILTER句を極める
+description: Window関数のFILTERオプションについて、その機能、WHERE句との違い等を徹底解説。
 tags:
   - PostgreSQL
   - Window Function
