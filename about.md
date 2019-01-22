@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 ## Name
-Masahiko Sawada
+Masahiko SAWADA
 
 ## Decription
 He is a PostgreSQL contributor and database engineer at Tokyo. He has been insterested in replication, vacuum, MVCC, distributed transaction and patch reviews. Also he is a maintainer of some PostgreSQL related tools: [pg_bigm](http://pgbigm.osdn.jp/)、[pg_repack](https://reorg.github.io/pg_repack/jp/).
