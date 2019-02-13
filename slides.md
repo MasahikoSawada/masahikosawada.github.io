@@ -6,6 +6,9 @@ permalink: /slides/
 
 # Recent presentations
 
+## 2019
+* [Transparent Data Encryptoin in PostgreSQL and Integratino with Key Management Service (FOSDEM PGDAY 2019)](https://www.slideshare.net/masahikosawada98/transparent-data-encryptoin-in-postgresql-and-integratino-with-key-management-service)
+
 ## 2018
 * [Bloat and Fragmentatio in PostgreSQL (PGConf.ASIA 2018)](https://www.slideshare.net/masahikosawada98/bloat-and-fragmentation-in-postgresql)
 * [今秋リリース予定のPostgreSQL11を設定解説 (関西DB勉強会)](https://www.slideshare.net/masahikosawada98/postgresql11)
