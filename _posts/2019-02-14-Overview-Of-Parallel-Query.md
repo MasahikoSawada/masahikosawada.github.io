@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Parallel Queryの概要
-decription: PostgreSQLのパラレルクエリ(Parallel Query)について、その概要、実行計画(EXPLAIN)の読み方などを解説
+description: PostgreSQLのパラレルクエリ(Parallel Query)について、その概要、実行計画(EXPLAIN)の読み方などを解説
 tags:
   - PostgreSQL
   - Parallel Query
