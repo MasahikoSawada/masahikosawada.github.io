@@ -85,6 +85,9 @@ figure > img {
 
 figcaption {
   font-size: $small-font-size;
+  @include media-query($on-laptop) {
+     font-size: 40px;
+  }
 }
 
 
@@ -153,6 +156,10 @@ blockquote {
   font-size: 18px;
   letter-spacing: -1px;
   font-style: italic;
+
+  @include media-query($on-laptop) {
+     font-size: 40px;
+  }
 
   > :last-child {
     margin-bottom: 0;
