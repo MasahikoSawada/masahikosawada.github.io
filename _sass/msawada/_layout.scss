@@ -89,6 +89,9 @@
  */
 .page-content {
   padding: $spacing-unit 0;
+  @include media-query($on-laptop) {
+     font-size: 40px;
+  }
 }
 
 .page-heading {
@@ -181,7 +184,7 @@
   line-height: 1;
 
   @include media-query($on-laptop) {
-    font-size: 40px;
+    font-size: 60px;
   }
 }
 
@@ -193,7 +196,10 @@
     text-decoration: underline;
 
     @include media-query($on-laptop) {
-      font-size: 24px;
+      font-size: 60px;
+    }
+    @include media-query($on-mobile) {
+      font-size: 60px;
     }
   }
 
@@ -202,7 +208,10 @@
     text-decoration: underline;
 
     @include media-query($on-laptop) {
-      font-size: 22px;
+      font-size: 52px;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 50px;
     }
   }
 
@@ -210,7 +219,10 @@
     font-size: 18px;
 
     @include media-query($on-laptop) {
-      font-size: 20px;
+      font-size: 40px;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 90px;
     }
   }
 
@@ -218,7 +230,10 @@
     font-size: 15px;
 
     @include media-query($on-laptop) {
-      font-size: 13px;
+      font-size: 38px;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 90px;
     }
   }
 }
