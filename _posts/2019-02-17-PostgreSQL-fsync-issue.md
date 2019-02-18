@@ -52,7 +52,7 @@ CHECKPOINTは完了してはいけないし、WALも削除されてはいけな�
 
 * writeの失敗
   * 原理的には可能性はあるけど稀
-  * writeするべきデータはPostgreSQLが持っているのでりリトライできる
+  * writeするべきデータはPostgreSQLが持っているのでリトライできる
 * fsyncの失敗
   * SAN、NFSとか使っていると簡単に発生する
   * fsyncするべきデータは**kernelが持っている**
