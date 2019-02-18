@@ -6,6 +6,9 @@
 
   // Positioning context for the mobile navigation icon
   position: relative;
+  @include media-query($on-laptop) {
+     font-size: 40px;
+  }
 }
 
 .site-title {
@@ -16,6 +19,9 @@
   margin-bottom: 0;
   float: left;
 
+  @include media-query($on-laptop) {
+     font-size: 48px;
+  }
   &,
   &:visited {
     color: $grey-color-dark;
@@ -58,11 +64,17 @@
 
 .footer-heading {
   @include relative-font-size(0.8);
+  @include media-query($on-laptop) {
+     font-size: 40px * 0.8;
+  }
   margin-bottom: $spacing-unit / 2;
 }
 
 .footer-col-wrapper {
   @include relative-font-size(0.9375);
+  @include media-query($on-laptop) {
+     font-size: 40px * 0.9375;
+  }
   color: $grey-color;
   margin-left: -$spacing-unit / 2;
   @extend %clearfix;
@@ -90,13 +102,16 @@
 .page-content {
   padding: $spacing-unit 0;
   @include media-query($on-laptop) {
-     font-size: 40px;
+     font-size: 28px;
   }
 }
 
 .page-heading {
   @include relative-font-size(2);
   text-decoration: underline;
+  @include media-query($on-laptop) {
+       font-size: 40px;
+  }
 }
 
 .post-list-heading {
@@ -127,6 +142,9 @@
 
   .post-link {
     font-size: 24px;
+    @include media-query($on-laptop) {
+      font-size: 32px;
+    }
   }
 
   > li {
@@ -137,11 +155,18 @@
 .post-meta {
   font-size: $small-font-size;
   color: $grey-color;
+  @include media-query($on-laptop) {
+     font-size: 28px;
+  }
 }
 
 .post-link {
   display: block;
   @include relative-font-size(1.5);
+  @include media-query($on-laptop) {
+     font-size: 40px;
+  }
+
   &:visited {
     color: $text-color;
   }
@@ -176,6 +201,9 @@
  */
 .post-header {
   margin-bottom: $spacing-unit;
+  @include media-query($on-laptop) {
+     font-size: 40px * 0.8;
+  }
 }
 
 .post-title {
@@ -184,7 +212,7 @@
   line-height: 1;
 
   @include media-query($on-laptop) {
-    font-size: 60px;
+    font-size: 58px;
   }
 }
 
@@ -210,9 +238,6 @@
     @include media-query($on-laptop) {
       font-size: 52px;
     }
-    @media screen and (max-width: 480px) {
-      font-size: 50px;
-    }
   }
 
   h3 {
@@ -220,9 +245,6 @@
 
     @include media-query($on-laptop) {
       font-size: 40px;
-    }
-    @media screen and (max-width: 480px) {
-      font-size: 90px;
     }
   }
 
@@ -232,9 +254,10 @@
     @include media-query($on-laptop) {
       font-size: 38px;
     }
-    @media screen and (max-width: 480px) {
-      font-size: 90px;
-    }
+  }
+
+  @include media-query($on-laptop) {
+     font-size: 30px;
   }
 }
 

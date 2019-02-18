@@ -158,7 +158,7 @@ blockquote {
   font-style: italic;
 
   @include media-query($on-laptop) {
-     font-size: 40px;
+     font-size: 30px;
   }
 
   > :last-child {
@@ -190,6 +190,9 @@ code {
   border: 1px solid $grey-color-light;
   border-radius: 0;
   background-color: lighten($grey-color-light, 5%);
+  @include media-query($on-laptop) {
+     font-size: 30px;
+  }
 }
 
 code {
