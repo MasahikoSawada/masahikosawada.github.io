@@ -40,6 +40,7 @@ permalink: /keyboards/nin76.html
   * ホコリが入りにくいです
 * **配列は自由にカスタマイズできる**
   * qmk_firmwareを使っていて、自由にカスタマイズが可能です
+* フルキーボード（108キー）のキーキャップがそのまま使用可能（Cherry MXのスイッチのみ対応）
 
 # キーレイアウト
 
@@ -114,6 +115,12 @@ Nin76に必要なキーキャップです。
 |2 x 1|2個|
 |2.25 x 1|1個|
 |エンターキー用(L字のやつ)|1個|
+
+[Majestouch 日本語108キーの交換用キーキャップセット](https://www.diatec.co.jp/shop/det.php?prod_c=3716)に入っているキーも使えます。
+
+<div align="center">
+<img src="/images/nin76/black.jpg">
+</div>
 
 # ギャラリー
 
