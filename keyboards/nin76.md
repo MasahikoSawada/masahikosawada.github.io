@@ -4,6 +4,8 @@ title: 自作キーボード Nin76
 permalink: /keyboards/nin76.html
 ---
 
+~~試作機を[BOOTH](https://masahi-shop.booth.pm/items/1370844)にて頒布中です。~~ 現在売り切れ中です(2019/05/30)。
+
 <div align="center">
 <img src="/images/nin76/top.jpg">
 </div>
