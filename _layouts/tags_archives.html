@@ -2,28 +2,14 @@
 layout: default
 ---
 <div class="home">
+<h1>Categories</h1>
 
-  <h1 class="page-heading"> Archive of {{ page.type }} '{{page.title | escape }}'</h1>
-
-  {% capture site_lang %}{{ site.lang | default: "ja" }}{% endcapture %}
-
-  <ul class="post-archives">
-    {% for post in page.posts %}
-      {% capture site_lang %}{{ site.lang | default: "ja" }}{% endcapture %}
-
-      <li>
-	<span class="post-meta">
-	  {{ post.date | date: "%Y/%m/%d" }}
-	  {% if post.tags != empty %}
-	    {% include tags.html tags=post.tags %}
-	  {% endif %}
-	</span>
-
-	<h2>
-	  <a class="post-link" href="{{ post.url | relative_url }}" lang="ja">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
-	</h2>
-      </li>
-    {% endfor %}
-  </ul>
-
+{% assign all_categories = site.pages | map: "tag" %}
+<ul>
+{% for category in all_categories %}
+ {% if site.tags[category].size > 0 %}
+ <li><a href="/tag/{{ category }}">{{ category }}</a>({{ site.tags[category].size }})</li>
+ {% endif %}
+{% endfor %}
+</ul>
 </div>
