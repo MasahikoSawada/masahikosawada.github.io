@@ -7,6 +7,7 @@ permalink: /slides/
 # Recent presentations
 
 ## 2019
+* [PostgreSQL 12の話 (Middlewares Deep Talks)](https://www.slideshare.net/masahikosawada98/postgresql-12)
 * [OSS活動のやりがいとそれから得たもの - PostgreSQLコミュニティにて - (デブサミ2019)](https://www.slideshare.net/masahikosawada98/oss-postgresql-132162671)
 * [Transparent Data Encryptoin in PostgreSQL and Integratino with Key Management Service (FOSDEM PGDAY 2019)](https://www.slideshare.net/masahikosawada98/transparent-data-encryptoin-in-postgresql-and-integratino-with-key-management-service)
 
