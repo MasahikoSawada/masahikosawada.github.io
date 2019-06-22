@@ -74,7 +74,7 @@ Nin76にはキーボード側面を覆うパーツが付いていて、キーボ
 
 # 組み立て方法
 
-[こちら](https://slides.com/masahikosawada/nin76/fullscreen)をご参照ください。
+<iframe src="//slides.com/masahikosawada/nin76/embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 # 組み立てに必要なもの
 
