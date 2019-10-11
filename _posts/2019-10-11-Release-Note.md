@@ -39,7 +39,7 @@ Author: Michael Paquier <michael@paquier.xyz>
 
 **(2019-10-11追記)**
 
-@noborusさんから以下の様なコメントをいただきました。
+@noborusさんから以下のコメントをいただきました。
 
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">実はこっちだと見られるようにしてあります（コメントを表示するようにしているだけですが）。<a href="https://t.co/pNBtasoHu2">https://t.co/pNBtasoHu2</a><br><br>実は公式の日本語マニュアルでもhtmlはコメントをコメントとして残すようにしてあるので、htmlのソースを見るとコメントを見ることが出来ます。<a href="https://t.co/EQ7BwTO0oi">https://t.co/EQ7BwTO0oi</a> <a href="https://t.co/GMWJy7Etbk">https://t.co/GMWJy7Etbk</a></p>&mdash; Saito Noboru (@noborus) <a href="https://twitter.com/noborus/status/1182466688794542080?ref_src=twsrc%5Etfw">October 11, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
