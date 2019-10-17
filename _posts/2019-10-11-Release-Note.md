@@ -1,7 +1,7 @@
 ---
 layout: post
 title: リリースノートからコミットログを調べる
-tag:
+tags:
   - PostgreSQL
 ---
 
