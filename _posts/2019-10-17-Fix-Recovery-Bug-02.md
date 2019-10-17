@@ -102,9 +102,7 @@ index 9a21f006d1..ad28f4cb2a 100644
 
 私はsleepする時はよく`pg_usleep関数`を使いますが、通常の`sleep関数`でも問題ありません。アタッチするプロセスのPIDを出力するために`MyProcPid`を使っています。
 
-上記の変更を加えたPostgreSQLをビルドし、インストールします。そして、再度リカバリ手順を行うと、以下のようなログとともに動作がストップします。
-
-ストップしてる間に該当プロセスのバックトレースを見ます[^debug]。psコマンドで見るとわかるのですが、アタッチする対象のプロセスは`startup`プロセスです。
+上記の変更を加えたPostgreSQLをビルドし、インストールします。そして、再度リカバリ手順を行うと、追加したデバッグログの出力とともに動作がストップします。そして、ストップしてる間に該当プロセスのバックトレースを見ます[^debug]。psコマンドで見るとわかるのですが、アタッチする対象のプロセスは`startup`プロセスです。
 
 [^debug]: バックトレースを見るためにはconfigure時に`--enable-debug`を指定する必要があります。詳細は[こちら](https://qiita.com/sawada_masahiko/items/2fa99e422ec0eb35245c#%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E5%85%A5%E6%89%8B%E3%81%8B%E3%82%89%E8%B5%B7%E5%8B%95%E3%81%BE%E3%81%A7)をご参照ください。
 
@@ -128,7 +126,7 @@ Copyright (C) 2019 Free Software Foundation, Inc.
 #7  0x00005634ae76cac3 in StartChildProcess (type=StartupProcess) at postmaster.c:5414
 #8  0x00005634ae7672a1 in PostmasterMain (argc=3, argv=0x5634b03a19a0) at postmaster.c:1383
 #9  0x00005634ae66e472 in main (argc=3, argv=0x5634b03a19a0) at main.c:210
-(gdb) 
+(gdb)
 ```
 
 仮説2は正しかったようです！`exitArchiveRecovery関数`の直後に呼ばれる`writeTimeLineHistory関数`からの呼び出しで`RECOVERYHISTORY`ファイルが作成されていました(バックトレースの#3の所)。**`exitArchiveRecovery関数`で不要（一時）ファイルの掃除がされていましたが、その後に作られたため最後まで残ってしまったのですね。**
