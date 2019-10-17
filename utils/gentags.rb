@@ -27,7 +27,8 @@ def get_tags(file)
         yml = YAML.load(formatter)
 
         if yml["tags"].nil? then
-          fatal "title \"%s\" does not have any tags" % [yml["title"]]
+          p "title \"%s\" does not have any tags" % [yml["title"]]
+          exit
         end
 
         $tags_in_posts.concat(yml["tags"])
