@@ -167,7 +167,7 @@ Verifying - enter aes-256-cbc encryption password:
 
 # おまけ2
 
-PKCS#7 PaddingがどのようにPaddingをしているのかを確認してみる。ソースを以下のように変更する。
+PKCS#7 PaddingがどのようにPaddingをしているのかを確認してみる。
 
 ```diff
 @@ -9,8 +9,8 @@
