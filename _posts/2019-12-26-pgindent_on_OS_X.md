@@ -27,14 +27,15 @@ OS Xでは以下のように、`dsymutil`を使ってデバッグ情報（DWARF�
 
 ```bash
 $ dsymutil -flat src/backend/postgres
-$ dwarfdump src/backend/postgres.dwarf | \
-    egrep -A3 DW_TAG_typedef |\
-    perl -e ' while (<>) { chomp; @flds = split;next unless (1 < @flds);\
-		next if $flds[0]  ne "DW_AT_name" && $flds[1] ne "DW_AT_name";\
-		next if $flds[-1] =~ /^DW_FORM_str/;\
-		$flds[-1] =~ /\(\"(.*)\"\)/; \
-		print $1,"\n"; }' | \
-    sort | uniq > /tmp/my.typedefs
+$ vim /tmp/conv.pl
+while (<>) {
+    chomp; @flds = split;next unless (1 < @flds);
+    next if $flds[0]  ne "DW_AT_name" && $flds[1] ne "DW_AT_name";
+    next if $flds[-1] =~ /^DW_FORM_str/;
+    $flds[1] =~ /([\w_-]+)/;
+    print "$1\n";
+}
+$ dwarfdump src/backend/postgres.dwarf | egrep -A3 DW_TAG_typedef | perl /tmp/conv.pl | sort | uniq > /tmp/my.typedefs
 $ ./src/tools/pgindent/pgindent --typedefs=/tmp/my.typedefs src/backend/access/heap/heapam.c
 $ rm src/backend/postgres.dwarf
 ```
