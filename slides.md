@@ -6,6 +6,9 @@ permalink: /slides/
 
 # Recent presentations
 
+## 2020
+* [Toward full ACID distributed transaction support with Foreign Data Wrapper (PGCon 2020)](https://www.pgcon.org/events/pgcon_2020/schedule/session/78-toward-full-acid-distributed-transaction-support-with-foreign-data-wrapper/)
+
 ## 2019
 * Towards Advanced PostgreSQL Security: Transparent Data Encryption and Key Management (PGConf.ASIA 2019)
 * [PostgreSQL 12は ここがスゴイ！～性能改善やpluggable storage engineなどの新機能を徹底解説～ (NTTデータテクノロジーカンファレンス2019)](https://www.slideshare.net/nttdata-tech/postgresql12-performance-improvement-pluggable-storage-engine-ntt-sawada)
