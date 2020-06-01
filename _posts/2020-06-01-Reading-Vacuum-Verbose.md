@@ -6,7 +6,7 @@ tags:
   - Vacuum
 ---
 
-Vacuumとうまく付き合っていくために`VACUUM VERBOSE`ログの読み方を簡単にに紹介します。また、`log_autovacuum_min_duration`で出力されるautovacuumのログも大体同じです。バージョンは12.2を使います。`VACUUM VERBOSE`の出力内容はバージョンによって異なる可能性があるのでご注意ください。
+Vacuumとうまく付き合っていくために`VACUUM VERBOSE`ログの読み方を簡単に紹介します。また、`log_autovacuum_min_duration`で出力されるautovacuumのログも大体同じです。バージョンは12.2を使います。`VACUUM VERBOSE`の出力内容はバージョンによって異なる可能性があるのでご注意ください。
 
 # Vacuumのフェーズ
 
@@ -177,7 +177,7 @@ Skipped 0 pages due to buffer pins, 0 frozen pages.
 CPU: user: 3.29 s, system: 0.22 s, elapsed: 3.64 s.
 ```
 
-これはVacuum中に発見した空ページの数です。この値もあまり注目してみませんが、おおまかなテーブルの肥大化率の計算には役に立ちそうです。
+これはVacuum中に発見した空ページの数です。この値も個人的にはあまり注目して見ることはないですが、おおまかなテーブルの肥大化率の計算には役に立ちそうです。
 また、この時間はVacuumが始まってからここまでの処理に合計時間です。
 
 ```
@@ -187,4 +187,8 @@ DETAIL:  CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
 
 これは最後にテーブルに末尾を切り詰める処理のレポートです。Vacuumでは基本的には物理的なテーブルサイズを小さくすることはしませんが、テーブルの（物理的な）末尾に空ページが続いている場合、テーブルの物理ファイルを切り詰めて物理的に小さくします。
 
-この例では、元々17700ページあったのが、13275ページまで切り詰められたことがわかります。Vacuum中のテーブルの切り詰めは一長一短があります。テーブルやインデックスのVacuum中は`ShareUpdateExclusiveLock`という、SELECT/INSERT/UPDATE/DELETEとは競合しないロックを取得しますが、切り詰める時には一時的にAccessExclusiveLockというすべてのロックに競合するロック（排他ロック）取得します。これが同時実行中のプロセスやホットスタンバイに影響を与えることもあるので、それを避けるためにPostgreSQL 12以降では`TRUNCATE [on|off]`オプションで制御することが可能です。
+この例では、元々17700ページあったのが、13275ページまで切り詰められたことがわかります。Vacuum中のテーブルの切り詰めは一長一短があります。テーブルやインデックスのVacuum中は`ShareUpdateExclusiveLock`という、SELECT/INSERT/UPDATE/DELETEとは競合しない[ロック](https://www.postgresql.jp/document/12/html/explicit-locking.html)を取得しますが、切り詰める時には一時的に`AccessExclusiveLock`というすべてのロックに競合するロック（排他ロック）取得します。これが同時実行中のプロセスやホットスタンバイに影響を与えることもあるので、それを避けるためにPostgreSQL 12以降では`TRUNCATE [on|off]`オプションで制御することが可能です。
+
+# 終わりに
+
+他にもこんな読み方があるよ、という場合はぜひコメントください。
