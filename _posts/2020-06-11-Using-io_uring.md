@@ -1,6 +1,6 @@
 ---
 layout: post
-title: io_uring使ってみた
+title: io_uringを使ってみた
 tags:
   - Linux
   - io_uring
