@@ -7,6 +7,9 @@ tags:
   - Source Code Reading
 ---
 
+BRINのソースコードの構築周り（CREATE INDEX）を見たのでその時のメモ。
+
+
 # struct BrinBuildState
 
 
@@ -155,8 +158,7 @@ brinbuildCallback(Relation index,
 # brin_minmax_add_value()
 
 
-
-まずは、新しい値(`newval`)に対して、既存のminより値が小さいかどうかを書くにする。そのために、比較用の関数を探す（BTLessStrategyNumber(つまり`<`)）。既存のminよりも小さい場合は、minを更新する必要があるので、`bv_values[0]`に新しいminを代入する。
+新しい値(`newval`)に対して、既存のminより値が小さいかどうかを確認する。そのために、比較用の関数を探す（BTLessStrategyNumber(つまり`<`)）。既存のminよりも小さい場合は、minを更新する必要があるので、`bv_values[0]`に新しいminを代入する。
 
 ```c
     BrinDesc   *bdesc = (BrinDesc *) PG_GETARG_POINTER(0);
@@ -205,10 +207,10 @@ brinbuildCallback(Relation index,
 heapBlkは現在のレンジの最初のHeapのブロック。例えば、デフォルトだとpagesPerRange = 128なので、128とか256という値が入る。`tup`は挿入したいインデックスタプルで、`itemsz`はそのサイズ。
 
 ```c
-|OffsetNumber
-|brin_doinsert(Relation idxrel, BlockNumber pagesPerRange,
-|              BrinRevmap *revmap, Buffer *buffer, BlockNumber heapBlk,
-|              BrinTuple *tup, Size itemsz)
+OffsetNumber
+brin_doinsert(Relation idxrel, BlockNumber pagesPerRange,
+              BrinRevmap *revmap, Buffer *buffer, BlockNumber heapBlk,
+              BrinTuple *tup, Size itemsz)
 ```
 
 この関数でやることは大きく2つ。
@@ -297,4 +299,8 @@ heapBlkは現在のレンジの最初のHeapのブロック。例えば、デフ
      }
 ```
 
+# まとめと感想
 
+revmapの構造や更新方法はデータ型によらず同じ。なので、brin.cにある。一方、revmapから参照されるregular page内のインデックスのインデックスタプルは、データ型によって構造が異なる。その部分(`xxx_add_value()`)は、ユーザがoperator classを定義することで自由に実装することができ、コア側からはタプル毎に`xxx_add_value()`が呼ばれ、テーブルの値を元にインデックスタプルに入れたい値を計算していくイメージ。revmapの更新と、取り込んだインデックスタプルをインデックスに追加する部分はコア側で用意されている。
+
+btreeのようにテーブルデータをソートする必要がないので、BRIN構築時はmaintenance_work_memやwork_memは使わないかもしれない（まだ確認していない）。ブロックで分けることができるので、Parallel CREATE INDEXもブロックレンジ毎にスキャンして構築する、というやり方ができるかも。BRINはインデックスサイズが小さくなるのが大きな特徴でもあるので、以下にテーブルスキャンを高速化するかが重要になりそう。
