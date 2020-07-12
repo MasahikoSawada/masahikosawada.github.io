@@ -82,79 +82,63 @@ revmapに対応するインデックスタプルがあり、scan keyがmin, max�
 * 一つずつキー（検索条件）を見ていく場合、一つのキーチェックでもfalseを返せばそのレンジは検索条件に合わないので途中でチェックを打ち切ってfalseとなる。
 
 ```c
+				/*
+				 * Compare scan keys with summary values stored for the range.
+				 * If scan keys are matched, the page range must be added to
+				 * the bitmap.  We initially assume the range needs to be
+				 * added; in particular this serves the case where there are
+				 * no keys.
+				 */
+				addrange = true;
+				for (keyno = 0; keyno < scan->numberOfKeys; keyno++)
+				{
+					ScanKey		key = &scan->keyData[keyno];
+					AttrNumber	keyattno = key->sk_attno;
+					BrinValues *bval = &dtup->bt_columns[keyattno - 1];
+					Datum		add;
 
-                /*
-                 * Compare scan keys with summary values stored for the range.
-                 * If scan keys are matched, the page range must be added to
-                 * the bitmap.  We initially assume the range needs to be
-                 * added; in particular this serves the case where there are
-                 * no keys.
-                 */
-                addrange = true;
-                for (attno = 1; attno <= bdesc->bd_tupdesc->natts; attno++)
-                {
-                    BrinValues *bval;
-                    Datum       add;
+					/*
+					 * The collation of the scan key must match the collation
+					 * used in the index column (but only if the search is not
+					 * IS NULL/ IS NOT NULL).  Otherwise we shouldn't be using
+					 * this index ...
+					 */
+					Assert((key->sk_flags & SK_ISNULL) ||
+						   (key->sk_collation ==
+							TupleDescAttr(bdesc->bd_tupdesc,
+										  keyattno - 1)->attcollation));
 
-                    /* skip attributes without any san keys */
-                    if (!nkeys[attno - 1])
-                        continue;
+					/* First time this column? look up consistent function */
+					if (consistentFn[keyattno - 1].fn_oid == InvalidOid)
+					{
+						FmgrInfo   *tmp;
 
-                    bval = &dtup->bt_columns[attno - 1];
+						tmp = index_getprocinfo(idxRel, keyattno,
+												BRIN_PROCNUM_CONSISTENT);
+						fmgr_info_copy(&consistentFn[keyattno - 1], tmp,
+									   CurrentMemoryContext);
+					}
 
-                    Assert((nkeys[attno - 1] > 0) &&
-                           (nkeys[attno - 1] <= scan->numberOfKeys));
-
-                    /*
-                     * Check whether the scan key is consistent with the page
-                     * range values; if so, have the pages in the range added
-                     * to the output bitmap.
-                     *
-                     * When there are multiple scan keys, failure to meet the
-                     * criteria for a single one of them is enough to discard
-                     * the range as a whole, so break out of the loop as soon
-                     * as a false return value is obtained.
-                     */
-                    if (consistentFn[attno - 1].fn_nargs >= 4)
-                    {
-                        Oid         collation;
-
-                        /*
-                         * Collation from the first key (has to be the same for
-                         * all keys for the same attribue).
-                         */
-                        collation = keys[attno - 1][0]->sk_collation;
-
-                        /* Check all keys at once */
-                        add = FunctionCall4Coll(&consistentFn[attno - 1],
-                                                collation,
-                                                PointerGetDatum(bdesc),
-                                                PointerGetDatum(bval),
-                                                PointerGetDatum(keys[attno - 1]),
-                                                Int32GetDatum(nkeys[attno - 1]));
-                        addrange = DatumGetBool(add);
-                    }
-                    else
-                    {
-                        /* Check keys one by one */
-                        int         keyno;
-
-                        for (keyno = 0; keyno < nkeys[attno - 1]; keyno++)
-                        {
-                            add = FunctionCall3Coll(&consistentFn[attno - 1],
-                                                    keys[attno - 1][keyno]->sk_collation,
-                                                    PointerGetDatum(bdesc),
-                                                    PointerGetDatum(bval),
-                                                    PointerGetDatum(keys[attno - 1][keyno]));
-                            addrange = DatumGetBool(add);
-                            if (!addrange)
-                                break;
-                        }
-                    }
-
-                    if (!addrange)
-                        break;
-                }
+					/*
+					 * Check whether the scan key is consistent with the page
+					 * range values; if so, have the pages in the range added
+					 * to the output bitmap.
+					 *
+					 * When there are multiple scan keys, failure to meet the
+					 * criteria for a single one of them is enough to discard
+					 * the range as a whole, so break out of the loop as soon
+					 * as a false return value is obtained.
+					 */
+					add = FunctionCall3Coll(&consistentFn[keyattno - 1],
+											key->sk_collation,
+											PointerGetDatum(bdesc),
+											PointerGetDatum(bval),
+											PointerGetDatum(key));
+					addrange = DatumGetBool(add);
+					if (!addrange)
+						break;
+				}
+			}
 ```
 
 該当のレンジをスキャンする必要があるとわかった場合(`addrange == true`)、以下のコートで追加する。今の所、Bitmap(`tbm`)にはページ単位かタプル単位でしかページを登録する方法がないので、該当のレンジ内のブロックを一つずつ入れていく。
