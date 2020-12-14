@@ -65,15 +65,15 @@ tags:
 | src/backend/bootstrap    | データベースクラスタ作成時（`initdb`コマンド実行時）に使われる                                                                                                                               |
 | src/backend/catalog      | システムカタログ                                                                                                                                                                             |
 | src/backend/commands     | `CREATE TABLE`、`COPY`などのDDLやSQLコマンド                                                                                                                                                 |
-| src/backend/executor     | エグゼキュータ。プランナが作成した実行計画を実行する。                                                                                                                                       |
-| src/backend/foreign      | 外部テーブル（Foreign Data Wrapper）の基盤となるコード。                                                                                                                                     |
-| src/backend/jit          | JITコンパイル。                                                                                                                                                                              |
+| src/backend/executor     | エグゼキュータ。プランナが作成した実行計画を実行する                                                                                                                                       |
+| src/backend/foreign      | 外部テーブル（Foreign Data Wrapper）の基盤となるコード                                                                                                                                     |
+| src/backend/jit          | JITコンパイル                                                                                                                                                                              |
 | src/backend/lib          | バックエンドで使えるライブラリ                                                                                                                                                               |
 | src/backend/libpq        | lipqのサーバ側のコード                                                                                                                                                                       |
 | src/backend/main         | postgresプロセスのmain関数                                                                                                                                                                   |
-| src/backend/nodes        | ノードを扱う関数（比較、コピーなど）。                                                                                                                                                       |
-| src/backend/optimizer    | オプティマイザ（プランナ）。実行計画を作る。                                                                                                                                                 |
-| src/backend/parser       | パーサ。SQLを構文解析する。                                                                                                                                                                  |
+| src/backend/nodes        | ノードを扱う関数（比較、コピーなど）                                                                                                                                                       |
+| src/backend/optimizer    | オプティマイザ（プランナ）。実行計画を作る                                                                                                                                                 |
+| src/backend/parser       | パーサ。SQLを構文解析する                                                                                                                                                                  |
 | src/backend/partitioning | テーブル・パーティショニング                                                                                                                                                                 |
 | src/backend/po           | ログメッセージの多言語対応                                                                                                                                                                   |
 | src/backend/port         | サーバ側の環境依存コード                                                                                                                                                                     |
