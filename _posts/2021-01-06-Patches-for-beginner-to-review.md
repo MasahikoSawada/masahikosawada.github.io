@@ -101,4 +101,4 @@ Commitfestには現在260個のパッチが登録されているのですが、�
 
 # 最後に
 
-やってみたけどここがわからない、途中で詰まってしまった、という場合はいつでも[masahiko_sawada](https://twitter.com/masahiko_sawada)に、もしくは日本PostgreSQLユーザ会が運営している[slack](https://www.postgresql.jp/node/188)にて相談してください！
+やってみたけどここがわからない、途中で詰まってしまった、という場合はいつでも[@masahiko_sawada](https://twitter.com/masahiko_sawada)に、もしくは日本PostgreSQLユーザ会が運営している[slack](https://www.postgresql.jp/node/188)にて相談してください！
