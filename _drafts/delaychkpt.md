@@ -1,61 +1,60 @@
 ---
 layout: post
-tital: `MyProc->delayChkpt = true`についての理解と覚書
+tital: `MyProc->delayChkpt`についての理解と覚書
 tags:
   - PostgreSQL
+  - Source Code Reading
 ---
 
 PostgreSQLのコードを読んでいるとたまに`MyProc->delayChkpt`と一旦`true`にして、いくつか処理をしたあとに再び`false`に戻す、という処理を見ることがあります。
 
-例えば、PostgreSQLのトランザクションのコミットのコードを（かなり省略して書くと）以下のような流れになっていて、コミットのWALレコードを書く（`XactLogCommitRecord()`）の処理と、それのディスクへのFlush（`XLogFlush()`）、pg_xact（以前はCLOGと呼ばれていた）を更新する処理（`TransactionIdCommitTree()`）の一連の処理間、`MyProc->delayChkpt`を`true`にしています。
+例えば、PostgreSQLのトランザクションのコミットのコードを（かなり省略して書くと）以下のような流れになっていて、コミットのWALレコードを書く（`XactLogCommitRecord()`）の処理と、それのディスクへのFlush（`XLogFlush()`）、pg_xact（以前はpg_clogと呼ばれていたもの）を更新する処理（`TransactionIdCommitTree()`）の一連の処理の間`MyProc->delayChkpt`を`true`にしています。
 
 ```c
-    START_CRIT_SECTION();
     MyProc->delayChkpt = true;
 
-	XactLogCommitRecord(xactStopTimestamp,
-						nchildren, children, nrels, rels,
-						nmsgs, invalMessages,
-						RelcacheInitFileInval,
-						MyXactFlags,
-						InvalidTransactionId, NULL /* plain commit */ );
+    XactLogCommitRecord(xactStopTimestamp,
+                        nchildren, children, nrels, rels,
+                        nmsgs, invalMessages,
+                        RelcacheInitFileInval,
+                        MyXactFlags,
+                        InvalidTransactionId, NULL /* plain commit */ );
 
-	XLogFlush(XactLastRecEnd);
+    XLogFlush(XactLastRecEnd);
 
-	TransactionIdCommitTree(xid, nchildren, children);
+    TransactionIdCommitTree(xid, nchildren, children);
 
-	MyProc->delayChkpt = false;
-	END_CRIT_SECTION();
+    MyProc->delayChkpt = false;
 ```
 
-`MyProc->delayChkpt = true`をすると、実行中のCHECKPOINTを止めることができます。より詳細に見てみると、CHECKPOINTを実行するコード（`CreateCheckPoint()`）には、以下のようなコードが入っていて、バッファやpg_xactなどのFlushの前で`MyProc->delayChkpt = true`となっているプロセスを探して、それらがすべて`false`にするまで待つ、という挙動になっていることがわかります。
+`MyProc->delayChkpt = true`をすると、実行中のCHECKPOINTを止めることができます。CHECKPOINTを実行するコード（`CreateCheckPoint()`）には、以下のようなコードが入っていて、バッファやpg_xactなどをFlushする処理（`CheckPointGuts()`）の前で`MyProc->delayChkpt = true`となっているプロセスを探してそれらがすべて`false`にするまで待つ、という挙動になっていることがわかります。
 
 ```c
-	vxids = GetVirtualXIDsDelayingChkpt(&nvxids);
-	if (nvxids > 0)
-	{
-		do
-		{
-			pg_usleep(10000L);	/* wait for 10 msec */
-		} while (HaveVirtualXIDsDelayingChkpt(vxids, nvxids));
-	}
-	pfree(vxids);
+    vxids = GetVirtualXIDsDelayingChkpt(&nvxids);
+    if (nvxids > 0)
+    {
+        do
+        {
+            pg_usleep(10000L);	/* wait for 10 msec */
+        } while (HaveVirtualXIDsDelayingChkpt(vxids, nvxids));
+    }
+    pfree(vxids);
 
-	CheckPointGuts(checkPoint.redo, flags);
+    CheckPointGuts(checkPoint.redo, flags);
 ```
 
-では、なぜトランザクションのコミットはコミットのWALレコードをディスクに書いて、pg_xactログを更新するまでCHECKPOINTの動作を止める必要があるのか？それについての覚書です。
+では、なぜトランザクションのコミットは、コミットのWALレコードをディスクに書いて、pg_xactログを更新するまでCHECKPOINTの動作を止める必要があるのか？それについての覚書です。
 
-# PostgreSQLにおけるトランザクションのCommit
-PostgreSQLでは、トランザクションのCommit時に「XID=100のトランザクションはコミットされた」という情報をpg_xactログに書きます。
+# PostgreSQLにおけるトランザクションのコミット
+PostgreSQLでは、トランザクションのコミット時に「XID=100のトランザクションはコミットされた」という情報をpg_xactログに書きます。
 
-pg_xactログは各トランザクションのステータス（Commitされたのか実行中なのかなど）を保持しているモジュールで、テーブルやインデックスと同様に共有バッファにバッファされCHECKPOINT時にディスクに書かれます。PostgreSQLでは各トランザクションの状態をトランザクションにつき2 bitsで表している[^clog]ため、トランザクションのCommit時はそのbitを更新するだけです（更新自体はAtomicになる）。つまり、PostgreSQLではトランザクション内でどれだけデータを更新しても、そのトランザクションがCommitされたかどうかは2 bitを更新すればよいだけということになります。
+pg_xactログは各トランザクションのステータス（コミットされたのか実行中なのかなど）を保持しているモジュールで、テーブルやインデックスと同様に共有バッファにバッファされCHECKPOINT時にディスクに書かれます。PostgreSQLでは各トランザクションの状態をトランザクションにつき2 bitsで表している[^clog]ため、トランザクションのコミット時はそのbitを更新するだけです（bitの更新はAtomicになる）。つまり、PostgreSQLではトランザクション内でどれだけデータを更新しても、そのトランザクションがコミットされたという記録は、pg_xactログ内のそのトランザクションに対応する2 bitsを更新すれば良いだけということになります。
 
 [^clog]: `0x00` = 進行中、`0x01` = コミット済み、のような感じ
 
-ただ、pg_xactログ自体はメモリ上にありCHECKPOINTのタイミングでディスクに書き出されます。なので、ディスクに書き出される前にサーバがクラッシュすると、トランザクションをCommitしたという情報を失ってしまうことになります。
+ただ、pg_xactログ自体はメモリ上にありCHECKPOINTのタイミングでディスクに書き出されます。なので、ディスクに書き出される前にサーバがクラッシュすると、トランザクションをコミットしたという情報を失ってしまうことになります。
 
-そのため、PostgreSQLはトランザクションのコミットWALも書きます。コミットのWALレコードにはXIDが記載されているので、クラッシュした場合でもそのWALレコードを再生すれば「XID=100のトランザクションがコミットされた」という状況をリカバリ（回復）できます。
+そのため、PostgreSQLはトランザクションのコミットWALを書きます。コミットのWALレコードにはXIDが記載されているので、クラッシュした場合でもそのWALレコードを再生すれば「XID=100のトランザクションがコミットされた」という状況をリカバリ（回復）できます。
 
 # PostgreSQLのCHECKPOINT
 
@@ -79,7 +78,7 @@ CHECKPOINTがあることで、サーバがクラッシュした後のリカバ�
 2. コミットWALをディスクに書き出す
 3. pg_xactログのbitを更新
 
-の順序で起こらなくてはいけません。つまり、「pg_xactのbitを更新する処理」→「コミットWALをディスクに書き出す処理」の順序で行う必要があり、かつ、その間にCHECKPOINTによる処理が入り込んではいけません。pg_xactのbit更新処理とコミットWALの書き出し処理は同じプロセスが行うので、そのような順序にコードを書くだけで良いですが、CHECKPOINTはcheckpointerがバックグラウンドで走るので、タイミングによっては間に入ってしまう可能性があります。
+の順序で起こらなくてはいけません。つまり、「pg_xactのbitを更新する処理」→「コミットWALをディスクに書き出す処理」の順序で行う必要があり、かつ、その間にCHECKPOINTによる処理が入り込んではいけません。「pg_xactのbit更新処理」と「コミットWALの書き出し処理」は同じプロセスが行うので、そのような順序にコードを書くだけで良いですが、CHECKPOINTはcheckpointerプロセスがバックグラウンドで走るので、タイミングによっては間に入ってしまう可能性があります。
 
 冒頭で紹介した`MyProc->delayChkpt`はまさにこのためにある変数で、トランザクションを処理する各プロセスはコミット時に、コミットWALを書く処理とpg_xactを更新する処理の間にCHECKPOINTが入り込まないようにこの変数を`true`にします。
 
@@ -99,7 +98,7 @@ CHECKPOINTがあることで、サーバがクラッシュした後のリカバ�
 2. CHECKPOINTが走る
 3. pg_xactログのbitを更新
 
-CHECKPOINT実行時にはpg_xactの内容は更新されていないので、この時点では更新前のpg_xactログの内容をディスクに書き出します。その直後（3の前）にサーバがクラッシュすると、サーバは2で実行したCHECKPOINTからリカバリを開始します。そうすると、1で書いたコミットWALは**CHECKPOINTより前**なので適用されません。なので、トランザクションはアボートされたことになります。しかし、もし昔に取ったバックアップを持っていてそこからデータベースをリカバリすると、1で書いたコミットWALは再生さnれるので「トランザクションはコミットされた」ことになります。リカバリ開始時点によってリカバリ後のデータベースの状況が変わってしまいます。
+CHECKPOINT実行時にはpg_xactの内容は更新されていないので、この時点では更新前のpg_xactログの内容をディスクに書き出します。その直後（3の前）にサーバがクラッシュすると、サーバは2で実行したCHECKPOINTからリカバリを開始します。そうすると、1で書いたコミットWALは**CHECKPOINTより前**なので適用されません。なので、トランザクションはアボートされたことになります。しかし、もし昔に取ったバックアップを持っていてそこからデータベースをリカバリすると、1で書いたコミットWALは再生されるので「トランザクションはコミットされた」ことになります。リカバリ開始時点によってリカバリ後のデータベースの状況が変わってしまいます。
 
 # 最後に
 
