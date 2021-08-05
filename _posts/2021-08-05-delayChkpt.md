@@ -1,6 +1,6 @@
 ---
 layout: post
-tital: `MyProc->delayChkpt`についての理解と覚書
+title: `MyProc->delayChkpt`についての理解と覚書
 tags:
   - PostgreSQL
   - Source Code Reading
