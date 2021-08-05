@@ -13,6 +13,7 @@ PostgreSQLのコードを読んでいるとたまに`MyProc->delayChkpt`と一�
 ```c
     MyProc->delayChkpt = true;
 
+	/* コミットWALを書く */
     XactLogCommitRecord(xactStopTimestamp,
                         nchildren, children, nrels, rels,
                         nmsgs, invalMessages,
@@ -20,8 +21,10 @@ PostgreSQLのコードを読んでいるとたまに`MyProc->delayChkpt`と一�
                         MyXactFlags,
                         InvalidTransactionId, NULL /* plain commit */ );
 
+	/* それをFlush */
     XLogFlush(XactLastRecEnd);
 
+	/* pg_xactログを更新 */
     TransactionIdCommitTree(xid, nchildren, children);
 
     MyProc->delayChkpt = false;
