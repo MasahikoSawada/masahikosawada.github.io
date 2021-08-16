@@ -31,7 +31,7 @@ PostgreSQL 14では、インデックスの統計情報はANALYZEやautoanalyze�
 
 ## Btreeのページリサイクルの改善
 
-> Allow vacuum to more eagerly add deleted btree pages to the free space map (Peter Geoghegan)
+> * Allow vacuum to more eagerly add deleted btree pages to the free space map (Peter Geoghegan)
 >
 > Previously vacuum could only add pages to the free space map that were marked as deleted by previous vacuums.
 
