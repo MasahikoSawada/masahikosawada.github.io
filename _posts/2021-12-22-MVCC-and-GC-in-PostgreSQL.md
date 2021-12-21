@@ -107,6 +107,8 @@ PostgreSQLでは、各スナップショットのxminの値と各トランザク
 
 ![](/images/2021-12-22/xid_and_xmin.png)
 
+※RC: READ COMMITED, RR: REPEATABLE READ
+
 Vacuumにおいては、Oldest Xminの値が、Vacuumがどれくらいのタプルを物理削除できるかに影響するのでOldest Xminを進めることがとても重要です。
 
 例えば、長時間実行中のSQLは同じスナップショットを持ち続けているので、Oldest Xminが進まない原因となります。また、XIDが発行された後、COMMITを忘れて途中で止まっているトランザクションも、XIDをずっと保持し続けていることになるので、Oldest Xminが進まない原因となります。「ロングトランザクションがVacuumのゴミ回収を阻害する」とよく言われるのはこの仕組のためです。
