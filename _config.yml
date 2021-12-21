@@ -22,7 +22,7 @@ twitter_username: masahiko_sawada
 github_username:  MasahikoSawada
 linkedin_username: masahikosawada
 lang: ja
-timezone: JST
+timezone: Asia/Tokyo
 
 # Build settings
 markdown: kramdown
