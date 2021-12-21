@@ -7,7 +7,7 @@ tags:
   - Vacuum
 ---
 
-このエントリは[Advent Calender 2021](https://qiita.com/advent-calendar/2021/postgresql)の22日目の記事です。
+このエントリは[PostgreSQL Advent Calender 2021](https://qiita.com/advent-calendar/2021/postgresql)の22日目の記事です。
 
 [shallow1729](https://twitter.com/shallow1729)さんの[MVCCとInnoDBでの実装について](https://shallow1729.hatenablog.com/entry/2021/05/17/212613)という記事を読んで、これのPostgreSQL版を書きたいなと思い書いてみました。
 
