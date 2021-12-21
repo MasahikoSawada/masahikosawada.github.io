@@ -105,7 +105,7 @@ PostgreSQLでは、各スナップショットのxminの値と各トランザク
 
 ちなみに、スナップショットとXIDはそれぞれ存在期間が異なります。スナップショットはある時点でのデータベースデータを見るために使われるので、トランザクション分離レベルによってはSQL毎に生成されたり（例えばREAD COMMITTEDの場合）、トランザクション全体で同じスナップショットを使ったり（例えばREPEATABLE READの場合）します。一方、XIDはトランザクション内で初めてデータを更新した時（UPDATE、DELETEやCREATE TABLEも含む）に発行され、トランザクションが完了するまでXIDを持ち続けます。
 
-![](/images/2021-12-22/xid_and_xmin.png))
+![](/images/2021-12-22/xid_and_xmin.png)
 
 Vacuumにおいては、Oldest Xminの値が、Vacuumがどれくらいのタプルを物理削除できるかに影響するのでOldest Xminを進めることがとても重要です。
 
