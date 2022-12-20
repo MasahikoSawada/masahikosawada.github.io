@@ -21,10 +21,10 @@ XID周回問題についてはネット上に色々な解説があるのでこ�
 最近のVacuumは高速化されていますが、数百GBや数TBレベルの大きいテーブルにはどうしても時間がかかります。特に時間がかかるインデックスのVacuumです。インデックスVacuumでは、基本的にインデックスを全スキャンしてゴミを探しますが、以下のようにmaintenance_work_memに達した場合は、インデックスVacuumが複数回実行されます。
 
 1. テーブルをスキャンしてゴミを集める
-  1. 集めたゴミがmaintenance_work_memに達するか、テーブルをスキャンし終わったら次へ。
+    * 集めたゴミがmaintenance_work_memに達するか、テーブルをスキャンし終わったら次へ。
 2. インデックスをVacuumする
 3. テーブルをVacuumする
-  1. テーブルを最後までスキャンしていなければ(つまり、maintenance_work_memに達していた場合は）再度1へ。
+    * テーブルを最後までスキャンしていなければ(つまり、maintenance_work_memに達していた場合は）再度1へ。
 4. テーブルを切り詰める
 
 そして、「Freezeする」という観点では、実はインデックスをVacuumする必要はありません。Freezeするべき対象（XID）は、テーブル内のタプルには書かれますがインデックスのタプルに書かれないためです。
@@ -39,7 +39,7 @@ XID周回問題についてはネット上に色々な解説があるのでこ�
 
 とはいえ、実際にテーブルを削除できるケースは少ないと思いますので、次に検討するのはテーブル・パーティショニングを利用したテーブルの分割です。
 
-現在のVacuumは、テーブルに張ってあるインデックスに対しては並列に処理することが可能ですが、テーブル自体のVacuumはまだ単一プロセスで行います。テーブルを分割すれば、テーブルサイズも小さくなりますし、分割したテーブルを同時にVacuumすることができるので、とても効果が大きいです。これはVacuumの完了を急いでいないときでも有効な手段です。ただし、テーブル・パーティショニングを利用することによる副作用（実行プランの変更）には注意が必要です。
+現在のVacuumは、インデックスに対しては並列に処理することが可能ですが、テーブル自体のVacuumはまだ単一プロセスで行います。テーブルを分割すれば、テーブルサイズも小さくなりますし、分割したテーブルを同時にVacuumすることができるので、とても効果が大きいです。これはVacuumの完了を急いでいないときでも有効な手段です。ただし、テーブル・パーティショニングを利用することによる副作用（実行プランの変更）には注意が必要です。
 
 あとは、不要なインデックスを削除することも効果があります。ただ、Freeze処理に迫られているときはそもそもインデックスへのVacuumをスキップすることがおすすめです。
 
@@ -51,8 +51,8 @@ XID周回問題についてはネット上に色々な解説があるのでこ�
   * 遅延を無効にする。autovacuumはデフォルトで遅延がかかっていますが、手動Vacuumはデフォルトでは遅延がかかっていません。
 * `maintenance_work_mem = 1GB`
   * Vacuum中に使う最大のメモリ量。1GBが以上に設定しても意味無し(1GB使うと最大で約3800万タプルを一度の回収できる）[^maintenance_work_mem]。この値が低いとインデックスのVacuumを何度も行うことになるので非常に遅くなります。
-* `max_parallel_maintenance_workers = (最低でも、対象のテーブルのインデックス数 - 1。複数テーブルを同時にVacuumする場合は増やす）`
-  * Parallel Vacuumを使った場合の最大のワーカー数。
+* `max_parallel_maintenance_workers = (最低でも対象のテーブルのインデックス数 - 1。複数テーブルを同時にVacuumする場合は増やす）`
+  * Parallel Vacuumを使った場合の最大のワーカー数。ただしインデックスVacuumをスキップした場合は効果なし。
 
 [^maintenance_work_mem]: この制限をなくす＋高速化する[パッチ](https://www.postgresql.org/message-id/CAD21AoAfOZvmfR0j8VmZorZjL7RhTiQdVttNuC4W-Shdc2a-AA%40mail.gmail.com)に取り組んでいるので上手く行けばPG16で改善するかもしれません。
 
@@ -61,15 +61,15 @@ XID周回問題についてはネット上に色々な解説があるのでこ�
 * `INDEX_CLEANUP off`
   * インデックスVacuumをスキップする
 * `TRUNCATE off`
-  * Vacuumの最後に可能であればテーブルを切り詰める
+  * Truncate処理（Vacuumの最後に可能であればテーブルを切り詰める）をスキップする
 
 これにより、VacuumはテーブルのVacuum＋Freezeのみを行い、Freezeに不必要なインデックスVacuumやテーブルの切り詰めはスキップします。
 
 # `INDEX_CLEANUP off`の副作用
 
-インデックスもテーブルと同じようにゴミが溜まります。インデックスのVacuumをスキップしているので、当然インデックスの肥大化につながる可能性があります。ただ、通常、インデックスは一部の列のデータしか入っていないのでインデックスのタプルは、テーブルのタプルに比べて小さいことが多いです。そのため、テーブルよりは肥大化の影響は少ないと思います。
+インデックスもテーブルと同じようにゴミが溜まります。インデックスのVacuumをスキップしているので、インデックスの肥大化につながる可能性があります。ただ、通常、インデックスは一部の列のデータしか入っていないので、インデックスのタプルはテーブルのタプルに比べて小さいことが多いです。そのため、テーブルよりは肥大化の影響は少ないと思います。
 
-`INDEX_CLEANUP off`によって溜まるゴミは実はインデックスだけではありません。削除されていないインデックスの（ゴミ）タプルが参照するテーブル内タプルは消せるのですが、そのインデックスが指すテーブル内のタプル（正確にはタプルの[ItemID](https://www.postgresql.jp/document/14/html/storage-page-layout.html#STORAGE-PAGE-LAYOUT-FIGURE)）が再利用されないようするためにDead状態で残ります。
+`INDEX_CLEANUP off`によって溜まるゴミは実はインデックスだけではありません。削除されていないインデックスの（ゴミ）タプルが参照するテーブル内タプルは消せるのですが、そのタプルの[ItemID](https://www.postgresql.jp/document/14/html/storage-page-layout.html#STORAGE-PAGE-LAYOUT-FIGURE)は、再利用されないようするためにDead状態で残ります。
 
 ```
 postgres=# create table test (a int primary key);
@@ -93,7 +93,7 @@ system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
 VACUUM
 ```
 
-`443 pages from table (100.00% of total) have 10000 dead item identifiers`とログに書いてあるように、10000個の死んだItemId (dead item identifiers)が残っています。`INDEX_CLEANUP on`でVacuumすると、これらは削除されます。
+`443 pages from table (100.00% of total) have 10000 dead item identifiers`とログに書いてあるように、10000個の死んだItemId (10000 dead item identifiers)が残っています。`INDEX_CLEANUP on`でVacuumすると、これらは削除されます。
 
 ```
 postgres=# vacuum (index_cleanup on, verbose) test;
@@ -113,7 +113,7 @@ VACUUM
 
 PostgreSQLの1ページ(8kB)には最大で格納できるItemIdの数が決まっているので、死んだItemIdが増えすぎると、ページに空き領域はあるけど空いているItemIdがないので新しいタプルを格納できない（なので新しいページを探す・作る）、ということが起きます。
 
-`INDEX_CLEANUP off`を使った後、テーブルの肥大化が心配な場合は、余裕のある時に`INDEX_CLEANUP on`でVacuumをすることをおすすめします。
+`INDEX_CLEANUP off`を使った後、インデックスやテーブルの肥大化が心配な場合は、余裕のある時に`INDEX_CLEANUP on`でVacuumをすることをおすすめします。
 
 # まとめ
 
