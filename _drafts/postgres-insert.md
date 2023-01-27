@@ -9,7 +9,7 @@ tags:
 
 今回は`int`と`text`の列を持ったテーブルを使います。列`a`にはインデックスが付いています。INSERTするデータはどれも共通して`1'`と`'alice'`にしましょう。
 
-```
+```sql
 CREATE TABLE test (a int primary key, b text);
 ```
 
@@ -17,7 +17,7 @@ CREATE TABLE test (a int primary key, b text);
 
 これが最も簡単な方法です。PostgreSQLサーバを起動し、`psql`で接続して`INSERT`を実行します。
 
-```
+```sql
 =# INSERT INTO test VALUES (1, 'alice');
 INSERT 1
 =# SELECT * FROM test;
@@ -32,7 +32,7 @@ SPI(Server Programming Interface)は、C言語で書かれたユーザ定義関�
 
 SPIの使い方は非常に簡単で、`SPI_connect()`で接続し、`SPI_execute()`でSQLを実行します。
 
-```
+```c
 Datum
 insert_spi(PG_FUNCTION_ARGS)
 {
@@ -49,7 +49,7 @@ insert_spi(PG_FUNCTION_ARGS)
 
 C言語で書かれたユーザ定義関数をコンパイルして、サーバにロードする方法は最後にまとめて記載します。まずは、どのようなCプログラムになるのか見てみます。
 
-```
+```sql
 =# SELECT insert_spi();
 
 =# SELECT * FROM test;
@@ -61,7 +61,7 @@ C言語で書かれたユーザ定義関数をコンパイルして、サーバ�
 
 次はもう少し下のレイヤーに行き、Executorを直接使ってINSERTしてみます。
 
-```
+```c
 Datum
 insert_executor(PG_FUNCTION_ARGS)
 {
@@ -130,7 +130,7 @@ SPIを使ったプログラムに比べるとだいぶ書く量が増えまし�
 
 もう一つ下のレイヤーに降りて、Heap Access MethodのAPIを直接叩いてINSERTします。
 
-```
+```c
 Datum
 insert_heap(PG_FUNCTION_ARGS)
 {
@@ -173,7 +173,7 @@ missing: index
 
 最後に更にもう一つ下レイヤーにいき、ページに直接タプルをINSERTしてみます。
 
-```
+```c
 Datum
 insert_page(PG_FUNCTION_ARGS)
 {
