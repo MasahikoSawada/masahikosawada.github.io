@@ -273,9 +273,18 @@ $ make USE_PGXS=1
 $ sudo make USE_PGXS=1 install
 ```
 
-`pg_insert_test`という名前のExtensionができるので、`CREATE EXTENSION`コマンドでデータベースの登録します。
+`pg_insert_test`という名前のExtensionができるので、`CREATE EXTENSION`コマンドでデータベースの登録すれば、`insert_spi()`等の関数が使えるようになります。
 
 ```
 =# CREATE EXTENSION pg_insert_test;
 CREATE EXTENSION
+=# \dx+ pg_insert_test
+Objects in extension "pg_insert_test"
+     Object description
+----------------------------
+ function insert_executor()
+ function insert_heap()
+ function insert_page()
+ function insert_spi()
+(4 rows)
 ```
