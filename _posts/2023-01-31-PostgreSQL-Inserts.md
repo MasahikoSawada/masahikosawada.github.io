@@ -262,20 +262,20 @@ insert_page(PG_FUNCTION_ARGS)
 }
 ```
 
-スキーマ（Namesapce）とテーブルの存在確認、OIDの取得から始まり、INSERTする`HeapTuple`の準備、タプルヘッダの設定、ページの取得やWAL書き込みまですべて行っています。個々まで来ると、Table Access Methodで実装している事をユーザ定義関数で実装していることになります。ただし、CLOG（コミットログ）については別モジュールで管理されているので、ここでは意識する必要はありません。Heapでは、PostgreSQLが生成したトランザクションID（この例だと`GetTopTransactionId()`で取得している部分)をタプルに書きます。Heapが用意するタプルの可視性判断関数（`HeapTupleSatisfiesXXX()`）では、そのトランザクションIDをCLOGに問い合せることで、トランザクションがCommitしたのかAbortしたのかを認識しています。
+スキーマ（Namesapce）とテーブルの存在確認、OIDの取得から始まり、INSERTする`HeapTuple`の準備、タプルヘッダの設定、ページの取得やWAL書き込みまですべて行っています。ここまで来ると、ほぼTable Access Methodで実装している事をユーザ定義関数で実装していることになります。ただし、CLOG（コミットログ）については別モジュールで管理されているので、ここでは意識する必要はありません。Heapでは、PostgreSQLが生成したトランザクションID（この例だと`GetTopTransactionId()`で取得している部分)をタプルに書きます。Heapが用意するタプルの可視性判断関数（`HeapTupleSatisfiesXXX()`）では、そのトランザクションIDをCLOGに問い合せることで、トランザクションがCommitしたのかAbortしたのかの情報を取得しています。
 
 # 参考
 
 ここで利用したソースコードは、[こちら](https://gist.github.com/MasahikoSawada/6db0e7b381fa89e3301596489437886c)に公開しています。ソースコードのビルドは他のExtensionと同じです(PG15で動作確認ずみ）。
 
-```
+```bash
 $ make USE_PGXS=1
 $ sudo make USE_PGXS=1 install
 ```
 
 `pg_insert_test`という名前のExtensionができるので、`CREATE EXTENSION`コマンドでデータベースの登録すれば、`insert_spi()`等の関数が使えるようになります。
 
-```
+```sql
 =# CREATE EXTENSION pg_insert_test;
 CREATE EXTENSION
 =# \dx+ pg_insert_test
