@@ -11,12 +11,12 @@ PostgreSQLには物理レプリケーションと論理レプリケーション�
 ```
 +---------+  Replication Protocol   +---------+
 | primary | ----------------------> | replica |
-+---------+  Send WAL records       +---------+
++---------+                         +---------+
 ```
 
 # レプリケーションプロトロルで接続してみる
 
-クライアントがPostgreSQLサーバに接続するのと同じように、レプリケーションプロトロルを使う時もPostgreSQLサーバに接続要求を出しますが、接続文字列に`replication`パラメータを使用します。例えば、`psql`を使ってレプリケーションプロトロルが使えるように接続することもできます。
+クライアントがPostgreSQLサーバに接続するのと同じようにPostgreSQLサーバに接続要求を出しますが、接続文字列に`replication`パラメータを使用します。例えば、`psql`を使ってレプリケーションプロトロルが使えるように接続することもできます。
 
 ```
 % psql -d "dbname=postgres replication=database"
@@ -151,7 +151,6 @@ int main()
         }
 
         r = PQgetCopyData(conn, &buf, 0);
-
         if (r <= 0)
             break;
 
@@ -179,7 +178,7 @@ int main()
 
 ```
 
-プログラムを実行直後は何も出力されませんが、サーバ側でなにかテーブルを変更すると、その変更が出力されます。
+プログラム実行直後は何も出力されませんが、サーバ側でなにかテーブルを変更すると、そのWALをデコードしたデータがサーバから送信され、それが表示されます。
 
 ```
 % psql
@@ -190,6 +189,8 @@ INSERT 0 1
 postgres(1:1709135)=# insert into test values (2);
 INSERT 0 1
 ```
+
+出力されるデータの形式はデコーディング・プラグインによって変わります。今回は、PostgreSQLに同梱されている`test_decoding`を使っています。この他にも[wal2json](https://github.com/eulerto/wal2json)を使うと、JSON形式でデータを取得できます。
 
 ```
 % gcc -o test test.c -L/usr/local/pgsql/lib -lpq
