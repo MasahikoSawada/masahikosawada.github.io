@@ -190,7 +190,7 @@ postgres(1:1709135)=# insert into test values (2);
 INSERT 0 1
 ```
 
-出力されるデータの形式はデコーディング・プラグインによって変わります。今回は、PostgreSQLに同梱されている`test_decoding`を使っています。この他にも[wal2json](https://github.com/eulerto/wal2json)を使うと、JSON形式でデータを取得できます。
+出力されるデータの形式はデコーディング・プラグインによって変わります。今回は、PostgreSQLに同梱されている`test_decoding`を使っています。この他にも、例えば[wal2json](https://github.com/eulerto/wal2json)を使うと、JSON形式でデータを取得できます。
 
 ```
 % gcc -o test test.c -L/usr/local/pgsql/lib -lpq
