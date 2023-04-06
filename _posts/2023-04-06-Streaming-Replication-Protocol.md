@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ストリーミングレプリケーションプロトロルで遊んでみる
+title: ストリーミングレプリケーションプロトロルで遊ぶ
 tags:
   - PostgreSQL
   - Replication
@@ -18,8 +18,8 @@ PostgreSQLには物理レプリケーションと論理レプリケーション�
 
 クライアントがPostgreSQLサーバに接続するのと同じようにPostgreSQLサーバに接続要求を出しますが、接続文字列に`replication`パラメータを使用します。例えば、`psql`を使ってレプリケーションプロトロルが使えるように接続することもできます。
 
-```
-% psql -d "dbname=postgres replication=database"
+```bash
+$ psql -d "dbname=postgres replication=database"
 psql (16devel)
 Type "help" for help.
 
@@ -30,8 +30,8 @@ postgres(1:1636174)=#
 
 `psql`で接続したままそれに対応するPostgreSQLのサーバプロセスを確認すると、walsenderが起動していることがわかります（`psql`のプロンプトに出ている1636174が接続しているPostgreSQLのサーバプロセスです）。
 
-```
-% ps x | grep 1636174
+```bash
+$ ps x | grep 1636174
 1636174 ?        Ss     0:00 postgres: walsender masahiko postgres [local] idle
 ```
 
@@ -43,8 +43,8 @@ postgres(1:1636174)=#
 
 レプリケーションプロトロルで使えるコマンドの一覧は[公式ドキュメント](https://www.postgresql.jp/document/14/html/protocol-replication.html)に載っていて、例えば物理レプリケーションを開始したいときは、`START_REPLICATION`コマンドを使用します。
 
-```
-% bin/psql -d "dbname=postgres replication=on" # 物理walsenderモード
+```bash
+$ bin/psql -d "dbname=postgres replication=on" # 物理walsenderモード
 psql (16devel)
 Type "help" for help.
 
@@ -58,8 +58,8 @@ postgres(1:1636516)=# select version();
 ERROR:  cannot execute SQL commands in WAL sender for physical replication
 ```
 
-```
-% psql -d "dbname=postgres replication=database" # 論理walsenderモード
+```bash
+$ psql -d "dbname=postgres replication=database" # 論理walsenderモード
 psql (16devel)
 Type "help" for help.
 
@@ -81,7 +81,7 @@ postgres(1:1636464)=# select version();
 ここまで紹介した内容でレプリケーションコマンドが使える様になったので、PostgreSQLの物理レプリケーションや論理レプリケーションが内部でやっていることは`psql`でもできそうです。試しに`psql`を使って論理レプリケーションをやってみたいと思います。手順は簡単で、まずレプリケーションスロットを作成し、それを使ってレプリケーションを開始するだけです。
 
 ```
-% psql -d "dbname=postgres replication=database" # 論理walsenderモードで接続
+$ psql -d "dbname=postgres replication=database" # 論理walsenderモードで接続
 psql (16devel)
 Type "help" for help.
 
@@ -172,16 +172,16 @@ int main()
 
 これをコンパイルして実行します（libpqライブラリのパスは調整してください）。
 
-```zsh
-% gcc -o test test.c -L/usr/local/pgsql/lib -lpq
-% ./test
+```bash
+$ gcc -o test test.c -L/usr/local/pgsql/lib -lpq
+$ ./test
 
 ```
 
 プログラム実行直後は何も出力されませんが、サーバ側でなにかテーブルを変更すると、そのWALをデコードしたデータがサーバから送信され、それが表示されます。
 
-```
-% psql
+```bash
+$ psql
 postgres(1:1709135)=# create table test (c int);
 CREATE TABLE
 postgres(1:1709135)=# insert into test values (1);
@@ -192,9 +192,8 @@ INSERT 0 1
 
 出力されるデータの形式はデコーディング・プラグインによって変わります。今回は、PostgreSQLに同梱されている`test_decoding`を使っています。この他にも、例えば[wal2json](https://github.com/eulerto/wal2json)を使うと、JSON形式でデータを取得できます。
 
-```
-% gcc -o test test.c -L/usr/local/pgsql/lib -lpq
-% ./test
+```bash
+$ ./test
 BEGIN 766
 COMMIT 766
 BEGIN 767
