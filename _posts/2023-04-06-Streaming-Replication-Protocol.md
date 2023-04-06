@@ -103,7 +103,7 @@ unexpected PQresultStatus: 8
 
 論理walsenderモードを使ってPostgreSQLサーバに接続し、`CREATE_REPLICATION_SLOT`コマンドでレプリケーションスロットを作成した後、`START_REPLICATION`コマンドで受信を開始します。`START_REPLICATION`コマンドが成功すると結果は`PGRES_COPY_BOTH`となり、これはレプリケーションプロトロルでのみ利用されます（サーバからもクライアントからもデータを贈り合う、という意味）。`psql`はこれに対応していないため、`unexpected PQresultStatus: 8`を出していました(`PGRES_COPY_BOTH`は8です[コードはこちら](https://github.com/postgres/postgres/blob/master/src/interfaces/libpq/libpq-fe.h#L109))。
 
-レプリケーションプロトロルは、libpq的には`COPY ... TO stdin`のような感じで動くので、データの受信には`PQgetCopyData()`が利用できます。受信したデータのヘッダを覗いて出力します。
+レプリケーションプロトロルは、libpq的には`COPY ... TO stdin`のような感じで動くので、データの受信には`PQgetCopyData()`が利用できます。受信したデータのヘッダを除いて出力します。
 
 ```c
 #include "libpq-fe.h"
