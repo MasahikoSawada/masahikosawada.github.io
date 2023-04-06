@@ -80,7 +80,7 @@ postgres(1:1636464)=# select version();
 
 ここまで紹介した内容でレプリケーションコマンドが使える様になったので、PostgreSQLの物理レプリケーションや論理レプリケーションが内部でやっていることは`psql`でもできそうです。試しに`psql`を使って論理レプリケーションをやってみたいと思います。手順は簡単で、まずレプリケーションスロットを作成し、それを使ってレプリケーションを開始するだけです。
 
-```
+```bash
 $ psql -d "dbname=postgres replication=database" # 論理walsenderモードで接続
 psql (16devel)
 Type "help" for help.
