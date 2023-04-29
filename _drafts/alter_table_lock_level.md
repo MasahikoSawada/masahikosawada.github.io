@@ -5,7 +5,7 @@ tags:
   - PostgreSQL
 ---
 
-`ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。(ソース)[https://github.com/postgres/postgres/blob/REL_15_STABLE/src/backend/commands/tablecmds.c#L4161]を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。
+`ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。[ソース](https://github.com/postgres/postgres/blob/REL_15_STABLE/src/backend/commands/tablecmds.c#L4161)を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。
 
 **※ PostgreSQL 15 の情報です。**
 
