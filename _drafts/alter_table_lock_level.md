@@ -5,7 +5,7 @@ tags:
   - PostgreSQL
 ---
 
-`ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。(ソース)[]を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。
+`ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。(ソース)[https://github.com/postgres/postgres/blob/REL_15_STABLE/src/backend/commands/tablecmds.c#L4161]を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。
 
 **※ PostgreSQL 15 の情報です。**
 
@@ -19,58 +19,58 @@ PostgreSQLのロックレベルは[こちら](https://www.postgresql.jp/document
 
 ## `ALTER TABLE`のサブコマンドとロックレベルの一覧
 
-| サブコマンド                               | ロックレベル                                                        |
-|--------------------------------------------|---------------------------------------------------------------------|
-| ADD COLUMN                                 | AccessExclusiveLock                                                 |
-| ATTACH PARTITION                           | ShareUpdateExclusiveLock                                            |
-| DROP COLUMN                                | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET DATA TYPE             | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET DEFAULT               | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... DROP DEFAULT              | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET NOT NULL              | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... DROP NOT NULL             | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... DROP EXPRESSION           | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... ADD GENERATED AS IDENTITY | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET GENERATED             | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... DROP IDENTITY             | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET STATISTICS            | ShareUpdateExclusiveLock                                            |
-| ALTER COLUMN ... SET (...)                 | ShareUpdateExclusiveLock                                            |
-| ALTER COLUMN ... RESET (...)               | ShareUpdateExclusiveLock                                            |
-| ALTER COLUMN ... SET STORAGE               | AccessExclusiveLock                                                 |
-| ALTER COLUMN ... SET COMPRESSION           | AccessExclusiveLock                                                 |
-| ADD table_constraint                       | AccessExclusiveLock or ShareRowExclusiveLock [^table_constraint]    |
-| ALTER CONSTRAINT ...                       | AccessExclusiveLock                                                 |
-| VALIDATE CONSTRAINT                        | ShareUpdateExclusiveLock                                            |
-| DETACH PARTITION                           | ShareUpdateExclusiveLock or AccessExclusiveLock [^detach_partition] |
-| DROP CONSTRAINT                            | AccessExclusiveLock                                                 |
-| DISABLE TRIGGER                            | ShareRowExclusiveLock                                               |
-| ENABLE TRIGGER                             | ShareRowExclusiveLock                                               |
-| ENABLE REPLICA TRIGGER                     | ShareRowExclusiveLock                                               |
-| ENABLE ALWAYS TRIGGER                      | ShareRowExclusiveLock                                               |
-| DISABLE RULE                               | AccessExclusiveLock                                                 |
-| ENABLE RULE                                | AccessExclusiveLock                                                 |
-| ENABLE REPLICA RULE                        | AccessExclusiveLock                                                 |
-| ENABLE ALWAYS RULE                         | AccessExclusiveLock                                                 |
-| DISABLE ROW LEVEL SECURITY                 | AccessExclusiveLock                                                 |
-| ENABLE ROW LEVEL SECURITY                  | AccessExclusiveLock                                                 |
-| NO FORCE ROW LEVEL SECURITY                | AccessExclusiveLock                                                 |
-| CLUSTER ON                                 | ShareUpdateExclusiveLock                                            |
-| SET WITHOUT CLUSTER                        | ShareUpdateExclusiveLock                                            |
-| SET WITHOUT OIDS                           | AccessExclusiveLock                                                 |
-| SET ACCESS METHOD                          | AccessExclusiveLock                                                 |
-| SET TABLESPACE                             | AccessExclusiveLock                                                 |
-| SET LOGGED/UNLOGGED                        | AccessExclusiveLock                                                 |
-| SET (...)                                  | パラメータによって異なる                                            |
-| RESET (...)                                | パラメータによって異なる                                            |
-| INHERIT                                    | AccessExclusiveLock                                                 |
-| NO INHERIT                                 | AccessExclusiveLock                                                 |
-| OF                                         | AccessExclusiveLock                                                 |
-| NOT OF                                     | AccessExclusiveLock                                                 |
-| OWNER TO                                   | AccessExclusiveLock                                                 |
-| RENAME                                     | AccessExclusiveLock                                                 |
-| REPLICA IDENTITY                           | AccessExclusiveLock                                                 |
-| SET SCHEMA                                 | AccessExclusiveLock                                                 |
-| SET TABLESPACE                             | AccessExclusiveLock                                                 |
+| サブコマンド                               | ロックレベル                                                                              |
+|--------------------------------------------|-------------------------------------------------------------------------------------------|
+| ADD COLUMN                                 | AccessExclusiveLock                                                                       |
+| ATTACH PARTITION                           | ShareUpdateExclusiveLock                                                                  |
+| DROP COLUMN                                | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET DATA TYPE             | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET DEFAULT               | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... DROP DEFAULT              | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET NOT NULL              | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... DROP NOT NULL             | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... DROP EXPRESSION           | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... ADD GENERATED AS IDENTITY | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET GENERATED             | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... DROP IDENTITY             | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET STATISTICS            | ShareUpdateExclusiveLock                                                                  |
+| ALTER COLUMN ... SET (...)                 | ShareUpdateExclusiveLock                                                                  |
+| ALTER COLUMN ... RESET (...)               | ShareUpdateExclusiveLock                                                                  |
+| ALTER COLUMN ... SET STORAGE               | AccessExclusiveLock                                                                       |
+| ALTER COLUMN ... SET COMPRESSION           | AccessExclusiveLock                                                                       |
+| ADD table_constraint                       | AccessExclusiveLock or ShareRowExclusiveLock [^table_constraint]                          |
+| ALTER CONSTRAINT ...                       | AccessExclusiveLock                                                                       |
+| VALIDATE CONSTRAINT                        | ShareUpdateExclusiveLock                                                                  |
+| DETACH PARTITION                           | ShareUpdateExclusiveLock or AccessExclusiveLock [^detach_partition]                       |
+| DROP CONSTRAINT                            | AccessExclusiveLock                                                                       |
+| DISABLE TRIGGER                            | ShareRowExclusiveLock                                                                     |
+| ENABLE TRIGGER                             | ShareRowExclusiveLock                                                                     |
+| ENABLE REPLICA TRIGGER                     | ShareRowExclusiveLock                                                                     |
+| ENABLE ALWAYS TRIGGER                      | ShareRowExclusiveLock                                                                     |
+| DISABLE RULE                               | AccessExclusiveLock                                                                       |
+| ENABLE RULE                                | AccessExclusiveLock                                                                       |
+| ENABLE REPLICA RULE                        | AccessExclusiveLock                                                                       |
+| ENABLE ALWAYS RULE                         | AccessExclusiveLock                                                                       |
+| DISABLE ROW LEVEL SECURITY                 | AccessExclusiveLock                                                                       |
+| ENABLE ROW LEVEL SECURITY                  | AccessExclusiveLock                                                                       |
+| NO FORCE ROW LEVEL SECURITY                | AccessExclusiveLock                                                                       |
+| CLUSTER ON                                 | ShareUpdateExclusiveLock                                                                  |
+| SET WITHOUT CLUSTER                        | ShareUpdateExclusiveLock                                                                  |
+| SET WITHOUT OIDS                           | AccessExclusiveLock                                                                       |
+| SET ACCESS METHOD                          | AccessExclusiveLock                                                                       |
+| SET TABLESPACE                             | AccessExclusiveLock                                                                       |
+| SET LOGGED/UNLOGGED                        | AccessExclusiveLock                                                                       |
+| SET (...)                                  | パラメータによって異なる（大体が`ShareUpdateExclusiveLock`、たまに`AccessExclusiveLock`） |
+| RESET (...)                                | パラメータによって異なる（大体が`ShareUpdateExclusiveLock`、たまに`AccessExclusiveLock`） |
+| INHERIT                                    | AccessExclusiveLock                                                                       |
+| NO INHERIT                                 | AccessExclusiveLock                                                                       |
+| OF                                         | AccessExclusiveLock                                                                       |
+| NOT OF                                     | AccessExclusiveLock                                                                       |
+| OWNER TO                                   | AccessExclusiveLock                                                                       |
+| RENAME                                     | AccessExclusiveLock                                                                       |
+| REPLICA IDENTITY                           | AccessExclusiveLock                                                                       |
+| SET SCHEMA                                 | AccessExclusiveLock                                                                       |
+| SET TABLESPACE                             | AccessExclusiveLock                                                                       |
 
  [^table_constraint]: 外部キーに関するものの場合は`ShareRowExclusiveLock`、それ以外（主キーなど）は`AccessExclusiveLock`
  [^detach_partition]: `CONCURRENTLY`オプションがついていれば`ShareUpdateExclusiveLock`、そうでない場合は`AccessExclusiveLock`
