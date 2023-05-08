@@ -12,12 +12,12 @@ tags:
 PostgreSQLのロックレベルは[こちら](https://www.postgresql.jp/document/14/html/explicit-locking.html#TABLE-LOCK-COMPATIBILITY)に載っています。`ALTER TABLE`に関連する主なロックレベルと、大体の雰囲気は以下の通り。
 
 * `AccessExclusiveLock`: SELECTさえもできなくなる、一番強いロック。
-* `ShareRowExclusiveLock`: SELECTはできるけど、UPDATE、DELETE、INSERTはできない。
+* `ShareRowExclusiveLock`: SELECTはできるけど、UPDATE、DELETE、INSERTはできない。同じコマンド同士も競合する。
 * `ShareUpdateExclusiveLock`: SELECT、INSERT、UPDATE、DELETEはできる。同じコマンド同時は競合する。
 
-基本的にテーブルの書き換えが必要なもの（例えば列のデータ型をINTからTEXTにするなど）は、`AccessExclusiveLock`が必要となります。ただ、一部`ShareRowExsluveLock`や`ShareUpdateExclusiveLock`などの弱いロックが使われていて、SELECTやINSERT、UPDATE、DELETEが同時に実行できるイメージ。
+基本的にテーブルの書き換えが必要なもの（例えば列のデータ型をINTからTEXTにするなど）は、`AccessExclusiveLock`が必要となります。ただ、一部`ShareRowExsluveLock`や`ShareUpdateExclusiveLock`などの弱いロックが使われていて、SELECTやINSERT、UPDATE、DELETEが同時に実行できる、というイメージ。
 
-## `ALTER TABLE`のサブコマンドとロックレベルの一覧
+## `ALTER TABLE`のサブコマンドとロックレベルの一覧（PG15版）
 
 | サブコマンド                               | ロックレベル                                                                              |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|
@@ -75,3 +75,4 @@ PostgreSQLのロックレベルは[こちら](https://www.postgresql.jp/document
  [^table_constraint]: 外部キーに関するものの場合は`ShareRowExclusiveLock`、それ以外（主キーなど）は`AccessExclusiveLock`
  [^detach_partition]: `CONCURRENTLY`オプションがついていれば`ShareUpdateExclusiveLock`、そうでない場合は`AccessExclusiveLock`
 
+抜け漏れ、誤り等あればぜひご指摘ください。
