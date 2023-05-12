@@ -8,7 +8,7 @@ permalink: /about/
 Masahiko SAWADA
 
 ## Decription
-He is a PostgreSQL major contributor and committer. He has been insterested in replication, vacuum, distributed transaction, bug fixing and patch review. Also he is a maintainer of some PostgreSQL related tools: [pg_bigm](http://pgbigm.osdn.jp/)、[pg_repack](https://reorg.github.io/pg_repack/jp/).
+I'm a [PostgreSQL](https://www.postgresql.org/) major contributor and committer and insterested in replication, vacuum, distributed transaction, bug fixing and patch review. Also I'm a maintainer of some PostgreSQL related tools: [pg_bigm](http://pgbigm.osdn.jp/)、[pg_repack](https://reorg.github.io/pg_repack/jp/).
 
 ## Contributions to PostgreSQL
 
