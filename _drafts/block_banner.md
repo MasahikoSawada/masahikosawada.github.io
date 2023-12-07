@@ -5,7 +5,7 @@ tags:
   - PostgreSQL
 ---
 
-これは、[PostgreSQL Advent calendar 2023](https://qiita.com/advent-calendar/2023/postgresql)シリーズ2のXX日目の記事です。
+これは[PostgreSQL Advent calendar 2023](https://qiita.com/advent-calendar/2023/postgresql)シリーズ2の8日目の記事です。
 
 [`banner`プログラム](https://ja.wikipedia.org/wiki/Banner_(UNIX))は、UnixやUnixライクなシステムで提供されており、文字列をASCIIアートに変換してターミナル上に大きく出力プログラムとして有名です。これは普通のbannerプログラム。
 
