@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostgreSQLで一風変わったbannerプログラム作ってみた
+title: PostgreSQLで（わかりづらい）bannerプログラム作ってみた
 tags:
   - PostgreSQL
 ---
