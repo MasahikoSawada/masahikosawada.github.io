@@ -156,6 +156,8 @@ $ xxd -u -c 32   $(psql -d postgres -Atq -X -c "select current_setting('data_dir
 
 `xxd`の出力をゆっくり見たい人は`awk '{print $0; system("sleep 0.05")}'`にリダイレクトしてみてください。
 
+<img src="/images/block_banner.gif">
+
 コードはGithubに[公開](https://github.com/MasahikoSawada/pg_block_banner)しています。
 
 # block_bannerでは何をしているか？
