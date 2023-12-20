@@ -226,4 +226,4 @@ Time: 2893.244 ms (00:02.893)
 
 autovacuum launcherを起こす処理は入れていないので、autovacuum launcherがaggressive vacuumのために起きるタイミングは、設定したXIDや`autovacuum_naptime`に依存します。このあたりは将来変わる可能性があります。
 
-ぜひこの方法を使ってXIDを大量消費し、XID周回を起こしてみてください！
+ぜひこの方法を使って快適なXID消費ライフを！
