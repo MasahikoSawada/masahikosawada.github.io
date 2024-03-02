@@ -9,7 +9,7 @@ lang: en
 
  PostgreSQL's transaction ID (hereafter XID) is internally represendted as a "monotoronicaly increasing 32-bit unsigned integer value", so after reaching 2^32-1 (approximately 4 billion) it wraps around back to 0. In PostgreSQL, each transaction that modifies the database such as INSERT, UPDATE and even DDLs is assigned a unique XID. Since the order of XIDs is used to check the visibility of tuples in tables, if XID wraps around after reaching the upper limit, this logic would break.
 
- To prevent this problem, PostgreSQL has a safety mechanis called "aggressive vacuum", runs automatically before the wraparound happens (specifically, before consumign approx. 2-31 XIDs). This clears old XIDs so new ones can continue to be consumed. In recent years, I've been working on improvements around this safety mechanism, so I often needed to test the mechanism itself, which requires consuming a massive number of XIDs and takes time.
+ To prevent this problem, PostgreSQL has a safety mechanis called "aggressive vacuum", runs automatically before the wraparound happens (specifically, before consumign approx. 2^31 XIDs). This clears old XIDs so new ones can continue to be consumed. In recent years, I've been working on improvements around this safety mechanism, so I often needed to test the mechanism itself, which requires consuming a massive number of XIDs and takes time.
 
 For example, a poor-man's approach to complete 2 billion wirte transactions. Moreover, when issuing new XIDs, status data accociated eich each XID, like CLOG and Commit Timestamp, also need to expand. When testing those behaviors, actually consuming XIDs is important.
 
