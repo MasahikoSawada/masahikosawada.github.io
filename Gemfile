@@ -26,6 +26,10 @@ group :jekyll_plugins do
   gem "jekyll-seo-tag"
 end
 
+group :jekyll_plugins do
+    gem "jekyll-polyglot"
+end
+
 gem "rouge"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -39,4 +43,3 @@ gem "kramdown", ">= 2.3.1"
 
 gem "webrick", "~> 1.7"
 gem "rexml", ">= 3.2.5"
-

@@ -160,6 +160,25 @@
   }
 }
 
+.post-meta-right {
+  float: right;
+  font-size: $small-font-size;
+  color: $grey-color;
+  @include media-query($on-laptop) {
+     font-size: 28px;
+  }
+}
+
+.post-meta-left {
+  float: left;
+  font-size: $small-font-size;
+  color: $grey-color;
+  @include media-query($on-laptop) {
+     font-size: 28px;
+  }
+}
+
+
 .post-link {
   display: block;
   @include relative-font-size(1.5);
