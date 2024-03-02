@@ -15,7 +15,7 @@ For example, a poor-man's approach to complete 2 billion wirte transactions. Mor
 
 So in this post, I'll introduce various methods to consume XIDs quickly.
 
-# 1. Consuming XIDs using PL/pgsSQL
+# 1. Consuming XIDs using PL/pgSQL
 
 Comsuming 1 billion XIDs using this use-defined function that internally generates 1 billion subtransactions.
 
@@ -53,11 +53,11 @@ $ pg_ctl start
 $ psql -c "SELECT pg_current_xact_id()"
 ```
 
-Why is the next XID an odd number, 2000027648? This is because we need to make sure the next XID lang on a CLOG page (8kB) boundary. Otherwise on startup, we'd get erros that transaction status (e.g. committed, aborted etc) is inaccessible. This happens because on startup, if the current XID isN't a ta CLOG page boundary, statuses for unused XIDs in that page are initialied to 0 (see `TrimCLOG() for details). This applies to all pg_resetwal use case, although it's normally not an issue as XID skips are small.
+Why is the next XID an odd number, 2000027648? This is because we need to make sure the next XID lang on a CLOG page (8kB) boundary. Otherwise on startup, we'd get erros that transaction status (e.g. committed, aborted etc) is inaccessible. This happens because on startup, if the current XID isn't at CLOG page boundary, statuses for unused XIDs in that page are initialied to 0 (see `TrimCLOG()` for details). This applies to all pg_resetwal use case, although it's normally not an issue as XID skips are small.
 
 This quickly and easily skips XIDs but not a "real" use case. We need to stop and start server, choose the next XID carefully, and it depends on page size.
 
-# 3. C function
+# 3. Using C function to skip XIDs
 
 ```c
 PG_FUNCTION_INFO_V1(set_next_xid);
@@ -136,11 +136,11 @@ Time: 0.483 ms
 Time: 0.926 ms
 ```
 
-However, `ExtendCLOG()` only create pages if th eapssed XID lands on a page boundary, so the next XID must be calculated carefully same as before. This jumps XIDs more than incrementing them. Expands CLOG near new XID but does nothing for preceding XIDs.
+However, `ExtendCLOG()` only create pages if the passed XID lands on a page boundary, so the next XID must be calculated carefully same as before. This jumps XIDs more than incrementing them. Expands CLOG near new XID but does nothing for preceding XIDs.
 
 # 4. "Fast Forward" XID internally
 
-Finally, the approach used by the `xid_wraparound` testing extension I recently pushed to the PostgreSQL source code.
+Finally, the approach used by the `xid_wraparound` testing extension I recently [pushed](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=e255b646a16b45823c338dadf787813fc9e191dc) to the PostgreSQL source code.
 
 Tough written for regression tests, the SQL functions in the exntesion can work if you installed it to your system.
 
