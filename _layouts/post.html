@@ -6,11 +6,33 @@ layout: default
   <header class="post-header">
     <h1 class="post-title" itemprop="name">{{ page.title | escape }}</h1>
 
-    <p class="post-meta"><time datetime="{{ page.date | dateto_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y/%m/%d" }}</time> - <span itemprop="author"><span itemprop="name">{{ page.author }}</span></span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}</p>
+    <p class="post-meta-left">
+	<time datetime="{{ page.date | dateto_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y/%m/%d" }}</time> - <span itemprop="author"><span itemprop="name">{{ page.author }}</span></span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}
+    </p>
+
+    <p class="post-meta-right">
+      {% for lang in site.languages %}
+      {% if lang == site.active_lang %}
+      {{ lang }}
+      {% else %}
+      {% if lang == site.default_lang %}
+      <a href=" {{ page.url }}">{{ lang }}</a>
+      {% else %}
+      <a href="/{{ lang }}{{ page.url }}">{{ lang }}</a>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </p>
+
+    <br>
 
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    {% if page.lang != site.active_lang %}
+    {% include no-translation.html %}
+    {% endif %}
+
     {% include toc.html html=content %}
     {{ content }}
   </div>

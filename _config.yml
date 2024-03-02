@@ -32,10 +32,16 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-polyglot
 
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
 paginate: 5
+
+languages: ["jp", "en"]
+default_lang: "jp"
+exclude_from_localization: ["assets/css", "assets/img"]
+parallel_localization: true
 
 #jekyll-archives:
 #  enabled:

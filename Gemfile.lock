@@ -32,6 +32,8 @@ GEM
     jekyll-feed (0.15.1)
       jekyll (>= 3.7, < 5.0)
     jekyll-paginate (1.1.0)
+    jekyll-polyglot (1.5.1)
+      jekyll (>= 3.0)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
     jekyll-seo-tag (2.7.1)
@@ -74,6 +76,7 @@ DEPENDENCIES
   jekyll-archives
   jekyll-feed (~> 0.6)
   jekyll-paginate
+  jekyll-polyglot
   jekyll-seo-tag
   jekyll-sitemap
   kramdown (>= 2.3.1)
