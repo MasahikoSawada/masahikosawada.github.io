@@ -68,17 +68,17 @@ The implementation is very simple. It scans the exsiting table, store tuples int
 
 ```
 +-------------------+     +------------+  compression   +---------+
-|                   | --> |   chunk    | -------------> |         | \
+|                   | --> |   chunk    | -------------> |xxxxxxxxx| \
 |                   |     |  (16kB)    |                +---------+   \
 |                   |     +------------+                                \     +--------------------+
 |  original table   |                                                    \    |                    |
 | (heap, 8kB pages) |     +------------+  compression   +---------+       `-> |     new table      |
-|                   | --> |   chunk    | -------------> |         | --------> |  (road, 8kB pages) |
+|                   | --> |   chunk    | -------------> |xxxxxxxxx| --------> |  (road, 8kB pages) |
 |                   |     |  (16kB)    |                +---------+       .-> |                    |
 |                   |     +------------+                                 /    |                    |
 |                   |                                                   /     +--------------------+
 |                   |     +------------+ compression    +---------+   /
-|                   | --> |   chunk    | -------------> |         | /
+|                   | --> |   chunk    | -------------> |xxxxxxxxx| /
 |                   |     |  (16kB)    |                +---------+
 |                   |     +------------+
 +-------------------+
@@ -191,7 +191,7 @@ road_tuple_insert(Relation relation, TupleTableSlot *slot,
 
 # Try Creating Your Own Table AMs
 
-The essense of a custom Table AM is a collection of callbacks that get invoked for functionality like scans, index creation etc. that the AM wants to support. Table AMs are nicely abstracted from other PostgreSQL components, so you can implement yours fairly independently. PostgreSQL provides transaction mamager, buffer manager etc. so AMs can choose whether or not to leverage those facilitities. For example, using the buffer manager provided by PostgreSQL core allows AM developers to implement their access method without having to consider the lower levels than the shared buffer.
+The Table AM is actually a collection of callbacks. Table AM developer implements callbacks that get invoked for functionality like scans, index creation etc. that the table AM wants to support. Table AMs are nicely abstracted from other PostgreSQL components, so you can implement yours fairly independently. PostgreSQL provides transaction mamager, buffer manager etc. so AMs can choose whether or not to leverage those facilitities. For example, using the buffer manager provided by PostgreSQL core allows Table AM developers to implement their access method without having to consider the lower levels than the shared buffer.
 
 That said, there is a lot more to consider when implementing a table AM:
 
