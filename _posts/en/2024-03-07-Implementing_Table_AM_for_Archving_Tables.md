@@ -64,7 +64,7 @@ HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tu
 
 # Architecture
 
-The implementation is very simple. It scans the exsiting table, store tuples into 16kB chunks (in memory), compresses it, and writes them to the `road` table.
+The implementation is very simple. It scans the existing table, stores tuples into 16kB chunks (in memory), compresses it, and writes them to the `road` table.
 
 ```
 +-------------------+     +------------+  compression   +---------+
