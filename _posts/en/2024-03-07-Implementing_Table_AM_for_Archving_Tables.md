@@ -220,7 +220,7 @@ While designing a idea, robust Table AM is great, for hobby projects I recommend
 While `pgorad` focuses on archival, some other fun Table AM ideas:
 
 - Automatic row IDs.
-- Heap table with [PAX page format]((https://www.pdl.cmu.edu/PDL-FTP/Database/pax.pdf).
+- Heap table with [PAX page format](https://www.pdl.cmu.edu/PDL-FTP/Database/pax.pdf).
 - Write ahead log only tables.
 
 I encourage you to try developmeing your own PostgreSQL Table AM extension!
