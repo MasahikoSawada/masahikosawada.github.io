@@ -7,7 +7,7 @@ tags:
   - Table AM
 ---
 
-I recently published my hobby project [pgroad](https://github.com/MasahikoSawada/pgroad), a new PostgreSQL Table Access Method (Table AM). pgroad is an PostgreSQL extension that adds a new table format called `road` to PostgreSQL. ROAD stands for "Read Only Archived Data" and is used to convert exsiting tables that are access infrequently but cannot be dropped into compact, read-only tables.
+I recently published my hobby project [pgroad](https://github.com/MasahikoSawada/pgroad), a new PostgreSQL Table Access Method (Table AM). pgroad is a PostgreSQL extension that adds a new table format called `road` to PostgreSQL. ROAD stands for "Read Only Archived Data" and is used to convert existing tables that are accessed infrequently but cannot be dropped into compact, read-only tables.
 
 **CAUTION: since `pgroad` is still in development and a hobby project, it's not production ready**
 
@@ -64,7 +64,7 @@ HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tu
 
 # Architecture
 
-The implementation is very simple. It scans the exsiting table, store tuples into 16kB chunks (in memory), compresses it, and writes them to the `road` table.
+The implementation is very simple. It scans the existing table, stores tuples into 16kB chunks (in memory), compresses it, and writes them to the `road` table.
 
 ```
 +-------------------+     +------------+  compression   +---------+
@@ -84,7 +84,7 @@ The implementation is very simple. It scans the exsiting table, store tuples int
 +-------------------+
 ```
 
-Currently `road` table internally utilizes heap tuples. However, heap tuple headers contain some data like xmin and xmax that `road` doesn't need, so I would like to add support for a custom (more compact) tuple format some day.
+Currently the `road` table internally utilizes heap tuples. However, heap tuple headers contain some data like xmin and xmax that `road` doesn't need, so I would like to add support for a custom (more compact) tuple format some day.
 
 Chunk pages are compressed using `pglz` by default, but `lz4` can also be chosen if enabled in the PostgreSQL.
 
@@ -100,9 +100,9 @@ I've implemented basic features for now:
 - TOAST
 - WAL (Generic WAL)
 
-# Converting exsting tables to road tables
+# Converting existing tables to road tables
 
-Since `pgroad` focuses specifically on archiving exsiting data, `road` tables can only be creaetd in the following two ways:
+Since `pgroad` focuses specifically on archiving existing data, `road` tables can only be created in the following two ways:
 
 - `ALTER TABLE ... SET ACCESS METHOD road`
 - `CREATE TABLE ... USING road AS ...`
@@ -191,7 +191,7 @@ road_tuple_insert(Relation relation, TupleTableSlot *slot,
 
 # Try Creating Your Own Table AMs
 
-The Table AM is actually a collection of callbacks. Table AM developer implements callbacks that get invoked for functionality like scans, index creation etc. that the table AM wants to support. Table AMs are nicely abstracted from other PostgreSQL components, so you can implement yours fairly independently. PostgreSQL provides transaction mamager, buffer manager etc. so AMs can choose whether or not to leverage those facilitities. For example, using the buffer manager provided by PostgreSQL core allows Table AM developers to implement their access method without having to consider the lower levels than the shared buffer.
+The Table AM is actually a collection of callbacks. Table AM developer implements callbacks that get invoked for functionality like scans, index creation etc. that the table AM wants to support. Table AMs are nicely abstracted from other PostgreSQL components, so you can implement yours fairly independently. PostgreSQL provides transaction manager, buffer manager etc. so AMs can choose whether or not to leverage those facilities. For example, using the buffer manager provided by PostgreSQL core allows Table AM developers to implement their access method without having to consider the lower levels than the shared buffer.
 
 That said, there is a lot more to consider when implementing a table AM:
 
@@ -202,25 +202,25 @@ That said, there is a lot more to consider when implementing a table AM:
 - Handling ROLLBACK and failed transactions (including handling garbage data).
 - Handling data bigger than page size.
 
-While designing a idea, robust Table AM is great, for hobby projects I recommend constraining the use cases as much as possible. More constraints means less cases to handle an dsimpler implementation. Start with a "minimally viable" table AM - something that works for a narrow use case, even if it's not fully practical. Getting something working will be motivating you! The learning is in the process more than the end product.
+While designing an idea, a robust Table AM is great, for hobby projects I recommend constraining the use cases as much as possible. More constraints means less cases to handle an dsimpler implementation. Start with a "minimally viable" table AM - something that works for a narrow use case, even if it's not fully practical. Getting something working will be motivating you! The learning is in the process more than the end product.
 
 `pgroad` has the following limitations that made its implementation very straightforward:
 
-- Table creation only by converting exsting tables.
+- Table creation only by converting existing tables.
   - `road` tables can only be made with an exclusive lock on the source table.
     - No concurrency
 - Cannot create `road` tables in transaction blocks
-  - Entire table i slost on failed creation.
+  - Entire table is lost on failed creation.
   - No need to handle SAVEPOINTs.
   - No need to handle CURSOR and to consider CommandId.
 - Read only (no INSERT/UPDATE/DELETE)
-  - Fewer callbaccks to implement.
+  - Fewer callbacks to implement.
   - No garbage in tables.
 
 While `pgorad` focuses on archival, some other fun Table AM ideas:
 
 - Automatic row IDs.
-- Heap table with [PAX page format]((https://www.pdl.cmu.edu/PDL-FTP/Database/pax.pdf).
+- Heap table with [PAX page format](https://www.pdl.cmu.edu/PDL-FTP/Database/pax.pdf).
 - Write ahead log only tables.
 
-I encourage you to try developmeing your own PostgreSQL Table AM extension!
+I encourage you to try developing your own PostgreSQL Table AM extension!
