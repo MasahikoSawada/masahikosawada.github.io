@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostgreSQLでmusl libcを使う方法
+title: Building PostgreSQL with musl libc
 lang: en
 tags:
   - PostgreSQL
