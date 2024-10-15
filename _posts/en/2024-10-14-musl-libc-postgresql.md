@@ -5,15 +5,15 @@ tags:
   - PostgreSQL
 ---
 
-The well-known implementation of the standard C library is glibc. [musl libc](https://www.musl-libc.org) is another implmentation of the standard C library. Its license is the MIT Liense, and it is known for its simple implementation and small binary size. It is also used in Alpine Linux.
+The well-known implementation of the standard C library is glibc. [musl libc](https://www.musl-libc.org) is another implementation of the standard C library. It uses the MIT License, and it is known for its simple implementation and small binary size. It is also used in Alpine Linux.
 
-A comparision with glibc can be found [here](https://www.musl-libc.org).
+A comparison with glibc can be found [here](https://www.musl-libc.org).
 
 This post is a note on how to build PostgreSQL using musl libc.
 
 # Preparing musl libc
 
-The source code of musl libc can be donwloaded [here](https://musl.libc.org/releases.html). It seems that there is also a place called [musl.cc](https://musl.cc/) where you can download pre-built binaries, but this time I built it from source code:
+The source code of musl libc can be downloaded [here](https://musl.libc.org/releases.html). It seems that there is also a place called [musl.cc](https://musl.cc/) where you can download pre-built binaries, but this time I built it from source code:
 
 ```bash
 $ wget https://musl.libc.org/releases/musl-1.2.5.tar.gz
@@ -24,7 +24,7 @@ $ make
 $ make install
 ```
 
-By specifying `--prefix` and `--syslibdir` options, you can specify the directories where musl libc and the dynamic linker will be installed, respectively. The build completed in about 20 seconds on my environment.
+By specifying `--prefix` and `--syslibdir` options, you can specify the directories where musl libc and the dynamic linker will be installed, respectively. The build completed in about 20 seconds in my environment.
 
 You can find a program called `musl-gcc` in the `bin` directory of the installation destination:
 
@@ -33,7 +33,7 @@ $ ls /home/masahiko/musl/bin
 musl-gcc
 ```
 
-`musl-gcc` is a wrapper program (it's actuall a schell script), and it seems that when you compile programs using this, they will be linked against musl libc.
+`musl-gcc` is a wrapper program (it's actually a shell script), and it seems that when you compile programs using this, they will be linked against musl libc.
 
 # Building PostgreSQL from source code
 
@@ -72,13 +72,13 @@ $ make install
 
 You can specify the compiler to use with `CC`.
 
-## Abount specifying `--without-XXX`
+## About specifying `--without-XXX`
 
-By default, PostgreSQL builds with readline, zlib, and icu enabled (in the cause of using `configure` script). While the readline header files are in `usr/include/readline`, `/usr/include` also contains the header files of glibc. Therefore, if it's configured to search `/usr/include` directory when compiling programs, the build using `musl-gcc` wouldn't work. So I disabled these libraries for the build.
+By default, PostgreSQL builds with readline, zlib, and icu enabled (in the case of using `configure` script). While the readline header files are in `usr/include/readline`, `/usr/include` also contains the header files of glibc. Therefore, if it's configured to search `/usr/include` directory when compiling programs, the build using `musl-gcc` wouldn't work. So I disabled these libraries for the build.
 
-The raeson I copied `/usr/include/linux` etc. directories inthe preparation step was to deal with this problem. [This seems to be the recommend way](https://www.openwall.com/lists/musl/2017/11/23/1), but I went with it for now. I think readline etc. could also be built in a similar way. Not sure.
+The reason I copied `/usr/include/linux` etc. directories in the preparation step was to deal with this problem. [This seems to be the recommended way](https://www.openwall.com/lists/musl/2017/11/23/1), but I went with it for now. I think readline etc. could also be built in a similar way. Not sure.
 
-While PostgreSQL can be built withotu readline etc. `/usr/include/linux` etc. are essential for building PostgreSQL as PostgreSQL's built-in programs are using it. For instance, `pg_combinebackup` requires `/usr/include/linux`. Without these steps, I got the following error in my environment:
+While PostgreSQL can be built without readline etc. `/usr/include/linux` etc. are essential for building PostgreSQL as PostgreSQL's built-in programs are using it. For instance, `pg_combinebackup` requires `/usr/include/linux`. Without these steps, I got the following error in my environment:
 
 ```bash
 musl-gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wcast-function-type -Wshadow=compatible-
@@ -111,6 +111,6 @@ $ ldd bin/postgres
         libc.so => /home/masahiko/musl/lib/libc.so (0x00007f21be639000)
 ```
 
-musl libc is not completely compatible with glibc, and ther are [some behavioral differences](https://wiki.musl-libc.org/functional-differences-from-glibc.html), `make check-world` also passed.
+musl libc is not completely compatible with glibc, and there are [some behavioral differences](https://wiki.musl-libc.org/functional-differences-from-glibc.html), `make check-world` also passed.
 
 While musl libc is smaller as a library than glibc, glibc is faster in terms of performance, so I'd also like to compare the performance as the next step.
