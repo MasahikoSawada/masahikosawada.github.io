@@ -1,6 +1,7 @@
 ---
 layout: post
 title: PostgreSQLでmusl libcを使う方法
+lang: jp
 tags:
   - PostgreSQL
 ---
