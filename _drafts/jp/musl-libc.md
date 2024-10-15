@@ -34,7 +34,7 @@ $ ls /home/masahiko/musl/bin
 musl-gcc
 ```
 
-これはgccのラッパーで、これを使ってプログラムをコンパイルするとmusl libcにリンクするようになるらしい。
+これはgccのラッパー(中身はシェルスクリプト)で、これを使ってプログラムをコンパイルするとmusl libcにリンクするようになるらしい。
 
 # PostgreSQLのビルド
 
@@ -78,7 +78,7 @@ CCには使用するコンパイラを指定できる。
 
 ## `--without-XXX`の指定について
 
-PostgreSQLがデフォルトでreadline, zlib, icuを有効にしてビルドする（configureの場合）。例えば、readlineのヘッダファイルは`/usr/include/readline`にあるけど、`/usr/include`にはglibcのヘッダファイルもある。なので`/usr/include`を探しに行くように設定するとmusl libcを使ったビルドができなかった。なので、これらのライブラリは無効にした状態でビルドする。今回はお試しなのでこれでOK。
+PostgreSQLがデフォルトでreadline, zlib, icuを有効にしてビルドする（configureの場合）。例えば、readlineのヘッダファイルは`/usr/include/readline`にあるけど、`/usr/include`にはglibcのヘッダファイルもある。なので`/usr/include`を探しに行くように設定すると`musl-gcc`を使ったビルドができなかった。なので、これらのライブラリは無効にした状態でビルドする。今回はお試しなのでこれでOK。
 
 下準備として`/usr/include/linux`等をディレクトリごとコピーしたのはこれに対応するため。これは[推奨された方法ではない](https://www.openwall.com/lists/musl/2017/11/23/1)らしいけど今回はこれでOKとした。おそらく、readline等も同じようにすればビルド出来るのだと思う。
 
@@ -97,7 +97,7 @@ pg_combinebackup.c:24:10: fatal error: linux/fs.h: No such file or directory
 
 自分の環境では、以下のようなWARNINGが出た。ビルド自体はできたので問題なし。
 
-```
+```bash
 pg_get_line.c: In function _pg_get_line_append_:
 pg_get_line.c:129:27: warning: _({anonymous})_ may be used uninitialized [-Wmaybe-uninitialized]
   129 |         if (prompt_ctx && sigsetjmp(*((sigjmp_buf *) prompt_ctx->jmpbuf), 1) != 0)
@@ -114,4 +114,7 @@ $ ldd bin/postgres
         libc.so => /home/masahiko/musl/lib/libc.so (0x00007f21be639000)
 ```
 
-`make check-world`も通って一安心。
+musl libcはglibcに完全互換しているわけではなく、[若干挙動が違ったりする](https://wiki.musl-libc.org/functional-differences-from-glibc.html)とのことだけど、`make check-world`も通って一安心。
+
+musl libcの方がライブラリとしてはglibcより小さいけど、性能はglibcの方が早いとのことなので、性能面も比較してみたい。
+
