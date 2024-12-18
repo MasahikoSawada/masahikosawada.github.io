@@ -11,7 +11,7 @@ tags:
 
 # radixtree.h
 
-先日リリースされたPostgreSQL 17では、Vacuumの実行速度やメモリ使用量が大きく改善されています。内部的な情報なのでリリースノートでは言及されていませんが、その改善の立役者となったのはPostgreSQL 17で新しく実装されたradix treeです。以前はTIDの配列を使ってゴミタプルのTIDを管理していたのですが、PostgreSQL 17からはゴミタプルのTIDをradix treeに入れることにより、Vacuumがより早く、より省メモリで動くようになりました。radix treeの実装は[こちらの論文](https://db.in.tum.de/~leis/papers/ART.pdf)をベースにしており、いくつか最適化を入れています。ソースコードに興味がある方は[こちら]()。
+先日リリースされたPostgreSQL 17では、Vacuumの実行速度やメモリ使用量が大きく改善されています。内部的な情報なのでリリースノートでは言及されていませんが、その改善の立役者となったのはPostgreSQL 17で新しく実装されたradix treeです。以前はTIDの配列を使ってゴミタプルのTIDを管理していたのですが、PostgreSQL 17からはゴミタプルのTIDをradix treeに入れることにより、Vacuumがより早く、より省メモリで動くようになりました。radix treeの実装は[こちらの論文](https://db.in.tum.de/~leis/papers/ART.pdf)をベースにしており、いくつか最適化を入れています。ソースコードに興味がある方は[こちら](https://github.com/postgres/postgres/blob/master/src/include/lib/radixtree.h)。
 
 インメモリでなにかのデータを保持したい場合、PostgreSQLのソースコードにはハッシュテーブルをはじめとしたいくつかのデータ構造が実装されています。
 
