@@ -37,7 +37,9 @@ tags:
 
 # pg_memstore
 
-[`pg_memstore`](https://github.com/MasahikoSawada/pg_memstore)は、PostgreSQLの拡張機能（Extension）で、共有メモリ上に作成したradix treeをベースとしたキーバリューストアです。最初は簡単なSET、GETだけをサポートする予定だったのですが、作っていたら色々面白くなってきて、ファイルへのダンプ・リストア、WALサポートも実装してみました。
+[`pg_memstore`](https://github.com/MasahikoSawada/pg_memstore)は、PostgreSQLの拡張機能（Extension）で、共有メモリ上に作成したradix treeをベースとしたキーバリューストアです。可変長のバリューが持てる特徴を活かし、バリューにはjsonbデータが格納できます。
+
+最初は簡単なSET、GETだけをサポートする予定だったのですが、作っていたら色々面白くなってきて、ファイルへのダンプ・リストア、WALサポートも実装してみました。
 
 インストールはリポジトリ内の[README](https://github.com/MasahikoSawada/pg_memstore)をご参照ください。
 
