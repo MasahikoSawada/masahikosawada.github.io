@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostgreSQL 17で新しく実装されたradix treeでインメモリのキーバリューストア作ってみた
+title: PostgreSQL 17で新しく実装されたradix treeを使ってインメモリのキーバリューストア作ってみた
 tags:
   - PostgreSQL
   - radixtree
