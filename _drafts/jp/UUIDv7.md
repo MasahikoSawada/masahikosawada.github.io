@@ -1,15 +1,14 @@
 ---
 layout: post
-title: UUIDv7
+title: PostgreSQLがUUIDv7をサポート
 tags:
   - PostgreSQL
   - UUID
 ---
 
-# UUIDv7
+UUIDv7は[RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html)で定義されました。UUIDには8つのバージョンがあり、どれもサイズは128ビットですが、格納するデータがそれぞれバージョンで異なります。私もUUIDv7を知るまでは、UUIDといえばランダムデータのイメージでしたが、それはバージョン4のUUIDで、本記事で紹介するバージョン7のUUID（UUIDv7）はタイムスタンプをデータの先頭に持つためソート可能であるのが大きな特徴です。
 
-UUIDv7はXXXに完成した[RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html)で登場しました。UUIDには8つのバージョンがあり、格納するデータはそれぞれバージョンで異なります（サイズは常に128bit）。私もUUIDv7を知るまでは、UUIDといえばランダムデータのイメージでしたが、それはバージョン4で、UUIDv7はタイムスタンプをデータの先頭に持つためソート可能であるのが大きな特徴です。
-
+実際に比較してみると違いは一目瞭然です:
 
 ```sql
 =# select uuidv4(), uuidv7() from generate_series(1, 5);
@@ -23,7 +22,7 @@ UUIDv7はXXXに完成した[RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.htm
 (5 rows)
 ```
 
-例えば、データベースの主キーとして使用した時に多くのメリットがあります。PostgreSQLでは主キーインデックスにはBtreeインデックスが使われます。そのため、大量にデータをロードした場合でも挿入されるUUIDv7は常に昇順になるので、インデックス更新の局所性が高く、性能的に有利です。また、PostgreSQLではFull Page Writes（FPW）を抑える効果もあります。
+UUIDv7は、例えばデータベースの主キーとして使用した時に多くのメリットがあります。PostgreSQLでは主キーインデックスにはBtreeインデックスが使われます。そのため、大量にデータをロードした場合でも挿入されるUUIDのデータは常に昇順になるので、インデックス更新の局所性が高く、性能的に有利です。また、PostgreSQLではFull Page Writes（FPW）を抑える効果もあります。
 
 SERIAL型（シーケンス）とUUID型（UUIDv4とUUIDv7）の主キーをつけた状態で500万件INSERTした結果は以下のとおりです(PostgreSQL 18 Betaで検証):
 
@@ -35,7 +34,7 @@ SERIAL型（シーケンス）とUUID型（UUIDv4とUUIDv7）の主キーをつ�
 
 ## PostgreSQLでUUIDを使う方法
 
-PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/document/17/html/datatype-uuid.html)を持っています。PostgreSQL 17では、UUIDを生成する方法は大きく2つあります。
+PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/document/17/html/datatype-uuid.html)を持っていて、（PostgreSQL 17現在）UUIDを生成する方法は大きく2つあります。
 
 一つは、組み込みの[`gen_random_uuid()`SQL関数](https://www.postgresql.jp/document/17/html/functions-uuid.html)を利用する方法です。これはバージョン4のUUIDを生成します（バージョンの詳細については後述）。PostgreSQL独自の実装を利用しています。
 
@@ -56,7 +55,6 @@ PL/Rustは利用できるcrateが限られているためRustのuuid crateは利
 
 [^pgrx]: RustでPostgreSQLのExtensionを作成するためのフレームワーク
 
-
 ```rust
 use pgrx::prelude::*;
 use uuid::Uuid;
@@ -73,9 +71,11 @@ fn pgrx_uuidv7() -> pgrx::Uuid {
 
 PostgreSQL 18では[`uuidv7()`SQL関数](https://www.postgresql.org/docs/devel/functions-uuid.html)が導入されるため、すべてのPostgreSQLがユーザがUUIDv7を利用できるようになります([コミットログ](https://github.com/postgres/postgres/commit/78c5e141e9c139fc2ff36a220334e4aa25e1b0eb))！
 
+`gen_random_uuid()`はこれまで通りUUIDv4を生成する関数として存在し、新しく`uuidv4()`も追加されましたが中身は同じです。
+
 ## UUIDv7のフォーマット
 
-UUIDv7の具体的なフォーマットはRFCに記載されています:
+UUIDv7のフォーマットはRFCに以下のように記載されています:
 
 ```
  0                   1                   2                   3
@@ -119,7 +119,7 @@ UUIDv7では、バージョンの前にミリ秒制度のタイムスタンプ�
 
 PostgreSQLのUUIDv7実装では、RFCで記載されている[Method 3(Replace Leftmost Random Bits with Increased Clock Precision)](https://www.rfc-editor.org/rfc/rfc9562.html#name-monotonicity-and-counters)の方法を取り入れました。具体的には、`rand_a`の部分にミリ秒以下のタイムスタンプを入れ、全体で60(=48+12)ビットをタイムスタンプに使っています。これにより、秒間約400万個のUUID生成に耐えることが可能です。さらに、同一プロセス内ではUUID生成事に`rand_a`の部分が必ず増加するように調整しているので、それ以上の高頻度でのUUID生成でも**単一プロセスから生成されるUUIDv7のデータは単調増加していることが保証**されています。
 
-ソースコードは[ここ](https://github.com/postgres/postgres/blob/master/src/backend/utils/adt/uuid.c#L601)です。
+また、引数に`interval`値を入れることができ、UUIDデータに格納されるタイムスタンプを指定した期間だけずらすことも可能です。
 
-# より高速なUUID生成を目指して
+ソースコードは[ここ](https://github.com/postgres/postgres/blob/master/src/backend/utils/adt/uuid.c#L601)です。
 
