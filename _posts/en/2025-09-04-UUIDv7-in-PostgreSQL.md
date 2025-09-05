@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostgreSQL support UUIDv7
+title: PostgreSQL 18 supports UUIDv7
 lang: en
 tags:
   - PostgreSQL

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostgreSQLがUUIDv7をサポート
+title: PostgreSQL 18がUUIDv7をサポート
 lang: jp
 tags:
   - PostgreSQL
