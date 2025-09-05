@@ -24,15 +24,13 @@ UUIDv7は[RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html)で定義され�
 
 UUIDv7は、例えばデータベースの主キーとして使用した時に多くのメリットがあります。PostgreSQLでは主キーインデックスにはBtreeインデックスが使われます。そのため、大量にデータをロードした場合でも挿入されるUUIDのデータは常に昇順になるので、インデックス更新の局所性が高く、性能的に有利です。また、PostgreSQLではFull Page Writes（FPW）を抑える効果もあります。
 
-SERIAL型（シーケンス）とUUID型（UUIDv4とUUIDv7）の主キーをつけた状態で500万件INSERTした結果は以下のとおりです(PostgreSQL 18 Betaで検証):
+SERIAL型（シーケンス）とUUID型（UUIDv4とUUIDv7）に主キーをつけた状態で500万件INSERTした結果は以下のとおりです(PostgreSQL 18 Betaで検証):
 
 |          | SERIAL  | UUIDv4  | UUIDv7   |
 |----------|---------|---------|----------|
 | Druation | 8.452 s | 42.24 s | 16.922 s |
 
 # PostgreSQLとUUID
-
-## PostgreSQLでUUIDを使う方法
 
 PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/document/17/html/datatype-uuid.html)を持っていて、（PostgreSQL 17現在）UUIDを生成する方法は大きく2つあります。
 
