@@ -42,7 +42,7 @@ PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/do
 
 上記の通り、PostgreSQL 17現在、UUIDv7の生成をサポートしていないので、UUIDv7を利用したい場合は、公開されているextensionを利用する、もしくは自分で実装する必要があります。githubで探すと以下のextensionが見つかりました:
 
-- [pg_uuidv7](https://github.com/fboulnois/pg_uuidv7) (xxx stars)
+- [pg_uuidv7](https://github.com/fboulnois/pg_uuidv7)
   - C言語で実装
 - [postgres-uuidv7-sql](https://github.com/dverite/postgres-uuidv7-sql)
   - SQLで実装。なので、Extensionとして登録しなくても`CREATE FUNCTION`を使えば利用可能
