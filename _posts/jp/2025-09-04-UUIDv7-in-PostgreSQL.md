@@ -47,7 +47,7 @@ PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/do
 
 pg_tle + PL/RustでUUIDv7を生成する関数を作るブロクもあります：
 
-https://aws.amazon.com/blogs/database/implement-uuidv7-in-amazon-rds-for-postgresql-using-trusted-language-extensions/
+[https://aws.amazon.com/blogs/database/implement-uuidv7-in-amazon-rds-for-postgresql-using-trusted-language-extensions/]
 
 PL/Rustは利用できるcrateが限られているためRustのuuid crateは利用できません。自作ExtensionでUUIDv7を生成する関数を作りたい場合は、おそらくpgrx[^pgrx]を利用するのが一番簡単だと思います。UUIDv7の生成だけであれば以下のコードだけで可能です:
 
