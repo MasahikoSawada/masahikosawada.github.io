@@ -1,6 +1,7 @@
 ---
 layout: post
 title: PostgreSQLがUUIDv7をサポート
+lang: jp
 tags:
   - PostgreSQL
   - UUID
