@@ -19,9 +19,9 @@ PostgreSQL 18の`uuidv7()`関数はC言語で実装されていて、自作のpg
 
 UUIDv7を100万件生成するのにかかった時間は以下のとおりです:
 
-|              | `uuidv7()` | `pgrx_uuidv7()` |
-|--------------|------------|-----------------|
-| 実行時間(ms) | 2203.124   | 264.688         |
+|              | uuidv7() | pgrx_uuidv7() |
+|--------------|----------|---------------|
+| 実行時間(ms) | 2203.124 | 264.688       |
 
 `uuidv7()`でも秒間約45万個のUUIDv7が生成できていてる一方で、`pgrx_uuidv7()`は約10倍近く速い結果となりました。この生成速度の違いを調べた所、ランダムデータ生成が実行時間の大半を占めていて、それぞれの方式で異なるランダムデータ生成方法が使用されていることがわかりました。
 
@@ -39,9 +39,9 @@ PostgreSQLではビルド時にどちらの方法を利用するか決めてい�
 一方、OpenSSLを利用すると[`RAND_bytes()`関数を使用](https://github.com/postgres/postgres/blob/master/src/port/pg_strong_random.c#L90)してランダムデータを生成します。PostgreSQLをOpenSSLを有効にしてビルドし直してもう一度UUIDv7の生成速度を測定してます。
 
 
-|              | `uuidv7() (/dev/urandomを利用)` | `uuidv7() (OpenSSLのRAND_bytes()を利用)` | `pgrx_uuidv7()` |
-|--------------|---------------------------------|------------------------------------------|-----------------|
-| 実行時間(ms) | 2203.124                        | 759.296                                  | 264.688         |
+|              | uuidv7() (/dev/urandomを利用) | uuidv7() (OpenSSLのRAND_bytes()を利用) | pgrx_uuidv7() |
+|--------------|-------------------------------|----------------------------------------|---------------|
+| 実行時間(ms) | 2203.124                      | 759.296                                | 264.688       |
 
 OpenSSLは`/dev/urandom`よりはかなり速いが、`pgrx_uuidv7()`よりは遅いという結果になりました。世の中のほぼすべてのPostgreSQLはOpenSSLを有効にしてビルドされたものだと思うので、UUIDの生成速度で困ることはほとんどないでしょう。
 
@@ -118,17 +118,19 @@ $ ./bench
 
 この検証には、先程紹介したPostgreSQLコミュニティに提案中のパッチが必要となります。
 
-|              | `uuidv7() (/dev/urandomを利用)` | `uuidv7() (OpenSSLのRAND_bytes()を利用)` | `uuidv7() (getrandom)を利用` | `pgrx_uuidv7() (参考)` |
-|--------------|---------------------------------|------------------------------------------|------------------------------|------------------------|
-| 実行時間(ms) | 2183.191                        | 766.671                                  | 196.876                      | 260.512                |
+|              | uuidv7() (/dev/urandomを利用) | uuidv7() (OpenSSLのRAND_bytes()を利用) | uuidv7() (getrandom)を利用 | pgrx_uuidv7() (参考) |
+|--------------|-------------------------------|----------------------------------------|----------------------------|----------------------|
+| 実行時間(ms) | 2183.191                      | 766.671                                | 196.876                    | 260.512              |
 
 ついにPostgreSQLの`uuidv7()`が最も早くなりました！秒間約500万件のUUIDv7が生成できています。ちなみに、同環境では、シーケンスの値を`nextval()`関数で100万回取得するのに352.519msかかったので、シーケンスの払い出しよりも高速になったと言えます[^sequence]。
+
+UUID生成速度を上げるためにより速いランダムデータ生成方法を利用する、という話でした。
 
 [^sequence]: シーケンスの払い出しはシーケンス自体の更新＋WALもあるので
 
 # 参考資料
 
-- A vDSO implementation of getrandom() : https://lwn.net/Articles/919008/
-- GNU C Library Merges Support for getrandom vDSO : https://www.phoronix.com/news/glibc-getrandom-vDSO-Merged
-- implement getrandom() in vDSO : https://lwn.net/Articles/978601/
+- [A vDSO implementation of getrandom()](https://lwn.net/Articles/919008/)
+- [GNU C Library Merges Support for getrandom vDSO](https://www.phoronix.com/news/glibc-getrandom-vDSO-Merged)
+- [implement getrandom() in vDSO](https://lwn.net/Articles/978601/)
 
