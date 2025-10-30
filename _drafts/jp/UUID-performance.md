@@ -51,7 +51,7 @@ OpenSSLは`/dev/urandom`よりはかなり速いが、`pgrx_uuidv7()`よりは�
 
 `pgrx_uuidv()`の元になっている`Uuid::now_v7()`を調べた所、おそらく最終的には(Linuxでは)`getrandom()`関数を使ってランダムデータを生成しているようです[^source]。[`getrandom()`](https://man7.org/linux/man-pages/man2/getrandom.2.html)はランダムデータを生成するglibcの関数であり、同名のシステムコールを呼びます。
 
-[^source] https://github.com/rust-lang/rust/blob/master/library/std/src/random.rs
+[^source]: https://github.com/rust-lang/rust/blob/master/library/std/src/random.rs
 
 `getrandom()`関数の`flags`に`GRND_NONBLOCK`を指定することで`/dev/urandom`と同じソースからランダムデータを生成することができるようです。`/dev/urandom`を`open()`したり`read()`する必要がないので高速に動きます。古いLinuxではサポートされていないシステムコールなので注意が必要です。
 
@@ -128,7 +128,7 @@ $ ./bench
 
 # 参考資料
 
-‐ A vDSO implementation of getrandom() : https://lwn.net/Articles/919008/
+- A vDSO implementation of getrandom() : https://lwn.net/Articles/919008/
 - GNU C Library Merges Support for getrandom vDSO : https://www.phoronix.com/news/glibc-getrandom-vDSO-Merged
 - implement getrandom() in vDSO : https://lwn.net/Articles/978601/
 
