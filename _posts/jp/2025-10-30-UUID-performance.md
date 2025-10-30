@@ -104,7 +104,7 @@ $ ./bench
 [^rhel10]: Linux kernel 6.12.0 + glibc-2.39-43ですが、Red Hat Engerprise LinuxではvDSO対応パッチをバックポートしているようです。
 
 ```
-./bench
+$ ./bench
             len        urandom      getrandom  getrandom_sys        openssl
              16           1921             61            366           1536
              64           2063            160            501            430
