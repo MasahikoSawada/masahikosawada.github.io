@@ -3,48 +3,42 @@ layout: null
 sitemap: false
 ---
 {%- comment -%}
-  Replaces jekyll-sitemap's generated sitemap. The plugin skips its own generator when a
-  source page already claims /sitemap.xml (jekyll-sitemap.rb: `unless file_exists?`), but
-  still emits robots.txt, which is what we want.
+  Replaces jekyll-sitemap's generated sitemap. The plugin skips its own generator
+  when a source page already claims /sitemap.xml, but still emits robots.txt, so
+  robots.txt is hand-written too and points at the index instead.
 
-  Two reasons for hand-writing it: the plugin listed all 11 /posts/N/ pagination pages and
-  all 37 /tag/ pages, and polyglot never told it about the /en/ tree. Only pages carrying
-  `translated: true` get an /en/ entry, so the noindex'd Japanese fallbacks stay out.
-
-  Only emitted for the default language; polyglot renders this file once per language and
-  /en/sitemap.xml would otherwise be a byte-identical duplicate.
+  Rendered once per language. lang-exclusive means site.posts holds only the posts
+  of the language being built, so each language gets its own sitemap and the two
+  are tied together by sitemap_index.xml. The pagination and tag pages the plugin
+  used to list are left out; they carry no content of their own.
 {%- endcomment -%}
-{%- if site.active_lang == site.default_lang -%}
+{%- assign prefix = '' -%}
+{%- unless site.active_lang == site.default_lang -%}
+  {%- capture prefix %}/{{ site.active_lang }}{% endcapture -%}
+{%- endunless -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>{{ '/' | absolute_url | xml_escape }}</loc>
+    <loc>{{ site.url }}{{ prefix }}/</loc>
     <lastmod>{{ site.posts.first.date | date_to_xmlschema }}</lastmod>
   </url>
 {%- for post in site.posts %}
   <url>
-    <loc>{{ post.url | absolute_url | xml_escape }}</loc>
+    <loc>{{ site.url }}{{ prefix }}{{ post.url | xml_escape }}</loc>
     <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
   {%- if post.translated %}
-    <xhtml:link rel="alternate" hreflang="ja" href="{{ post.url | absolute_url | xml_escape }}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="{{ post.url | prepend: '/en' | absolute_url | xml_escape }}"/>
+    {%- for lang in site.languages %}
+    <xhtml:link rel="alternate" hreflang="{{ lang }}" href="{{ site.url }}{% unless lang == site.default_lang %}/{{ lang }}{% endunless %}{{ post.url | xml_escape }}"/>
+    {%- endfor %}
   {%- endif %}
   </url>
 {%- endfor %}
-{%- for post in site.posts %}{% if post.translated %}
-  <url>
-    <loc>{{ post.url | prepend: '/en' | absolute_url | xml_escape }}</loc>
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-    <xhtml:link rel="alternate" hreflang="ja" href="{{ post.url | absolute_url | xml_escape }}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="{{ post.url | prepend: '/en' | absolute_url | xml_escape }}"/>
-  </url>
-{%- endif %}{% endfor %}
 {%- for p in site.html_pages %}
-  {%- unless p.sitemap == false or p.noindex or p.url == '/' or p.url contains '/tag/' or p.url contains '/posts/' or p.url contains '404' or p.url contains 'categories' %}
+  {%- unless p.sitemap == false or p.noindex or p.url == '/' or p.url contains '/tag/' or p.url contains '/posts/' or p.url contains '404' %}
+    {%- if p.noindex_translations and site.active_lang != site.default_lang %}{% continue %}{% endif %}
   <url>
-    <loc>{{ p.url | replace: 'index.html', '' | absolute_url | xml_escape }}</loc>
+    <loc>{{ site.url }}{{ prefix }}{{ p.url | replace: 'index.html', '' | xml_escape }}</loc>
   </url>
   {%- endunless %}
 {%- endfor %}
 </urlset>
-{%- endif -%}

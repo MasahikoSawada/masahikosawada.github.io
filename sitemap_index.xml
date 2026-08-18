@@ -1,0 +1,18 @@
+---
+layout: null
+sitemap: false
+lang-exclusive: ["en"]
+---
+{%- comment -%}
+  Only built for the default language: polyglot renders every source file once per
+  language, and without lang-exclusive this index would be duplicated under /ja/.
+  robots.txt points here so one submission covers both languages.
+{%- endcomment -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for lang in site.languages %}
+  <sitemap>
+    <loc>{{ site.url }}{% unless lang == site.default_lang %}/{{ lang }}{% endunless %}/sitemap.xml</loc>
+  </sitemap>
+{%- endfor %}
+</sitemapindex>

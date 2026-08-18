@@ -11,6 +11,14 @@
   {%- assign noindex = false -%}
   {%- if page.lang and page.lang != site.active_lang -%}{%- assign noindex = true -%}{%- endif -%}
   {%- if page.noindex -%}{%- assign noindex = true -%}{%- endif -%}
+  {%- comment -%}
+    Pages are built for every language. Most of them differ per language because
+    they list that language's posts, but the standalone ones are the same text
+    twice, so keep only the default-language copy in the index.
+  {%- endcomment -%}
+  {%- if page.noindex_translations and site.active_lang != site.default_lang -%}
+    {%- assign noindex = true -%}
+  {%- endif -%}
   {%- comment -%} pagination pages 2..N are thin duplicates of the post list {%- endcomment -%}
   {%- if paginator -%}{%- if paginator.page > 1 -%}{%- assign noindex = true -%}{%- endif -%}{%- endif -%}
   {%- if noindex %}
@@ -22,23 +30,26 @@
   {%- comment -%}
     hreflang. jekyll-polyglot is pinned to 1.5.1 by the github-pages gem, which has
     neither page_id nor permalink_lang, so translated pairs are marked by hand with
-    "translated: true" in front matter. Both members carry the same permalink, so the
-    ja URL is page.url and the en URL is /en + page.url. Emitting the full set on both
-    members is what makes the annotations reciprocal, and static_href keeps polyglot
-    from rewriting these absolute URLs into the language it is currently building.
-    The href sits on its own line because polyglot's rewrite regexes carry a
-    (?<!hreflang="<default_lang>" ) lookbehind that would otherwise also skip the pass
-    that restores static_href's placeholder, leaving a literal ferh= in the output.
+    "translated: true" in front matter. Both members share a permalink, and polyglot
+    puts the default language at the root, so the URL for each language is the
+    permalink with that language's prefix. Emitting the full set on every member is
+    what makes the annotations reciprocal.
+
+    static_href keeps polyglot from rewriting these absolute URLs into the language
+    it is currently building. The href sits on its own line because polyglot's
+    rewrite regexes carry a (?<!hreflang="<default_lang>" ) lookbehind that would
+    otherwise also skip the pass restoring static_href's placeholder, leaving a
+    literal ferh= in the output.
   {%- endcomment -%}
   {%- if page.translated %}
-  {%- assign ja_url = page.url | prepend: site.url -%}
-  {%- assign en_url = page.url | prepend: '/en' | prepend: site.url -%}
-  <link rel="alternate" hreflang="ja"
-        {% static_href %}href="{{ ja_url }}"{% endstatic_href %}>
-  <link rel="alternate" hreflang="en"
-        {% static_href %}href="{{ en_url }}"{% endstatic_href %}>
+    {%- for lang in site.languages %}
+      {%- capture alt_url %}{{ site.url }}{% unless lang == site.default_lang %}/{{ lang }}{% endunless %}{{ page.url }}{% endcapture %}
+  <link rel="alternate" hreflang="{{ lang }}"
+        {% static_href %}href="{{ alt_url }}"{% endstatic_href %}>
+    {%- endfor %}
+    {%- capture default_url %}{{ site.url }}{{ page.url }}{% endcapture %}
   <link rel="alternate" hreflang="x-default"
-        {% static_href %}href="{{ ja_url }}"{% endstatic_href %}>
+        {% static_href %}href="{{ default_url }}"{% endstatic_href %}>
   {%- endif %}
 
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">

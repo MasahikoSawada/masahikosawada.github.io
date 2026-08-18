@@ -39,8 +39,8 @@ social:
     - https://x.com/masahiko_sawada
     - https://www.linkedin.com/in/masahikosawada
 logo: /assets/images/og-default.png
-lang: ja
-locale: ja_JP
+lang: en
+locale: en_US
 timezone: Asia/Tokyo
 
 # Measurement. Both are read by _includes/google-analytics.html and jekyll-seo-tag.
@@ -71,14 +71,29 @@ defaults:
   # English posts too. Polyglot re-renders the Japanese documents under /en/ as
   # well, but those keep their own path and so stay ja_JP, which is right: the
   # body is still Japanese.
+  # A post appears only in the build for its own language. Without this polyglot
+  # falls back to rendering every document under every language prefix, which is
+  # how 52 Japanese articles used to show up on the English side.
   - scope:
       path: "_posts/en"
     values:
       locale: en_US
+      lang-exclusive: ["en"]
   - scope:
       path: "_drafts/en"
     values:
       locale: en_US
+      lang-exclusive: ["en"]
+  - scope:
+      path: "_posts/jp"
+    values:
+      locale: ja_JP
+      lang-exclusive: ["ja"]
+  - scope:
+      path: "_drafts/jp"
+    values:
+      locale: ja_JP
+      lang-exclusive: ["ja"]
   - scope:
       path: ""
     values:
@@ -93,8 +108,21 @@ permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
 paginate: 5
 
-languages: ["ja", "en"]
-default_lang: "ja"
+languages: ["en", "ja"]
+default_lang: "en"
+include:
+  - _redirects
+
+# The stubs under _redirects are pages, so they must not be treated as content:
+# the README beside them would otherwise be turned into one by
+# jekyll-optional-front-matter and listed in the sitemap.
+exclude:
+  - _redirects/README
+  - Gemfile
+  - Gemfile.lock
+  - docker-compose.yml
+  - utils
+
 exclude_from_localization: ["assets/css", "assets/img"]
 parallel_localization: true
 

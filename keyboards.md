@@ -1,4 +1,5 @@
 ---
+noindex_translations: true
 layout: page
 title: 自作キーボード
 permalink: /keyboards/

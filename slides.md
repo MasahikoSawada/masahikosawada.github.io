@@ -1,4 +1,5 @@
 ---
+noindex_translations: true
 layout: home
 title: "Slides"
 permalink: /slides/

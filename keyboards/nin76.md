@@ -1,4 +1,5 @@
 ---
+noindex_translations: true
 layout: post
 title: 自作キーボード Nin76
 permalink: /keyboards/nin76.html

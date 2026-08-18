@@ -1,4 +1,5 @@
 ---
+noindex_translations: true
 layout: page
 title: About
 permalink: /about/

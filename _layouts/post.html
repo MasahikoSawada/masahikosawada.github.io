@@ -10,10 +10,6 @@ layout: default
 	<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y/%m/%d" }}</time> - <span class="post-author">{{ site.author.name }}</span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}
     </p>
 
-    <p class="post-meta-right">
-      {% include lang-switcher.html %}
-    </p>
-
     <br>
 
   </header>

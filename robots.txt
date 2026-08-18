@@ -1,0 +1,9 @@
+---
+layout: null
+sitemap: false
+lang-exclusive: ["en"]
+---
+User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}/sitemap_index.xml
