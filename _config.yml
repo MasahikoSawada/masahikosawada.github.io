@@ -66,6 +66,19 @@ defaults:
       type: "posts"
     values:
       image: /assets/images/og-default.png
+  # site.locale would otherwise win over the page language in jekyll-seo-tag's
+  # page_locale (page.locale || site.locale || page_lang), stamping ja_JP on the
+  # English posts too. Polyglot re-renders the Japanese documents under /en/ as
+  # well, but those keep their own path and so stay ja_JP, which is right: the
+  # body is still Japanese.
+  - scope:
+      path: "_posts/en"
+    values:
+      locale: en_US
+  - scope:
+      path: "_drafts/en"
+    values:
+      locale: en_US
   - scope:
       path: ""
     values:
