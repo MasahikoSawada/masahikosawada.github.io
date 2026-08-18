@@ -110,18 +110,12 @@ paginate: 5
 
 languages: ["en", "ja"]
 default_lang: "en"
+# The redirect stubs live in _redirects, which Jekyll would skip for the leading
+# underscore. Nothing else is added here: setting `exclude` replaces Jekyll's
+# default list rather than extending it, and that list is what keeps vendor/bundle
+# out of the build, which CI populates through bundler-cache.
 include:
   - _redirects
-
-# The stubs under _redirects are pages, so they must not be treated as content:
-# the README beside them would otherwise be turned into one by
-# jekyll-optional-front-matter and listed in the sitemap.
-exclude:
-  - _redirects/README
-  - Gemfile
-  - Gemfile.lock
-  - docker-compose.yml
-  - utils
 
 exclude_from_localization: ["assets/css", "assets/img"]
 parallel_localization: true
