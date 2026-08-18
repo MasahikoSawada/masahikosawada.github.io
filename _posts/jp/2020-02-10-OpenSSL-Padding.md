@@ -1,20 +1,22 @@
 ---
 layout: post
 title: OpenSSLでAES暗号したときのPadding
+description: >-
+  OpenSSLでAES暗号化したときのPaddingの挙動についてのメモです。PKCS#7 Paddingでは入力サイズがブロックサイズの倍数でも1ブロック分パディングされる点や、暗号化後のデータサイズの計算方法を整理します。
 tags:
   - AES
   - OpenSSL
-lang: jp
+lang: ja
 ---
 
 OpenSSLのPaddingではまったので覚書。
 
-# TL;DR
+## TL;DR
 * 入力サイズがAESのブロックサイズ（16バイト）の倍数でない可能性があるのなら、`EVP_{En|De}cryptFinal_ex`が必要
 * PaddingにはPKCS#7 Paddingを使っており、入力サイズがブロックサイズの倍数の場合でも、1ブロック分Paddingされる
 * PKCS#7 Paddingを使った際の暗号化データサイズは、`data_size + (block_size - data_size % block_size)`で計算できる
 
-# 実験
+## 実験
 
 OpenSSLを使うソースは以下の通り。
 
@@ -153,7 +155,7 @@ dec (16) : 01 02 03 04 05 06 07 08 09 10 | 11 12 13 14 15 16
 
 というやり方が正しいそうな感じ。
 
-# おまけ1
+## おまけ1
 
 `openssl`コマンドでも`-nopad`をつけることで同じ事ができる。
 
@@ -168,7 +170,7 @@ Verifying - enter aes-256-cbc encryption password:
       0       1      16
 ```
 
-# おまけ2
+## おまけ2
 
 PKCS#7 PaddingがどのようにPaddingをしているのかを確認してみる。
 

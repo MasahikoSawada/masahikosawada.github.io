@@ -1,7 +1,10 @@
 ---
 layout: post
 title: PostgreSQLで「圧縮＋読み取り専用テーブル」をテーブルAMを使って自作してみた
-lang: jp
+description: >-
+  PostgreSQLのTable Access Method（Table AM）を使って、圧縮された読み取り専用テーブルを追加する拡張機能 pgroad を自作しました。Table AMのコールバック実装と、アーカイブ用途での使い方を解説します。
+lang: ja
+translated: true
 tags:
   - PostgreSQL
   - Table AM
@@ -11,7 +14,7 @@ tags:
 
 **趣味実装かつ、作成途中なのでプロダクション環境では利用しないでください！**
 
-# 動作サンプル
+## 動作サンプル
 
 `CREATE EXTENSION`で`pgroad`をデータベースに登録します(あらかじめ`shared_preload_libraies`へ`pgroad`の追加する必要があります)。
 
@@ -62,7 +65,7 @@ ERROR:  cannot insert tuple directly into a ROAD table
 HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tuples
 ```
 
-# アーキテクチャ
+## アーキテクチャ
 
 作りは非常に単純です。既存のテーブルをスキャンしながら、16KBページ（メモリ上）にタプルを格納していき、ページが満杯になったら圧縮して`road`テーブルに書き込みます。
 
@@ -88,7 +91,7 @@ HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tu
 
 圧縮方法はデフォルトは`pglz`。PostgreSQL本体が対応していれば`lz4`も指定可能です。
 
-# サポートしている機能
+## サポートしている機能
 
 - テーブルの作成
 - インデックスの作成（BRINは未対応）
@@ -98,7 +101,7 @@ HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tu
 - TOAST
 - WAL
 
-# ROADテーブルの作成
+## ROADテーブルの作成
 
 「既存のテーブルを`road`へ変換する」というユースケースに絞って作成したので、`road`テーブルを作成する方法は以下の2つ限られています：
 
@@ -107,7 +110,7 @@ HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tu
 
 また、トランザクション内では作成できません。
 
-## ProcessUtility_hookの利用
+### ProcessUtility_hookの利用
 
 特定のDDLコマンドが実行されたかどうかを知るには`ProcessUtility_hook`が利用できます。PostgreSQLにはhookポイントと呼ばれる箇所がいくつかあり、拡張機能内で自身の関数を差し込むことが可能です。`ProcessUtility_hook`はPostgreSQLが提供するHookポイントの一つで、DDLが実行されるときに呼ばれます。
 
@@ -189,7 +192,7 @@ road_tuple_insert(Relation relation, TupleTableSlot *slot,
                          "CREATE TABLE ... AS")));
 ```
 
-# 最後に：趣味テーブルAMのすすめ
+## 最後に：趣味テーブルAMのすすめ
 
 PostgreSQLの自作テーブルAMの実体は「コールバックのまとまり」であり、自作テーブルAMがサポートしたいテーブルに関する機能（例えば、シーケンシャルスキャン、インデックススキャン、インデックス構築など）に応じて、必要なコールバックを実装する必要があります。そして、テーブルAMはPostgreSQLの中でうまく抽象化されており、他のコンポーネントとは独立して実装することが可能です。PostgreSQL本体がトランザクションやバッファマネージャなどの機能を提供しているので、テーブルAM内でそれを使うか使わないかは、実装者が選択することができます。例えば、PostgreSQL本体のバッファマネージャの機能を利用することで、テーブルAM開発者は、共有バッファより下の層を意識することなく実装できます。
 

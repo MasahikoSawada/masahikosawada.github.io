@@ -1,17 +1,19 @@
 ---
 layout: post
 title: io_uringを使ってみた
+description: >-
+  Linuxカーネル5.1で導入されたio_uringを、ラッパーライブラリのliburingを使って実際に触ってみたメモです。liburingのビルドから、簡単な読み書きプログラムの実装までを紹介します。
 tags:
   - Linux
   - io_uring
-lang: jp
+lang: ja
 ---
 
 Liunxカーネル 5.1から入ったio_uringに興味があったので実際に使ってみました
 
 調べていくと[liburing](https://github.com/axboe/liburing)なるものを見つけたので、今回はliburingを使ったプログラムを書いたメモです。
 
-# liburingのビルド
+## liburingのビルド
 
 liburingのREADMEに書いてあるように、Linux カーネルは5.5以上が必要なので、今回はFedora 32の環境を用意しました。
 
@@ -26,7 +28,7 @@ $ sudo make install
 
 ビルドが完了すると`src/`に共有ライブラリが作成されます。
 
-# wcコマンドを実装してみました
+## wcコマンドを実装してみました
 
 io_uring(liburing)を使って`wc`コマンドを実装してみました。[io_uring-by-example](https://github.com/shuveb/io_uring-by-example)や、[liburing/examples/](https://github.com/axboe/liburing/tree/master/examples)あたりを参考にさせていただきました。
 
@@ -65,7 +67,7 @@ io_uring_cqe_seen(&ring, cqe);
 
 プログラム内では、途中から読むようにI/Oリクエストを再度投げるようにしました。
 
-# 最後に
+## 最後に
 
 PostgreSQLは同期I/O（かつBuffered I/O）ですが、先月開催されたPGConでio_uringを使った非同期I/Oの導入が[提案されていました](https://www.pgcon.org/events/pgcon_2020/schedule/session/152-asynchronous-io-for-postgresql/)。結構良い性能も出ているようです。パッチがでたらレビューできると良いなと思ってます。
 

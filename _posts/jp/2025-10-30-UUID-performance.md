@@ -1,7 +1,9 @@
 ---
 layout: post
 title: UUIDの生成速度を上げる取り組み
-lang: jp
+description: >-
+  PostgreSQLのUUIDv7の生成速度を上げるための改善について、その背景と検証内容を紹介します。C実装のuuidv7()とRust（pgrx）実装の性能を比較し、どこがボトルネックになっているかを掘り下げます。
+lang: ja
 tags:
   - PostgreSQL
   - UUID
@@ -9,7 +11,7 @@ tags:
 
 以前PostgreSQL 18でUUIDv7がサポートされたという[記事](https://masahikosawada.github.io/2025/09/04/UUIDv7-in-PostgreSQL/)を書きました。今回は現在取り組んでいるUUIDv7の生成を早くするための改善について、その背景や検証内容についてです。
 
-# 背景
+## 背景
 
 UUIDの生成速度が気になったきっかけは、PostgreSQLで色々なUUIDv7生成方法を比較していた時に、PostgreSQL 18で導入される予定の`uuidv7()`関数とpgrxで自前で作ったUUIDv7生成関数の性能比較をしていたときでした。
 
@@ -25,7 +27,7 @@ UUIDv7を100万件生成するのにかかった時間は以下のとおりで�
 
 `uuidv7()`でも秒間約45万個のUUIDv7が生成できていてる一方で、`pgrx_uuidv7()`は約10倍近く速い結果となりました。この生成速度の違いを調べた所、ランダムデータ生成が実行時間の大半を占めていて、それぞれの方式で異なるランダムデータ生成方法が使用されていることがわかりました。
 
-# PostgreSQLのランダムデータ生成方法
+## PostgreSQLのランダムデータ生成方法
 
 PostgreSQLは以下の2つ種類のランダムデータ生成方法をサポートしています（Linuxの場合）：
 
@@ -47,7 +49,7 @@ OpenSSLは`/dev/urandom`よりはかなり速いが、`pgrx_uuidv7()`よりは�
 
 しかし、`pgrx_uuidv7()`とはまだ3倍近くの差があります。一度検証を始めたからには、この差を埋める方法が見つかるまでさらに検証を進めていきます。
 
-# uuid createでは`getrandom()`を使っていた
+## uuid createでは`getrandom()`を使っていた
 
 `pgrx_uuidv()`の元になっている`Uuid::now_v7()`を調べた所、おそらく最終的には(Linuxでは)`getrandom()`関数を使ってランダムデータを生成しているようです[^source]。[`getrandom()`](https://man7.org/linux/man-pages/man2/getrandom.2.html)はランダムデータを生成するglibcの関数であり、同名のシステムコールを呼びます。
 
@@ -55,7 +57,7 @@ OpenSSLは`/dev/urandom`よりはかなり速いが、`pgrx_uuidv7()`よりは�
 
 `getrandom()`関数の`flags`に`GRND_NONBLOCK`を指定することで`/dev/urandom`と同じソースからランダムデータを生成することができるようです。`/dev/urandom`を`open()`したり`read()`する必要がないので高速に動きます。古いLinuxではサポートされていないシステムコールなので注意が必要です。
 
-# 実際どれくらい違うのか？
+## 実際どれくらい違うのか？
 
 簡単なCプログラムを書いて、それぞれ方式でののランダムデータ生成速度を測定してみました。各方式では、以下のようにランダムデータを生成しています。
 
@@ -76,7 +78,7 @@ $ ./bench
 
 生成データが小さい場合(len<=64)はgetrandomの方が圧倒的に性能が良く、生成するデータが大きくなっていくとOpenSSLの方が良くなる、という結果でした。PostgreSQLのUUIDv7実装では62 bitsのランダムデータを格納しているので、`getrandom()`を利用していた`pgrx_uuidv7()`が一番早かったのは納得です。
 
-# PostgreSQLでも`getrandom()`が使えるのか？
+## PostgreSQLでも`getrandom()`が使えるのか？
 
 より速いUUID生成性能を得るために、開発コミュニティに提案したのが[こちら](https://www.postgresql.org/message-id/CAD21AoAjb2TP%2BUj-fOr7s1cjv2Eq65BaUYi8xNMumcAXiYFM9Q%40mail.gmail.com)です。
 
@@ -95,7 +97,7 @@ $ ./bench
 
 特に最後の点は、`getrandom()`のvDSO実装によりさらなる性能的なメリットが得られることが議論を後押ししました。
 
-# getrandom()のvDSO実装でUUID生成を比べてみる
+## getrandom()のvDSO実装でUUID生成を比べてみる
 
 詳しいことはわかりませんが、新し目のLinuxカーネルではvDSO(Virtual Dynamic Shared Object)という仕組みを利用して、ユーザ空間で`getrandom`システムコール相当の処理ができるようなったようです。コンテキストスイッチも不要かつ、カーネル空間→ユーザ空間へのコピーも不要なのでとても高速化されているとのことです。これは、Linux 6.11以降 + glibc 2.40以降で利用可能で、特に数百バイト程度のランダムデータ生成時にこの方式が利用されます。
 
@@ -112,7 +114,7 @@ $ ./bench
            1024           4351           1801           2780            593
 ```
 
-# vDSO実装のgetrandomを使ってUUIDを生成してみる
+## vDSO実装のgetrandomを使ってUUIDを生成してみる
 
 最後にgetrandomを使ってPostgreSQLでUUIDv7を生成すると、どれくらい高速になるかを検証してみます。
 
@@ -128,7 +130,7 @@ UUID生成速度を上げるためにより速いランダムデータ生成方�
 
 [^sequence]: シーケンスの払い出しはシーケンス自体の更新＋WALもあるので
 
-# 参考資料
+## 参考資料
 
 - [A vDSO implementation of getrandom()](https://lwn.net/Articles/919008/)
 - [GNU C Library Merges Support for getrandom vDSO](https://www.phoronix.com/news/glibc-getrandom-vDSO-Merged)

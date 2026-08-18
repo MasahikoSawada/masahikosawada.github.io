@@ -1,24 +1,26 @@
 ---
 layout: post
 title: SQLからHINT句を生成するツール(phint)を作ってみた
+description: >-
+  SQLを実行して、その実行計画を再現するためのpg_hint_plan用のHINT句を生成するツール phint をGo言語で作りました。インストール方法から実際の使い方までを紹介します。
 tags:
   - PostgreSQL
   - Planner
   - Planner Hints
-lang: jp
+lang: ja
 ---
 
 タイトルの通り、SQLからHINT句を生成するツールを作ってみました。正確に言うと、 **SQLを実行して実行計画の代わりに、その実行計画を再現するためのHINT句を生成する** ツールです。
 
 今回はgo言語で作ってみました。ソースは[github](https://github.com/MasahikoSawada/phint)に公開しています。
 
-# 使ってみる
+## 使ってみる
 
-## 0. phintとpg_hint_planをインストールする
+### 0. phintとpg_hint_planをインストールする
 
 インストール方法等はRAEADMEをご参照ください(phintは`go get`するだけです)。phintの実行自体には[pg_hint_plan](http://pghintplan.osdn.jp/pg_hint_plan-ja.html)は必要ありませんが、phintで作ったHINT句をPostgreSQLで使用するためにpg_hint_planが必要です。[公式マニュアル](http://pghintplan.osdn.jp/pg_hint_plan-ja.html#install)を参照し、インストールしてください。
 
-## 1. PostgreSQLサーバを起動
+### 1. PostgreSQLサーバを起動
 
 phintは、PostgreSQLにSQLを送信して実行計画を取得し、それをパースしてHINT句を生成します。そのため、事前にPostgreSQLを起動しておきます。
 
@@ -26,7 +28,7 @@ phintは、PostgreSQLにSQLを送信して実行計画を取得し、それを�
 $ pg_ctl start
 ```
 
-## 2. 適当なテーブルを作る
+### 2. 適当なテーブルを作る
 
 ```sql
 CREATE TABLE t1 (a int primary key, b int);
@@ -38,7 +40,7 @@ INSERT INTO t3 SELECT c, c % 100 FROM generate_series(1,100) c;
 ANALYZE t1, t2, t3;
 ```
 
-## 3. phintでSQLを実行する
+### 3. phintでSQLを実行する
 
 適当なSQLを実行します。オプションは`psql`とほぼ同じにしています。
 
@@ -57,7 +59,7 @@ SELECT * FROM t1, t2 WHERE t1.a = t2.b AND EXISTS (SELECT * FROM t3 WHERE a = t1
 
 HIINT句と使用したSQLが標準出力に出力されます。
 
-## 4. おまけ
+### 4. おまけ
 
 実際に実行計画はどうなっているかを確認してみます。
 
@@ -81,7 +83,7 @@ $ psql -c "EXPLAIN SELECT * FROM t1, t2 WHERE t1.a = t2.b AND EXISTS (SELECT * F
 
 それっぽいHINT句が生成できている気がします。
 
-## 5. おまけ2
+### 5. おまけ2
 
 phintはjson形式の実行計画を標準入力から直接受け取ることができます。`--input-plan`を使います。
 
@@ -99,7 +101,7 @@ SeqScan(t3)
 
 もともと、既にファイルなどに保存している実行計画からHINT句を作るために作ったオプションですが、今はjson形式しか対応していないので、今は出番はなさそうです。
 
-# 使い道
+## 使い道
 
 元々実行計画を操作して色々試したいなと思い、その初期値を生成するツールとしてphintを作ったので、そのような用途には使えると思います。その他、以下の用途でも使えるかもしれません。
 
@@ -107,6 +109,6 @@ SeqScan(t3)
 * 実行計画を分析する
   * JSON形式の実行計画をパースする処理、そこからHINT句を生成する処理はモジュール化(`phint/pgplan`)しています
 
-# おわりに
+## おわりに
 
 基本的なプランノードには対応できていると思いますが、パラレルクエリやテーブル・パーティショニングなど、対応していない機能は多くあります。なにか不具合を見つけたらぜひPR下さい。

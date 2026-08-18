@@ -4,10 +4,10 @@ layout: default
 <article class="post">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name">{{ page.title | escape }}</h1>
+    <h1 class="post-title">{{ page.title | escape }}</h1>
 
     <p class="post-meta-left">
-	<time datetime="{{ page.date | dateto_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y/%m/%d" }}</time> - <span itemprop="author"><span itemprop="name">{{ page.author }}</span></span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}
+	<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y/%m/%d" }}</time> - <span class="post-author">{{ site.author.name }}</span>{% if page.tags != empty %}{% include tags.html tags=page.tags %}{% endif %}
     </p>
 
     <p class="post-meta-right">
@@ -18,7 +18,7 @@ layout: default
 
   </header>
 
-  <div class="post-content" itemprop="articleBody">
+  <div class="post-content">
     {% if page.lang != site.active_lang %}
     {% include no-translation.html %}
     {% endif %}
@@ -26,6 +26,35 @@ layout: default
     {% include toc.html html=content %}
     {{ content }}
   </div>
+
+  {%- comment -%}
+    Internal links by shared tag. PostgreSQL is on 43 of 52 posts and Diary is
+    not topical, so neither makes a useful relation. Jekyll's Liquid has no
+    push filter, so dedup runs through a string instead of an array.
+  {%- endcomment -%}
+  {%- capture related_items -%}
+    {%- assign seen = "" -%}
+    {%- assign n = 0 -%}
+    {%- for tag in page.tags -%}
+      {%- unless tag == 'PostgreSQL' or tag == 'Diary' -%}
+        {%- for p in site.tags[tag] -%}
+          {%- unless p.url == page.url or seen contains p.url -%}
+            {%- if n < 5 -%}
+<li><a href="{{ p.url | relative_url }}">{{ p.title | escape }}</a></li>
+              {%- assign seen = seen | append: p.url | append: " " -%}
+              {%- assign n = n | plus: 1 -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if related_items contains '<li>' %}
+  <nav class="related-posts">
+    <h2>{{ site.data[site.active_lang].l10n.related_posts | default: "Related posts" }}</h2>
+    <ul>{{ related_items }}</ul>
+  </nav>
+  {%- endif %}
 
 <!--  <div id="disqus_thread"></div>
   <script>

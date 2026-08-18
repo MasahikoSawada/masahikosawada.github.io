@@ -1,21 +1,23 @@
 ---
 layout: post
 title: PostgreSQLのリカバリ周りのバグを修正してみた - 原因究明編 -
+description: >-
+  PostgreSQLのリカバリ周りのバグ修正の原因究明編です。RECOVERYHISTORYファイルがなぜ残るのか、KeepFileRestoredFromArchive関数とexitArchiveRecovery関数を追いながら仮説と検証を繰り返して原因を特定します。
 tags:
   - PostgreSQL
   - Bug fixes
-lang: jp
+lang: ja
 ---
 
 PostgreSQLのリカバリ周りにあったバグ修正について、発見から修正までに実際に行ったことを紹介しています。今回は原因究明編です。前回をまだ読んでいない方は[前回の記事]({% post_url 2019-10-03-Fix-Recovery-Bug-01 %})を先に読むことをおすすめします。
 
-# 前回おさらい
+## 前回おさらい
 
 前回は`RECOVERYHISTORY`ファイルがなぜ作られるのか、そして作られた後どうなるのか？について調査しました。
 
 そしてソースコードを確認した所、`RECOVERYHISTORY`ファイルは作られた後、`KeepFileRestoredFromArchive関数`にて名前が変えられたり、`exitArchiveRecovery関数`で削除(unlink)されていました。
 
-# 仮説１ - 削除失敗? -
+## 仮説１ - 削除失敗? -
 
 `exitArchiveRecovery関数`をよく見ると、`unlink関数`が失敗した場合でもエラーを無視するようなコードになっています。
 
@@ -29,7 +31,7 @@ PostgreSQLのリカバリ周りにあったバグ修正について、発見か�
 
 このことから、**「`unlink関数`が何かしらの原因で失敗したために`RECOVERYHISTORY`ファイルが残ってしまったのではないか」**という仮説が生まれます。
 
-# 仮説1の検証
+## 仮説1の検証
 
 この仮説を検証するために実際にコードを変更して、`unlink関数`が成功したのか、失敗したのか、また、失敗したのであればなにがエラーの原因だったのかを見てましょう。
 
@@ -65,13 +67,13 @@ WARNING:  unlink error!! No such file or directory
 
 上記のエラーメッセージ(`No such file or directy`)から、`RECOVERYHISTORY`ファイルをunlinkをする時点(`exitArchiveRecovery関数`の時点)には当該ファイルは存在していない、ということがわかります。つまり、**残念ながら仮説1（unlinkが失敗してファイルが残ってしまった説）は間違っていた**ということになります。
 
-# 仮説2 - 削除後に再度作られた？-
+## 仮説2 - 削除後に再度作られた？-
 
 仮説1は間違っていましたが、検証したことにより`exitArchiveRecovery関数`が呼ばれる時には`RECOVERYHISTORY`ファイルが存在していないことがわかりました。このことから、**「`exitArchiveRecovery関数`後に`RECOVERYHISTORY`ファイルが作られたために消されずに残った」**という次の仮説が生まれます。
 
 では、どこで`RECOVERYHISTORY`ファイルは作られたのでしょうか？ソースコードから該当の箇所を探すことも可能ですが、この仮説が間違っていたら探しても見つからない可能性がありますし、今回は再現可能な事象でもありますので、コードを修正して実際に動かしてみながら探していきます。
 
-## `exitArchiveRecovery関数`の後、いつ`RestoreArchivedFile関数`が呼ばれるのか？
+### `exitArchiveRecovery関数`の後、いつ`RestoreArchivedFile関数`が呼ばれるのか？
 
 前回の調査により、`RECOVERYHISTORY`ファイルは`RestoreArchivedFile関数`で作成されています。今回の調査では、**`exitArchiveRecovery関数`の後に呼ばれた`RestoreArchivedFile関数`でプロセスにデバッガでアタッチし、バックトレースを見ることで、いつどこで`RECOVERYHISTORY`ファイルが作られたのかを確認する**、という方針で調査します。
 
@@ -156,7 +158,7 @@ Copyright (C) 2019 Free Software Foundation, Inc.
 
 ```
 
-# まとめ
+## まとめ
 
 仮説→検証を繰り返すことでバグの原因をコードレベルで突き止める事ができました！ここまで来たら後は修正するだけです。修正する際には、コードの修正だけでなくいつこのバグが作り込まれたのか、、どのバージョンが影響を受けるのか、も見るようにしています。
 

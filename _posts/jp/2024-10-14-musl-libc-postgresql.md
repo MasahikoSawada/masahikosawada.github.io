@@ -1,7 +1,10 @@
 ---
 layout: post
 title: PostgreSQLでmusl libcを使う方法
-lang: jp
+description: >-
+  標準Cライブラリにglibcではなくmusl libcを使ってPostgreSQLをビルドする方法のメモです。musl libcの準備からconfigureのオプション指定、ビルド時にはまった点までを紹介します。
+lang: ja
+translated: true
 tags:
   - PostgreSQL
 ---
@@ -12,7 +15,7 @@ glibcとの比較は[こちら](https://www.etalabs.net/compare_libcs.html)。
 
 このmusl libcを使うPostgreSQLをビルドする方法のメモ。
 
-# musl libcの準備
+## musl libcの準備
 
 ソースコードは[ここ](https://musl.libc.org/)から取得可能。[musl.cc](https://musl.cc/)というビルド済みのバイナリをダウンロード出来る所もあるらしいが、今回はソースコードをビルドした。
 
@@ -37,12 +40,12 @@ musl-gcc
 
 これはgccのラッパー(中身はシェルスクリプト)で、これを使ってプログラムをコンパイルするとmusl libcにリンクするようになるらしい。
 
-# PostgreSQLのビルド
+## PostgreSQLのビルド
 
 開発版のHEADを使ってビルドする。
 
 
-## 下準備
+### 下準備
 
 下準備として、先程インストールした`musl-gcc`をPATHに含めておく。
 
@@ -61,7 +64,7 @@ $ cp -rs /usr/include/asm-generic asm-generic/
 
 これをする理由は後ほど。
 
-## ビルド
+### ビルド
 
 PostgreSQLのソースコードをダウンロードして、ビルドする。
 
@@ -73,11 +76,11 @@ $ make
 $ make install
 ```
 
-## `CC=musl-cc`について
+### `CC=musl-cc`について
 
 CCには使用するコンパイラを指定できる。
 
-## `--without-XXX`の指定について
+### `--without-XXX`の指定について
 
 PostgreSQLがデフォルトでreadline, zlib, icuを有効にしてビルドする（configureの場合）。例えば、readlineのヘッダファイルは`/usr/include/readline`にあるけど、`/usr/include`にはglibcのヘッダファイルもある。なので`/usr/include`を探しに行くように設定すると`musl-gcc`を使ったビルドができなかった。なので、これらのライブラリは無効にした状態でビルドする。今回はお試しなのでこれでOK。
 
@@ -94,7 +97,7 @@ pg_combinebackup.c:24:10: fatal error: linux/fs.h: No such file or directory
       |          ^~~~~~~~~~~~
 ```
 
-## ビルド中のWARNING
+### ビルド中のWARNING
 
 自分の環境では、以下のようなWARNINGが出た。ビルド自体はできたので問題なし。
 
@@ -105,7 +108,7 @@ pg_get_line.c:129:27: warning: _({anonymous})_ may be used uninitialized [-Wmayb
       |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
-# 確認
+## 確認
 
 PostgreSQLがビルドできたら、ちゃんとmusl libcにリンクするようになっているかを確認する。
 

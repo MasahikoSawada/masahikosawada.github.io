@@ -1,17 +1,19 @@
 ---
 layout: post
 title: BRINソースコードリーディング（構築）
+description: >-
+  PostgreSQLのBRINインデックスのソースコードのうち、CREATE INDEXでの構築処理を読んだメモです。BrinBuildState構造体を起点に、レンジごとのサマリがどう作られていくかを追いかけます。
 tags:
   - PostgreSQL
   - BRIN
   - Source Code Reading
-lang: jp
+lang: ja
 ---
 
 BRINのソースコードの構築周り（CREATE INDEX）を見たのでその時のメモ。
 
 
-# struct BrinBuildState
+## struct BrinBuildState
 
 
 BRINを構築するときに使う構造体。
@@ -30,7 +32,7 @@ typedef struct BrinBuildState
 } BrinBuildState;
 ```
 
-# brinbuild()
+## brinbuild()
 
 meta pageを初期化して、`XLOG_BRIN_CREATE_INDEX`をWALに書く。
 
@@ -81,7 +83,7 @@ meta pageを初期化して、`XLOG_BRIN_CREATE_INDEX`をWALに書く。
 
 ```
 
-# brinbuildCallback()
+## brinbuildCallback()
 
 ビルドのメインはここ。`while`の所では、ブロックのレンジが設定値（デフォルトでは128ブロック）を超えたら、そこまでに貯めたタプルのサマリを新しい、Brinインデックスタプルとして書き出す(`form_and_insert_tuple()`)。その後に、`state->bs_currRangeStart`に次のレンジの最初のブロック番号を設定している。
 
@@ -156,7 +158,7 @@ brinbuildCallback(Relation index,
 }
 ```
 
-# brin_minmax_add_value()
+## brin_minmax_add_value()
 
 
 新しい値(`newval`)に対して、既存のminより値が小さいかどうかを確認する。そのために、比較用の関数を探す（BTLessStrategyNumber(つまり`<`)）。既存のminよりも小さい場合は、minを更新する必要があるので、`bv_values[0]`に新しいminを代入する。
@@ -201,7 +203,7 @@ brinbuildCallback(Relation index,
 ```
 
 
-# brin_doinsert()
+## brin_doinsert()
 
 `BrinTuple`を実際にディスク上に書く関数。
 
@@ -300,7 +302,7 @@ brin_doinsert(Relation idxrel, BlockNumber pagesPerRange,
      }
 ```
 
-# まとめと感想
+## まとめと感想
 
 revmapの構造や更新方法はデータ型によらず同じ。なので、brin.cにある。一方、revmapから参照されるregular page内のインデックスのインデックスタプルは、データ型によって構造が異なる。その部分(`xxx_add_value()`)は、ユーザがoperator classを定義することで自由に実装することができ、コア側からはタプル毎に`xxx_add_value()`が呼ばれ、テーブルの値を元にインデックスタプルに入れたい値を計算していくイメージ。revmapの更新と、取り込んだインデックスタプルをインデックスに追加する部分はコア側で用意されている。
 

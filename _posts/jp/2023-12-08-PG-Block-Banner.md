@@ -1,10 +1,11 @@
 ---
 layout: post
 title: PostgreSQLで（わかりづらい）bannerプログラム作ってみた
+description: >-
+  PostgreSQLのテーブルファイルをバイナリで覗くと文字列が浮かび上がる、という（わかりづらい）bannerプログラムを作ってみました。ページレイアウトとタプルの物理配置を利用した実装を解説します。
 tags:
   - PostgreSQL
-lang: jp
-lang: jp
+lang: ja
 ---
 
 これは[PostgreSQL Advent calendar 2023](https://qiita.com/advent-calendar/2023/postgresql)シリーズ2の8日目の記事です。
@@ -27,7 +28,7 @@ $ banner hello
 
 今回は一風変わった`banner`プログラム、"**block_banner**"を書いてみました。
 
-# SQLを出力するbannerプログラム
+## SQLを出力するbannerプログラム
 
 `block_banner`はC言語で書かれたプログラムで、標準出力にSQLを出力します。まずはビルドして実行してみます。`-t`にはテーブル名、`-m`には表示したい文字列を指定します。
 
@@ -83,7 +84,7 @@ $ psql
 
 テーブルにはデータが入っているようですが、なにかはわかりません。では"バナー"はどこに出力されているのでしょうか？
 
-# バナーはどこ？
+## バナーはどこ？
 
 テーブルの"見方"をちょっと変えるとわかります。以下のコマンドで、当該テーブルのファイルを見てみると・・・
 
@@ -162,11 +163,15 @@ $ xxd -u -c 32   $(psql -d postgres -Atq -X -c "select current_setting('data_dir
 
 `xxd`の出力をゆっくり見たい人は`awk '{print $0; system("sleep 0.05")}'`にリダイレクトしてみてください。
 
-<img src="/images/block_banner.gif" width="1080">
+<video src="/images/block_banner.mp4" poster="/images/block_banner-poster.jpg"
+       width="1080" height="434" autoplay muted loop playsinline preload="none"
+       style="max-width:100%;height:auto"
+       aria-label="xxd でPostgreSQLのテーブルファイルを表示すると、バイナリの中にバナー文字列が浮かび上がる様子">
+</video>
 
 コードはGithubに[公開](https://github.com/MasahikoSawada/pg_block_banner)しています。
 
-# block_bannerでは何をしているか？
+## block_bannerでは何をしているか？
 
 仕組みが気になる方のためにblock_bannerで何をしているかを少し紹介します。
 
@@ -210,7 +215,7 @@ ASCIアート用のデータは、下のようなデータを元にいい感じ�
 
 あとは、タプルは下から埋まっていくこと、そして、1ブロックに入る文字数を考慮しながらINSERT文を生成します。
 
-# おわりに
+## おわりに
 
 ということで、年末に全く役に立たないプログラムを書いてみました。
 

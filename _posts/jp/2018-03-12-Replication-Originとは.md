@@ -1,15 +1,17 @@
 ---
 layout: post
 title: "Replication Originとは"
+description: >-
+  PostgreSQLの論理レプリケーションで使われるReplication Origin（レプリケーション起点）とは何かを解説します。レプリケーション進捗の追跡と、双方向レプリケーションでの変更のループ防止という2つの目的を、具体的な動作とともに説明します。
 tags:
   - PostgreSQL
   - Replication
-lang: jp
+lang: ja
 ---
 
 PostgreSQLのLogical Replicationはいくつかのコンポーネントから実現されていており、その一つが **Replication Origin** です。PostgreSQLの日本語マニュアルだとReplication Originは「レプリケーション起点」と訳されていますが、名前だけみてもあまりぱっとイメージが付かなくて気になったので、少し調べた結果をまとめます。
 
-# Replicaiton Originの目的は？
+## Replicaiton Originの目的は？
 Replication OriginはPostgreSQLのLogical Replicationでのみ使用される機能です。PostgreSQL 9.0から利用できるStreaming Replicationとの関連性は全くありません。Replication Originの目的は2つあります。
 
 1. Logical Replicationの時に、レプリケーションの進捗を追跡する
@@ -20,7 +22,7 @@ Replication OriginはPostgreSQLのLogical Replicationでのみ使用される機
 
 以下、それぞれの目的について簡単に解説します。
 
-## 「1. Logical Replicationの時に、レプリケーションの進捗を追跡する」について
+### 「1. Logical Replicationの時に、レプリケーションの進捗を追跡する」について
 
 こちらについては、比較的イメージしやすいかと思います。
 
@@ -31,7 +33,7 @@ Logical Replicationでは、「受信側がどこまで変更を受信したか�
 
 ため、各レプリケーション毎にLSNを管理する必要があります。その機能を実現するのがReplication Originです。
 
-## 「2. レプリケーションされた情報がローカル発生したのか、リモートから発生したのかを区別する」について
+### 「2. レプリケーションされた情報がローカル発生したのか、リモートから発生したのかを区別する」について
 
 こっちは少しわかりにくいかもです。使い道としては、Logical Replicationを循環するような形（リング型）でLogical Replicationを利用した場合（マルチマスターなど）に、 **Logical Replication経由で伝搬されてきた変更については、下流に伝搬しない**というのがあります。PostgreSQL 10ではこの機能がまだ（恐らくPostgreSQL 11でもまだ）使われていませんが、もし実装されれば、レプリケーションが無限に伝搬し続ける、といったことを防ぐことや、特定の上流から来た変更だけを下流に流す、といったこともプラグインの書き方次第で可能になると思います。
 

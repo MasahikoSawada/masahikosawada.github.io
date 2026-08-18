@@ -5,7 +5,7 @@ description: PostgreSQLで修正されたfsync周りのバグ修正について�
 tags:
   - PostgreSQL
   - Bugs
-lang: jp
+lang: ja
 ---
 
 先日PostgreSQLの新しいマイナーバージョンが[リリースされました](https://www.postgresql.org/about/news/1920/)。このマイナーリリースでメインとなる修正は「fsync周りのバグ修正」で、このバグは**間違ったfsyncに対する間違った認識から約20年間存在してたバグ**ということで注目されていました。
@@ -14,14 +14,14 @@ lang: jp
 
 以下は、その時の聴講メモです。より詳しく知りたい方は是非動画の方も観て下さい。
 
-# TL;DR
+## TL;DR
 
 * PostgreSQLはずっとfsyncについて一部間違った認識をしており(具体的には、fsyncがエラーした後の動作)を間違っており、稀なケースではあるけどユーザの知らない所でデータが破損するリスクがあった
 * PostgreSQL 11以下の最近リリースされた全てのバージョンで、fsyncに失敗したらpanic(データベースのクラッシュ）になるような変更をいれることでこの修正されている
 
-# 聴講メモ
+## 聴講メモ
 
-## Intro into durability
+### Intro into durability
 
 WALはDirect I/Oを使っているけど、テーブルやインデックスなどのスデータについては、kernelが管理しているpage cacheを使ったBuffered I/Oを使っている（PostgreSQLの共有バッファ、OSのpage cache、ディスクの関係は講演資料に図があるのでそちらをぜひ見ていただきたい）
 
@@ -37,7 +37,7 @@ WALはDirect I/Oを使っているけど、テーブルやインデックスな�
 
 ここで一つ問題なのは、運用を続けているとWALはとても大きいサイズになる可能性があり、リカバリ時にWALを先頭から再生すると、とても時間がかかる。そのため、CHECKPOINTを使ってリカバリ時間を短縮する。
 
-## PostgreSQLのCHECKPIONT
+### PostgreSQLのCHECKPIONT
 PostgreSQLのCHECKPOINTは以下のように動く
 
 1. CHECKPOINT開始のLSNを記録する
@@ -47,7 +47,7 @@ PostgreSQLのCHECKPOINTは以下のように動く
 
 リカバリ時は、1で記録したLSNから再生できる。
 
-## CHECKPOINT中にエラーが発生したら？
+### CHECKPOINT中にエラーが発生したら？
 
 CHECKPOINTは完了してはいけないし、WALも削除されてはいけない。
 
@@ -58,7 +58,7 @@ CHECKPOINTは完了してはいけないし、WALも削除されてはいけな�
   * SAN、NFSとか使っていると簡単に発生する
   * fsyncするべきデータは**kernelが持っている**
 
-## fsyncへの2つの間違った期待
+### fsyncへの2つの間違った期待
 
 >1: fsyncが失敗した場合、次のfsyncのタイミングで失敗したdirty pageは再度書き込まれる
 
@@ -71,7 +71,7 @@ CHECKPOINTは完了してはいけないし、WALも削除されてはいけな�
 
 BSDでも同じように発生するけど、FreeBSD、illumosでは起きない。
 
-## なぜ今になって問題が明らかになってきた？
+### なぜ今になって問題が明らかになってきた？
 
 * SAN、EBS、NFSとか使うようになってきた
 * thin provisioning
@@ -79,11 +79,11 @@ BSDでも同じように発生するけど、FreeBSD、illumosでは起きない
 
 つまり、fsyncが失敗しやすい条件を持つユースケースが増えてきた
 
-## そもそもなぜBufferd I/Oなのか？
+### そもそもなぜBufferd I/Oなのか？
 
 Postgresはもともとresearch projectで、当時その辺を頑張る研究者がいなかった。また、複雑さをなくすため。
 
-## どうやって直すかか
+### どうやって直すかか
 1. カーネルを修正する
   * カーネル開発者たちに受け入れられたとしても数年単位で時間がかかる
 2. PostgresでCEHCKPOINTのfsyncが失敗したらpanicを起こすようにする
@@ -91,7 +91,7 @@ Postgresはもともとresearch projectで、当時その辺を頑張る研究�
 
 Direct I/Oのアプローチもありだしパッチもでている、だけどこれも数年かかるだろう。
 
-## 参考リンク
+### 参考リンク
 
 * pgsql-hackers
   * 開発者MLでの議論
@@ -109,7 +109,7 @@ Direct I/Oのアプローチもありだしパッチもでている、だけど�
   * 個人的にもこれはおススメ
   * https://goo.gl/Qst2Lf
 
-## 質疑
+### 質疑
 
 いくつか抜粋。
 
@@ -120,6 +120,6 @@ Direct I/Oのアプローチもありだしパッチもでている、だけど�
 * Q. zfs on freebsdではこの問題は起きない、と言っていたけど、zfs on linuxではどう？
   * A. zfs on linuxもセーフだと思う。page cacheではなくarcを使っているから
 
-# 最後に
+## 最後に
 対応する修正コミットは[これ](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=9ccdd7f66e3324d2b6d3dec282cfa9ff084083f1)と[これ](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=1556cb2fc5c774c3f7390dd6fb19190ee0c73f8b)。
 `data_sync_retry`という新しいパラメータが導入されて、デフォルトではfsync()の失敗でPANICになるようになった。fsyncの失敗は稀なケースではあるけれど、NFSとかEBSとかthin provisioningを使っている場合は気を付けたい。

@@ -1,16 +1,18 @@
 ---
 layout: post
 title: PostgreSQL 11で導入されたVacuumの2つの改善
+description: >-
+  PostgreSQL 11で導入されたVacuumの改善のうち、Vacuum実行中のFree Space Map（FSM）更新と、もう1つの改善について解説します。Vacuumの長時間化やキャンセル時にテーブルが肥大化していた問題がどう改善されたかを説明します。
 tags:
   - PostgreSQL
   - Vacuum
-lang: jp
+lang: ja
 ---
 
 [PGCon](https://www.pgcon.org/2018/)に向う途中です。
 搭乗まで時間があるので、先日リリースされた[PostgreSQL 11](https://www.postgresql.org/about/news/1855/)でVacuum機能の改善がいくつかあったのでその中から2つ紹介します。
 
-## 一つ目: Update the free space map during vacuum (Claudio Freire)
+### 一つ目: Update the free space map during vacuum (Claudio Freire)
 
 > Vacuum中にFree Space Map(FSM)が更新されるようになりました。(Claudio Freire)
 
@@ -22,7 +24,7 @@ FSMはテーブルに比べるととても小さいので頻繁に更新され�
 
 (※)FSMはテーブルの空き領域を管理しているマップです。INSERTやUPDATEの際は、このFSMを参照してテーブルにないので空いている箇所に新しいタプルを挿入します。なので、FSMが更新されていないと、「本当は空き領域があるのに使ってくれない」という状況になってしまいまいます。
 
-## 二つ目: Allow vacuum to avoid unnecesary index scans (Masahiko Sawada, Alexander Korotkov)
+### 二つ目: Allow vacuum to avoid unnecesary index scans (Masahiko Sawada, Alexander Korotkov)
 
 > Vacuumが不必要なIndex scanを回避するようになりました。(Masahiko Sawada, Alexander Korotkov)
 

@@ -1,10 +1,12 @@
 ---
 layout: post
 title: FreeBSDソースコードリーディング（psコマンド）
+description: >-
+  FreeBSDのpsコマンド（bin/ps）のソースコードを読んだメモです。オプション処理、kvm_getprocs()によるプロセスリストの取得、フィルタリングと出力までの大まかな流れを追いかけます。
 tags:
   - FreeBSD
   - Source Code Reading
-lang: jp
+lang: ja
 ---
 
 気になったので読んでみた。`bin/ps`にあるコードが対象。
@@ -271,7 +273,7 @@ typedef struct kinfo {
 
 ```
 
-# おわりに
+## おわりに
 
 * libxo便利そう
 * ユーザランドのコードなら読めそう

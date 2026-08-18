@@ -1,10 +1,13 @@
 ---
 layout: post
 title: Burning PostgreSQL transaction IDs.
+description: >-
+  Several ways to burn PostgreSQL transaction IDs (XIDs) as fast as possible, for testing XID wraparound and aggressive vacuum without waiting for 2 billion real transactions.
 tags:
   - PostgreSQL
   - Vacuum
 lang: en
+translated: true
 ---
 
  PostgreSQL's transaction ID (hereafter XID) is internally represendted as a "monotoronicaly increasing 32-bit unsigned integer value", so after reaching 2^32-1 (approximately 4 billion) it wraps around back to 0. In PostgreSQL, each transaction that modifies the database such as INSERT, UPDATE and even DDLs is assigned a unique XID. Since the order of XIDs is used to check the visibility of tuples in tables, if XID wraps around after reaching the upper limit, this logic would break.
@@ -15,7 +18,7 @@ For example, a poor-man's approach to complete 2 billion wirte transactions. Mor
 
 So in this post, I'll introduce various methods to consume XIDs quickly.
 
-# 1. Consuming XIDs using PL/pgSQL
+## 1. Consuming XIDs using PL/pgSQL
 
 Comsuming 1 billion XIDs using this use-defined function that internally generates 1 billion subtransactions.
 
@@ -41,7 +44,7 @@ Time: 797958.576 ms (13:17.959)
 
 Took 13 minutes, quite slow. XID generation takes exclusive locks so parallelization doesn't help much.
 
-# 2. Using pg_resetwal
+## 2. Using pg_resetwal
 
 The pg_resetwal resets PostgreSQL's internal data. We can force the next XID like this. Since it just overwrite the internal data so pg_resetwal should complete instanly.
 
@@ -57,7 +60,7 @@ Why is the next XID an odd number, 2000027648? This is because we need to make s
 
 This quickly and easily skips XIDs but not a "real" use case. We need to stop and start server, choose the next XID carefully, and it depends on page size.
 
-# 3. Using C function to skip XIDs
+## 3. Using C function to skip XIDs
 
 ```c
 PG_FUNCTION_INFO_V1(set_next_xid);
@@ -138,7 +141,7 @@ Time: 0.926 ms
 
 However, `ExtendCLOG()` only create pages if the passed XID lands on a page boundary, so the next XID must be calculated carefully same as before. This jumps XIDs more than incrementing them. Expands CLOG near new XID but does nothing for preceding XIDs.
 
-# 4. "Fast Forward" XID internally
+## 4. "Fast Forward" XID internally
 
 Finally, the approach used by the `xid_wraparound` testing extension I recently [pushed](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=e255b646a16b45823c338dadf787813fc9e191dc) to the PostgreSQL source code.
 

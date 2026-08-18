@@ -6,11 +6,11 @@ tags:
   - MVCC
 ---
 
-# 全般
+## 全般
 * 現時点ではpluggable storage engineのパッチを当てている訳ではなく、毎回リレーションのオプショを見て、zheapかheapかを判断してコードを切り替えている
 * ただし、インターフェースはPSEと同じ。
   * insert, update, delete, lock_tuple, multi_insert, prone, scan(beginscan, endscan, etc), MVCCなど
-# ストレージフォーマット
+## ストレージフォーマット
 * タプルヘッダも小さい
   * t_ctid、t_choice(t_heapにはxmin, xmaxがある)がない
 
@@ -93,8 +93,8 @@ typedef struct ZHeapPageOpaqueData
 } ZHeapPageOpaqueData;
 ```
 
-# UNDO
-## 基本的な方針
+## UNDO
+### 基本的な方針
 **COMMIT時には何もしない** ように、UNDOの中身を書くようになっている。
 * INSERT: テーブルに新しいレコードを書く。UNDOログにINSERTと記録して、ABORTの場合はLPにDEADと付ける。COMMITの場合はそのまま
 * DELETE: テーブルのレコードには削除フラグ（ZHEAP_DELETED)を付ける。削除前のレコードをUNDOログに記録する。ABORTの場合の場合は、UNDOログからmemcpyでもってくる。
@@ -104,18 +104,18 @@ typedef struct ZHeapPageOpaqueData
 更に、
 * ページのSpecialAreaにあるUNDOログへのポインタは、古いなかでも最新のレコードへつながっている。つまり、UNDOログを入れるときは、UNDOログ-chainの後ろに行くほど、古いレコードになる。
 
-### ROLLBACKするとき
+#### ROLLBACKするとき
 * UNDOログの再生は、同じトランザクション内で行う。そのため、AbortTransactionのときにはすでにUNDO済み
 * 
 
-## 具体的なコード
+### 具体的なコード
 例えばINSERTの時・・・
 * `PageGetUNDO(page, trans_slot_id)`をして、現時点でページからポイントしているUNDOページのアドレスを保持しておく（これはUNDOレコードをたどるために必要）
 * UNDOログを作成
 * `PrepareUndoInsert(&undorecord, UNDO_PERSISTENT, InvalidTransactionId)`をして、メモリ上にUNDOログを挿入する
 * `InsertPreparedUNDO()`で、上記のUNDOログを実際に書く
 
-# MVCC
+## MVCC
 * 入力は、ZheapTuple, Snapshot, Buffer, ItemPointerの4つ。出力はZHeapTupleまたはNULL
 * 対応する関数は、`ZHeapTupleSatisfiesMVCC`
 1. テーブル内のタプルが削除済み、または更新済み

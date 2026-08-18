@@ -1,11 +1,13 @@
 ---
 layout: post
 title: PostgreSQL 14でのBtreeインデックスのVacuum関連の改善についての解説
+description: >-
+  PostgreSQL 14で行われたBtreeインデックスのVacuum関連の3つの改善を解説します。index cleanupでのインデックスフルスキャンがどのような条件で走っていたのか、そしてそれがどう削減されたかを説明します。
 tags:
   - PostgreSQL
   - Vacuum
   - Btree Indexes
-lang: jp
+lang: ja
 ---
 
 Vacuum（とautovacuum）は、テーブルとインデックスのゴミ掃除をした後に[index cleanup](https://www.postgresql.jp/document/12/html/progress-reporting.html#VACUUM-PROGRESS-REPORTING)と呼ばれる「インデックスVacuumの後処理」のようなものを実行します。実際の処理内容はインデックスの種類によって異なりますが、index cleanupの主な目的はインデックスの統計情報（ページ数、タプル数）を取得することです（インデックスによっては、削除済みページの回収など、他の処理を行う場合もあります）。インデックスのゴミ掃除をした場合（つまりテーブルにゴミがある状態でVacuumが実行された場合）は、インデックスの統計情報はすでに取得済みなので、index cleanupでは何もしません。一方、テーブルにゴミがない状態でVacuumが実行された場合[^insert_vacuum]は、index cleanupはVacuumにとってこれが初めてのインデックスに対する処理となります。
@@ -16,7 +18,7 @@ PostgreSQL 13までのBtreeインデックスではindex cleanupにて、いく�
 
 PostgreSQL 14のリリースノートは[こちら](https://www.postgresql.org/docs/14/release-14.html)です。
 
-## vacuum_cleanup_index_scale_factorの廃止
+### vacuum_cleanup_index_scale_factorの廃止
 
 > * Remove server variable vacuum_cleanup_index_scale_factor (Peter Geoghegan)
 >
@@ -30,7 +32,7 @@ PostgreSQL 14のリリースノートは[こちら](https://www.postgresql.org/d
 
 PostgreSQL 14では、インデックスの統計情報はANALYZEやautoanalyzeで**インデックススキャンなしで推定**するようになり、このパラメータは廃止されました（PostgreSQL 13.3からも廃止されています）。インデックスの中身を見ないで統計情報を推定するので正確な値が得られないケースもありますが、取得する統計情報はインデックスサイズはインデックスタプル数くらいなのでそこまで正確な情報はいらないよね、という議論がありました。
 
-## Btreeのページリサイクルの改善
+### Btreeのページリサイクルの改善
 
 > * Allow vacuum to more eagerly add deleted btree pages to the free space map (Peter Geoghegan)
 >
@@ -44,7 +46,7 @@ PostgreSQLのBtreeインデックスは、ツリーの各ノードがPostgreSQL�
 
 PostgreSQL 14では、インデックスVacuumの最後に、削除済みとマークしたページがリサイクル可能になっているかどうかを確認するようになりました。これにより、多くの場合で1回のVacuumだけでページをリサイクル可能にします。多くのトランザクションは長期間滞在する事は少なく、インデックスのゴミ掃除は時間がかかる傾向があるので、インデックスのゴミ掃除をしている間にページ内に記載したトランザクションは完了している、という経験則に基づいた動作になっています。それでもそのようなページが溜まってしまった場合（インデックス全体の20%以上）にのみ、これまで通りindex cleanupにてインデックススキャンが行われるようになりました。
 
-## ページ内に記録するトランザクションIDを64-bit トランザクションIDに変更
+### ページ内に記録するトランザクションIDを64-bit トランザクションIDに変更
 
 上記の変更により、Btreeインデックスのindex cleanupではほとんどの場合でインデックススキャンを行わないようになり、Vacuumの負荷が軽減されました。さらに、インデックススキャンが長期間行われずインデックスが肥大化してしまう、というリスクに対しても対処しています（上記の20%の条件）。しかし、実はもう一つ考慮する点があります。それはページ内に記録したトランザクションIDが放置されたままトランザクションIDが周回してしまう可能性です[^xid_wrap]。
 

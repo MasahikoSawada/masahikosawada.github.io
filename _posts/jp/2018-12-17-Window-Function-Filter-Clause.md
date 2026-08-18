@@ -5,7 +5,7 @@ description: Window関数のFILTERオプションについて、その機能、W
 tags:
   - PostgreSQL
   - Window Function
-lang: jp
+lang: ja
 ---
 
 この記事は、[PostgreSQL Advent Calendar 2018](https://qiita.com/advent-calendar/2018/postgresql)の17日目の記事です。
@@ -21,7 +21,7 @@ function_name ( * ) [ FILTER ( WHERE filter_clause ) ] OVER ( window_definition 
 
 Window関数のメインとも言えるフレーム指定は、上記の`window_definition`や`window_name`にあたる部分で指定するため、FILTER句はその前にしておくものだということがわかります。
 
-# 使ってみる
+## 使ってみる
 FILTER句はその名前からも推測できるように、入力値をフィルターする役割を持ちます。
 指定する際には、`FILTER (WHERE a < 10)`の様に、WHERE句も一緒に記載します。これは、SQL標準に準拠した文法です。
 
@@ -97,7 +97,7 @@ FILTER句には、`WHERE b != 2`と指定したため、`b != 2`の条件に一�
 ここで注意したいのは、 **b = 2の行の出力自体はフィルタされていない**ことです。もう少し詳細に見ていきます。
 
 
-# FILTER句とWHERE句の違い
+## FILTER句とWHERE句の違い
 
 FILTER句では、入力行に対してある条件を指定することができました。一方で、`SELECT .. FROM .. WHERE`のWHERE句(ややこしい)でも行の入力を制限することが可能です。これらにはどのような違いがあるのでしょうか？
 
@@ -203,7 +203,7 @@ FILTER句は「集約関数にその値を渡すかどうか」に影響し、�
 
 FILTER句の例では、`WindowAgg`ノードに7行(全ての行)が渡されいることに対し、WHERE句の例では、`Seq Scan`にてすでに絞り込みが行われているため、`WindowAgg`には5行しか渡されていません。FILTER句とWHERE句では絞り込みするタイミングが異なることがわかります。
 
-# 余談
+## 余談
 FILTER句はWindow関数特有のものではなく、全ての集約関数に使用可能です。例えば、以下のように使うことも可能です。
 
 ```sql
@@ -219,7 +219,7 @@ FILTER句はWindow関数特有のものではなく、全ての集約関数に�
 (2 rows)
 ```
 
-# まとめ
+## まとめ
 Window関数のFILTER句について解説しました。FILTER句は入力行をフィルタするときに使用しますが、あくまでの「集約関数に値を渡すかどうか」を影響し、返却される行数等には関連しません。これは、[以前に投稿した記事]({% post_url 2018-07-04-Basics-of-Window-Function %})にも記載した以下の記載を思い出します。
 
 > > SQL において、窓関数もしくはウィンドウ関数 (英: window function) は結果セットを部分的に切り出した領域に集約関数を適用できる、拡張された SELECT ステートメントである。
@@ -230,7 +230,7 @@ Window関数のFILTER句について解説しました。FILTER句は入力行�
 
 明日は[yancha](https://qiita.com/yancya)さんの登場です。お楽しみに！
 
-lang: jp
+lang: ja
 ---
 
 これまでにまとめたWindow関数の記事もあわせてどうぞ。

@@ -1,7 +1,10 @@
 ---
 layout: post
 title: PostgreSQL 18 supports UUIDv7
+description: >-
+  PostgreSQL 18 supports UUIDv7 as defined in RFC 9562. Explains what makes UUIDv7 sortable, how the new uuidv7() function behaves, and how it compares with UUIDv4 in practice.
 lang: en
+translated: true
 tags:
   - PostgreSQL
   - UUID
@@ -31,7 +34,7 @@ Here are the results of inserting 5 million rows using SERIAL type (sequence) an
 |----------|---------|---------|----------|
 | Druation | 8.452 s | 42.24 s | 16.922 s |
 
-# How to use UUID in PostgreSQL
+## How to use UUID in PostgreSQL
 
 PostgreSQL has a native [uuid data type](https://www.postgresql.jp/document/17/html/datatype-uuid.html), and (as of PostgreSQL 17) there are two main ways to generate UUIDs:
 
@@ -72,7 +75,7 @@ Great news is that upcomoing PostgreSQL 18 will introduce the [uuidv7() SQL func
 
 For backward compatibility, `gen_random_uuid()` will continue to exist as a function that generates UUIDv4. Along with `uuidv7()`, `uuidv4()` has also been added, but it's just an alias for `gen_random_uuid()`.
 
-# Data Format of UUIDv7
+## Data Format of UUIDv7
 
 As per RFC, the data format of UUIDv7 is:
 
@@ -108,7 +111,7 @@ In UUIDv7, the rough format is: millisecond-precision timestamp followed by the 
 
 ```
 
-# Monotonicity in UUIDv7
+## Monotonicity in UUIDv7
 
 For use cases where millisecond precision isn't sufficient, the RFC allows implementations to use the `rand_a` (12 bits) portion (and optionally `rand_b`) as additional data to maintain monotonicity of generated values. The RFC [introduces several methods](https://www.rfc-editor.org/rfc/rfc9562.html#name-monotonicity-and-counters) for how this can be done.
 
@@ -116,7 +119,7 @@ Different UUIDv7 generation function implementations use different approaches, b
 
 [^pg_uuidv7_analysis]: For example, looking at [pg_uuidv7's implementation](https://github.com/fboulnois/pg_uuidv7/blob/main/pg_uuidv7.c#L35), you can see it uses "millisecond timestamp + random data"
 
-# PostgreSQL's UUIDv7 Implementation
+## PostgreSQL's UUIDv7 Implementation
 
 PostgreSQL's UUIDv7 implementation adopts [Method 3 (Replace Leftmost Random Bits with Increased Clock Precision)](https://www.rfc-editor.org/rfc/rfc9562.html#name-monotonicity-and-counters) from the RFC. Specifically, it uses the `rand_a` portion for sub-millisecond timestamps, using 60 bits (=48+12) total for the timestamp. This allows it to handle about 4 million UUID generations per second. Furthermore, within the same process, it's guaranteed that the `rand_a` portion is increased by a certain step for each UUID generation, so UUIDv7 data generated from a single process is guaranteed to be monotonically increasing even at higher frequencies.
 

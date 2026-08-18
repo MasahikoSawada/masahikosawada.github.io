@@ -1,10 +1,12 @@
 ---
 layout: post
 title: PostgreSQLのソースコードの構造
+description: >-
+  PostgreSQLのソースコードのディレクトリ構成と、どこから読み始めればよいかを解説します。src/backend以下の各ディレクトリが何を担当しているかを整理しており、ソースコードリーディングの入口として使えます。
 tags:
   - PostgreSQL
   - Source Code Reading
-lang: jp
+lang: ja
 ---
 
 先日の[PostgreSQLアンカンファレンス](https://pgunconf.connpass.com/event/194291/)でPostgreSQLのソースコードのディレクトリ構成や読み方について簡単に紹介しました。
@@ -13,7 +15,7 @@ lang: jp
 
 以下の説明は**PostgreSQL 13をベースとしています。**
 
-# どこで手に入るの？
+## どこで手に入るの？
 
 * 公式のgitリポジトリ
   * [git://git.postgresql.org/git/postgresql.git]()
@@ -22,7 +24,7 @@ lang: jp
 * バージョン毎のソースコード
   * [https://www.postgresql.org/ftp/source/]()
 
-# 何がはいってるの？
+## 何がはいってるの？
 
 大まかには以下のコードが入っています。
 
@@ -40,7 +42,7 @@ lang: jp
 * リグレッションテスト
   * `src/test`の下
 
-# `src`ディレクトリを見てみる
+## `src`ディレクトリを見てみる
 
 | パス           | 内容                                         |
 |:---------------|:---------------------------------------------|
@@ -58,7 +60,7 @@ lang: jp
 
 「Backend = PostgreSQLサーバ」、「Frontend = クライアントツール」がわかればそこまで迷うことはなくなりそう。
 
-# `src/backend`ディレクトリにあるサーバ側のコードを見てみる
+## `src/backend`ディレクトリにあるサーバ側のコードを見てみる
 
 | パス                     | 内容                                                                                                                                                                                         |
 |:-------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -88,23 +90,23 @@ lang: jp
 | src/backend/tsearch      | 全文検索用のライブラリ                                                                                                                                                                       |
 | src/backend/utils        | その他色々なコード（設定パラメータ、カタログキャッシュ、メモリ管理、各データ型の実装など）                                                                                                                                                                                             |
 
-# ソースコードを読む際に知っておくと便利な関数
+## ソースコードを読む際に知っておくと便利な関数
 
-## SQLを受け取り、処理する所
+### SQLを受け取り、処理する所
 
 `src/backend/tcop/postgres.c`の`exec_simple_query()`
 
-## COPYやALTER TABLE等のDDLやSQLコマンドを実行する所
+### COPYやALTER TABLE等のDDLやSQLコマンドを実行する所
 
 `src/backend/tcop/utility.c`の`standard_ProcessUtility()`
 
 `exec_simple_query()`を見ると、SQLを受信して、構文解析して、実行計画を作成して実行する、という一連の流れを見ることができます。構文解析後にそのSQLがSELECT、UPDATE、INSERT、DELETEの場合はExecutorに処理を渡し、それ以外のDDLやSQLコマンドである場合は、（最終的には）`standard_ProcesUtility()`に処理を引き渡します。
 
-# ソースコードを読む時に知っておくと便利な事(2020/12/15 追記)
+## ソースコードを読む時に知っておくと便利な事(2020/12/15 追記)
 
 こちらについてもアンカンファレンスで話したので追記しました。
 
-## `palloc()`と`pfree()`関数
+### `palloc()`と`pfree()`関数
 
 PostgreSQL版の`malloc()`、`free()`です。
 
@@ -114,7 +116,7 @@ PostgreSQL自体C言語で書かれているので、メモリ確保と解放が
 
 明示的に開放する必要がある場合は、`pfree()`関数を使います。ただ、`pfree()`関数がないからといってメモリが解放されないでいる、とは限りません。
 
-## `ereport()`と`elog()`関数
+### `ereport()`と`elog()`関数
 
 サーバログに出力する`printf()`のような関数です。
 

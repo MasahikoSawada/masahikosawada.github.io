@@ -1,9 +1,11 @@
 ---
 layout: post
 title: 2ndQuadrantにJoinしました
+description: >-
+  7年半勤めたNTTデータを退職し、2019年11月から2ndQuadrantで働き始めました。2ndQuadrantという会社の紹介と、転職の経緯について書いています。
 tags:
   - Diary
-lang: jp
+lang: ja
 ---
 
 7年半勤めたNTTデータを退職し、11月1日から2ndQuadrantで働いています。

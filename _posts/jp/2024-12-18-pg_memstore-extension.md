@@ -1,7 +1,9 @@
 ---
 layout: post
 title: PostgreSQL 17で新しく実装されたradix treeを使ってインメモリのキーバリューストア作ってみた
-lang: jp
+description: >-
+  PostgreSQL 17で新しく実装されたradix tree（radixtree.h）を使って、インメモリのキーバリューストア拡張 pg_memstore を作ってみました。Vacuumの高速化を支えたradix treeの使い方を実例で解説します。
+lang: ja
 tags:
   - PostgreSQL
   - radixtree
@@ -9,7 +11,7 @@ tags:
 
 これは[PostgreSQL Advent calendar 2024](https://qiita.com/advent-calendar/2024/postgresql)の18日目の記事です。
 
-# radixtree.h
+## radixtree.h
 
 先日リリースされたPostgreSQL 17では、Vacuumの実行速度やメモリ使用量が大きく改善されています。内部的な情報なのでリリースノートでは言及されていませんが、その改善の立役者となったのはPostgreSQL 17で新しく実装されたradix treeです。以前はTIDの配列を使ってゴミタプルのTIDを管理していたのですが、PostgreSQL 17からはゴミタプルのTIDをradix treeに入れることにより、Vacuumがより早く、より省メモリで動くようになりました。radix treeの実装は[こちらの論文](https://db.in.tum.de/~leis/papers/ART.pdf)をベースにしており、いくつか最適化を入れています。ソースコードに興味がある方は[こちら](https://github.com/postgres/postgres/blob/master/src/include/lib/radixtree.h)。
 
@@ -36,7 +38,7 @@ tags:
 
 特に、可変長のバリューを持つことができ、共有メモリ上に作成できることは（今のところ）大きな特徴だと言えます。この特徴を使ってインメモリのキーバリューストアを作ってみました。
 
-# pg_memstore
+## pg_memstore
 
 [`pg_memstore`](https://github.com/MasahikoSawada/pg_memstore)は、PostgreSQLの拡張機能（Extension）で、共有メモリ上に作成したradix treeをベースとしたキーバリューストアです。可変長のバリューが持てる特徴を活かし、バリューにはjsonbデータが格納できます。
 
@@ -128,7 +130,7 @@ tags:
 
 また、`pg_memstore.wal_logging = true`に設定すると、`memstore.set()`と`memstore.delete()`の情報がWALに書かれるので、レプリケーションのスタンバイサーバでも同じデータを持つことができます。
 
-# 実装してみた所感
+## 実装してみた所感
 
 `pg_memstore`を実装したことで2つPostgreSQLのバグを見つけることができました。1つは[修正済み](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=724890ffb75c703afc1e0287f5a66b94c2998799)ですが、もう一つは[議論中](https://www.postgresql.org/message-id/CAD21AoBB2U47V%3DF%2BwQRB1bERov_of5%3DBOZGaybjaV8FLQyqG3Q%40mail.gmail.com)です。READMEにも書いてありますが、PostgreSQL本体でこのバグが直るまで、`memstore.list()`と`memstore.save()`は使えません。
 

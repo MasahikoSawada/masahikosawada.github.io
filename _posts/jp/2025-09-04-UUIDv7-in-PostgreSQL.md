@@ -1,7 +1,10 @@
 ---
 layout: post
 title: PostgreSQL 18がUUIDv7をサポート
-lang: jp
+description: >-
+  PostgreSQL 18がRFC 9562のUUIDv7をサポートしました。タイムスタンプを先頭に持つためソート可能というUUIDv7の特徴と、uuidv7()関数の使い方、UUIDv4との違いを実際のSQLで比較しながら解説します。
+lang: ja
+translated: true
 tags:
   - PostgreSQL
   - UUID
@@ -31,7 +34,7 @@ SERIAL型（シーケンス）とUUID型（UUIDv4とUUIDv7）に主キーをつ�
 |----------|---------|---------|----------|
 | Druation | 8.452 s | 42.24 s | 16.922 s |
 
-# PostgreSQLとUUID
+## PostgreSQLとUUID
 
 PostgreSQLはSQLのデータ型として[`uuid`型](https://www.postgresql.jp/document/17/html/datatype-uuid.html)を持っていて、（PostgreSQL 17現在）UUIDを生成する方法は大きく2つあります。
 
@@ -72,7 +75,7 @@ PostgreSQL 18では[`uuidv7()`SQL関数](https://www.postgresql.org/docs/devel/f
 
 後方互換性のため`gen_random_uuid()`はこれまで通りUUIDv4を生成する関数として存在します。`uuidv7()`にあわせて`uuidv4()`も追加されましたが`gen_random_uuid()`のエイリアスです。
 
-# UUIDv7のフォーマット
+## UUIDv7のフォーマット
 
 UUIDv7のフォーマットはRFCに以下のように記載されています:
 
@@ -108,7 +111,7 @@ UUIDv7では、バージョンの前にミリ秒制度のタイムスタンプ�
 
 ```
 
-## UUIDv7の単調増加性
+### UUIDv7の単調増加性
 
 ミリ秒精度のタイムスタンプでは精度が足りないというユースケースのために、RFCでは、`rand_a`の部分を（またはそれに加えて`rand_b`も)生成されたデータの単調増加性を維持すための追加データとして利用することを許可しています。そして、どのように使うことができるかの方法もいくつかRFCで[紹介されています](https://www.rfc-editor.org/rfc/rfc9562.html#name-monotonicity-and-counters)。
 
@@ -116,7 +119,7 @@ UUIDv7生成関数の実装毎に異なる使い方をしていますが、高�
 
 [^pg_uuidv7_analysis]: 例えば[pg_uuidv7の実装](https://github.com/fboulnois/pg_uuidv7/blob/main/pg_uuidv7.c#L35)を見ると「ミリ秒精度のタイムスタンプ＋ランダムデータ」ということがわかります
 
-# PostgreSQLのUUIDv7の実装
+## PostgreSQLのUUIDv7の実装
 
 PostgreSQLのUUIDv7実装では、RFCで記載されている[Method 3(Replace Leftmost Random Bits with Increased Clock Precision)](https://www.rfc-editor.org/rfc/rfc9562.html#name-monotonicity-and-counters)の方法を取り入れました。具体的には、`rand_a`の部分にミリ秒以下のタイムスタンプを入れ、全体で60(=48+12)ビットをタイムスタンプに使っています。これにより、秒間約400万個のUUID生成に耐えることが可能です。さらに、同一プロセス内ではUUID生成事に`rand_a`の部分が必ず増加するように調整しているので、それ以上の高頻度でのUUID生成でも**単一プロセスから生成されるUUIDv7のデータは単調増加していることが保証**されています。
 

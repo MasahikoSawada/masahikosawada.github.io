@@ -1,7 +1,10 @@
 ---
 layout: post
 title: Implementing a new PostgreSQL Table AM for archiving tables
+description: >-
+  Implementing pgroad, a PostgreSQL Table Access Method that converts existing tables into compact read-only archived tables. Covers the Table AM callbacks involved and how the road format works.
 lang: en
+translated: true
 tags:
   - PostgreSQL
   - Table AM
@@ -11,7 +14,7 @@ I recently published my hobby project [pgroad](https://github.com/MasahikoSawada
 
 **CAUTION: since `pgroad` is still in development and a hobby project, it's not production ready**
 
-# How It Works
+## How It Works
 
 You can register `pgroad` in the database using `CREATE EXTENSION` command (you also need to add `pgroad` to `shared_preload_libraries` first):
 
@@ -62,7 +65,7 @@ ERROR:  cannot insert tuple directly into a ROAD table
 HINT:  Use ALTER TABLE ... SET ACCESS METHOD or CREATE TABLE ... AS to insert tuples
 ```
 
-# Architecture
+## Architecture
 
 The implementation is very simple. It scans the existing table, stores tuples into 16kB chunks (in memory), compresses it, and writes them to the `road` table.
 
@@ -88,7 +91,7 @@ Currently the `road` table internally utilizes heap tuples. However, heap tuple 
 
 Chunk pages are compressed using `pglz` by default, but `lz4` can also be chosen if enabled in the PostgreSQL.
 
-# Supported Features
+## Supported Features
 
 I've implemented basic features for now:
 
@@ -100,7 +103,7 @@ I've implemented basic features for now:
 - TOAST
 - WAL (Generic WAL)
 
-# Converting existing tables to road tables
+## Converting existing tables to road tables
 
 Since `pgroad` focuses specifically on archiving existing data, `road` tables can only be created in the following two ways:
 
@@ -109,7 +112,7 @@ Since `pgroad` focuses specifically on archiving existing data, `road` tables ca
 
 Also, you cannot create a `road` table inside a transaction block.
 
-## Utilizing ProcessUtility_hook
+### Utilizing ProcessUtility_hook
 
 PostgreSQL provides hook points that extensions can tap into by registering their own function. `ProcessUtility_hook` is one such hook point that gets called when DDL statements are executed. `pgroad` uses `ProcessUtility_hook` to detect if the SQL statement was `CREATE TABLE AS` or `ALTER TABLE ... SET ACCESS METHOD road`:
 
@@ -189,7 +192,7 @@ road_tuple_insert(Relation relation, TupleTableSlot *slot,
                          "CREATE TABLE ... AS")));
 ```
 
-# Try Creating Your Own Table AMs
+## Try Creating Your Own Table AMs
 
 The Table AM is actually a collection of callbacks. Table AM developer implements callbacks that get invoked for functionality like scans, index creation etc. that the table AM wants to support. Table AMs are nicely abstracted from other PostgreSQL components, so you can implement yours fairly independently. PostgreSQL provides transaction manager, buffer manager etc. so AMs can choose whether or not to leverage those facilities. For example, using the buffer manager provided by PostgreSQL core allows Table AM developers to implement their access method without having to consider the lower levels than the shared buffer.
 

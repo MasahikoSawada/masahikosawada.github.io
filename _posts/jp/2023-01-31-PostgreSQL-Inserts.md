@@ -1,12 +1,14 @@
 ---
 layout: post
 title: PostgreSQLの色んなINSERTの仕方
+description: >-
+  PostgreSQLでデータを投入する色々な方法を比較します。単純なINSERT、複数VALUES、PREPARE、COPY、pg_bulkloadなどの書き方と、それぞれの性能差を実測して整理します。
 tags:
   - PostgreSQL
-lang: jp
+lang: ja
 ---
 
-# 使用するテーブル
+## 使用するテーブル
 
 今回は`int`と`text`の列を持ったテーブルを使います。列`a`にはインデックスが付いています。INSERTするデータはどれも共通して`1'`と`'alice'`にします。
 
@@ -14,7 +16,7 @@ lang: jp
 CREATE TABLE test (a int primary key, b text);
 ```
 
-# SQLでINSERTを実行
+## SQLでINSERTを実行
 
 これが最も簡単な方法です。PostgreSQLサーバを起動し、`psql`で接続して`INSERT`を実行します。
 
@@ -28,7 +30,7 @@ INSERT 1
 (1 row)
 ```
 
-# SPIでINSERTを実行
+## SPIでINSERTを実行
 
 ここからはサーバ内で実行するプログラムを自分で書いて、その中で`INSERT`を実行します。
 
@@ -64,7 +66,7 @@ C言語で書かれたユーザ定義関数をコンパイルして、サーバ�
 
 「SQLでINSERTを実行」ではクライアントがSQLを送信してサーバ上で実行しているのに対し、「SPIでINSERTを実行」はサーバ上でSQLを指定してサーバ上で実行しています。SQLを実行していることに違いはないので、SQLのパース、時刻プランの作成、実行プランの実行が`SPI_execute()`の中では行われています。
 
-# Executorを直接叩いてINSERT
+## Executorを直接叩いてINSERT
 
 次はもう少し下のレイヤーに行き、Executorを直接使ってINSERTしてみます。
 
@@ -131,7 +133,7 @@ SPIを使ったプログラムに比べるとだいぶ書く量が増えまし�
 
 準備することが多いですがExecutorを使ってINSERTしているので、それよりも下のレイヤーのことは考えなくて良くなっています。例えば、テーブルについているインデックスへのINSERT、空き領域が十分あるページを取得、そのページへの挿入、INSERTのWALを書く、あたりの動作はすべて`ExecSimpleRelationInsert()`の中でやってくれています。さらに、INSERTするタプルは`TableTupleSlot`というデータを使って作成しています。コードには一切`heap`の文字がありません。そのため、テーブルが`heap`以外のAccess Methodでも動くようになっています。
 
-# HeapからINSERT
+## HeapからINSERT
 
 もう一つ下のレイヤーに降りて、Heap Access MethodのAPIを直接叩いてINSERTします。
 
@@ -171,7 +173,7 @@ insert_heap(PG_FUNCTION_ARGS)
 
 先程よりは簡単に書けました。しかし、Executorから実行した時とは異なり、インデックスへのINSERTもやってくれませんし、テーブルがHeap Access Methodであるときにだけこのコードは動きます。一方、バッファアクセスやWALに関しては`simple_heap_insert()`の中でやってくれています。PostgreSQL内部でシステムカタログを変更する時なんかは、これに近い事をやっています(例えば`InsertPgClassTuple()`など)。
 
-# 直接ページにINSERT
+## 直接ページにINSERT
 
 最後に更にもう一つ下レイヤーにいき、ページに直接タプルをINSERTしてみます。
 
@@ -266,7 +268,7 @@ insert_page(PG_FUNCTION_ARGS)
 
 スキーマ（Namesapce）とテーブルの存在確認、OIDの取得から始まり、INSERTする`HeapTuple`の準備、タプルヘッダの設定、ページの取得やWAL書き込みまですべて行っています。ここまで来ると、ほぼTable Access Methodで実装している事をユーザ定義関数で実装していることになります。ただし、CLOG（コミットログ）については別モジュールで管理されているので、ここでは意識する必要はありません。Heapでは、PostgreSQLが生成したトランザクションID（この例だと`GetTopTransactionId()`で取得している部分)をタプルに書きます。Heapが用意するタプルの可視性判断関数（`HeapTupleSatisfiesXXX()`）では、そのトランザクションIDをCLOGに問い合せることで、トランザクションがCommitしたのかAbortしたのかの情報を取得しています。
 
-# 参考
+## 参考
 
 ここで利用したソースコードは、[こちら](https://gist.github.com/MasahikoSawada/6db0e7b381fa89e3301596489437886c)に公開しています。ソースコードのビルドは他のExtensionと同じです(PG15で動作確認ずみ）。
 

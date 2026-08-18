@@ -1,11 +1,13 @@
 ---
 layout: post
 title: OS Xで開発中のコードに対してpgindentを実行する
+description: >-
+  PostgreSQLの拡張機能や開発中のコードに対してmacOS（OS X）でpgindentを実行する方法のメモです。LLVMではデバッグ情報が実行ファイルと別になるため、typedefリストの作り方に一工夫が必要です。
 tags:
   - PostgreSQL
   - pgindent
   - OS X
-lang: jp
+lang: ja
 ---
 
 外部ツールや開発中のコードについてpgindentを走らせたい時のメモ[^pgindent]。
@@ -18,11 +20,11 @@ lang: jp
 
 pgindentの実行に必要な手順は以下の通りです。
 
-# 1. `-gdwarf-2`フラグをつける
+## 1. `-gdwarf-2`フラグをつける
 
 コンパイル時にはgccのオプションとして`-gdwarf-2`フラグをつけます。なので、`configure`のときに`CFLAGS="-O0 -gdwarf-2"`のような感じで指定します。
 
-# 2. DWARF情報からtypedefsファイルを生成する
+## 2. DWARF情報からtypedefsファイルを生成する
 
 OS Xでは以下のように、`dsymutil`を使ってデバッグ情報（DWARF情報）を取り出して、そこから構造体のや変数の定義情報を取得します（`postgres.dwarfファイル`）。`pgindent`コマンドでは`--typedefs`オプションで任意のtypedefsファイルを指定できるので、作成したtypedefsファイルを指定します。
 

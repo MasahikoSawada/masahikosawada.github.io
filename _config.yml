@@ -15,14 +15,39 @@
 # in the templates via {{ site.myvariable }}.
 title: MasahikoSawada
 email: sawada.mshk@gmail.com
-description: Masahiko Sawada's home page
-author: Masahiko Sawada
-url: "https://masahikosawada.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+tagline: "PostgreSQLの内部構造を解説するブログ"
+description: >-
+  PostgreSQLメジャーコントリビュータ／コミッタ Masahiko Sawada のブログ。
+  VACUUM、MVCC、論理レプリケーション、トランザクション管理、インデックスなど
+  PostgreSQL の内部構造とソースコードを日本語で解説しています。
+author:
+  name: Masahiko Sawada
+  twitter: masahiko_sawada
+url: "https://masahikosawada.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: masahiko_sawada
 github_username:  MasahikoSawada
 linkedin_username: masahikosawada
+
+# Consumed by jekyll-seo-tag: Twitter card type and the Person/sameAs it emits.
+twitter:
+  username: masahiko_sawada
+  card: summary_large_image
+social:
+  name: Masahiko Sawada
+  links:
+    - https://github.com/MasahikoSawada
+    - https://x.com/masahiko_sawada
+    - https://www.linkedin.com/in/masahikosawada
+logo: /assets/images/og-default.png
 lang: ja
+locale: ja_JP
 timezone: Asia/Tokyo
+
+# Measurement. Both are read by _includes/google-analytics.html and jekyll-seo-tag.
+# Fill these in once the GA4 property and the Search Console property exist.
+#google_analytics: G-XXXXXXXXXX
+#webmaster_verifications:
+#  google: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 # Build settings
 markdown: kramdown
@@ -34,12 +59,28 @@ plugins:
   - jekyll-seo-tag
   - jekyll-polyglot
 
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      image: /assets/images/og-default.png
+  - scope:
+      path: ""
+    values:
+      image: /assets/images/og-default.png
+  - scope:
+      path: "tag"
+      type: "pages"
+    values:
+      noindex: true
+
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
 paginate: 5
 
-languages: ["jp", "en"]
-default_lang: "jp"
+languages: ["ja", "en"]
+default_lang: "ja"
 exclude_from_localization: ["assets/css", "assets/img"]
 parallel_localization: true
 

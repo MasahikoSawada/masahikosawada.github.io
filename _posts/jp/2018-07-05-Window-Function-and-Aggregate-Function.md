@@ -5,7 +5,7 @@ description: Window関数と集約関数について解説
 tags:
   - PostgreSQL
   - Window Function
-lang: jp
+lang: ja
 ---
 
 
@@ -14,7 +14,7 @@ lang: jp
 
 今回は、Window関数について、また集約関数をWindow関数として使う方法についてまとめます。
 
-# Window関数は特定の関数ではなく一つの機能
+## Window関数は特定の関数ではなく一つの機能
 
 [以前の記事]({% post_url 2018-07-04-Basics-of-Window-Function %})でも解説したように、Window関数は集約（`GROUP BY`句）と似ていますが、あくまでも関数なので結果は一つの列として出力されます。（`GROUP BY`は複数行の結果を一つの行に集約する）
 
@@ -35,7 +35,7 @@ Window関数として利用できる関数は、「Window関数としてしか�
   * `sum()`、`count()`など、`GROUP BY`でも使える関数。
   * 集約（`GROUP BY`句）でも、Window関数（`OVER`句）としても使える
 
-# 組み込みWindow関数
+## 組み込みWindow関数
 
 [PostgreSQL](https://www.postgresql.jp/document/10/html/functions-window.html)では、以下の組み込みWindow関数を用意しています。[MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html)でも同じです。公式マニュアルから図を持ってきます。
 
@@ -75,7 +75,7 @@ FROM empsalary;
  sales     |     3 |   4800 |    2
 ```
 
-# 集約関数
+## 集約関数
 
 集約関数は、馴染みのある`sum()`、`count()`、`min()`、`max()`などの関数です。これらの関数は集約関数としても利用できますが、`OVER`句を使うことでWindow関数としても利用できます。
 
@@ -137,10 +137,10 @@ SELECT salary, sum(salary) OVER (ORDER BY salary) FROM empsalary;
 (5 rows)
 ```
 
-# まとめ
+## まとめ
 Window関数、集約関数についてまとめました。この辺の違いを理解してると、ドキュメント等を読むときの助けになるので良いですね。ざっくりWindow関数について説明したので、次はフレーム指定方法とかを解説しようかな。
 
-lang: jp
+lang: ja
 ---
 
 これまでにまとめた記事もあわせてどうぞ。

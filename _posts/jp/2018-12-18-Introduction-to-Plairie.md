@@ -6,7 +6,7 @@ tags:
   - Keyboard
   - Plairie
   - DIY
-lang: jp
+lang: ja
 ---
 
 自作キーボードを作ってみました。回路設計から、基板発注、ケース設計等全部やってみました。名前は「Plairie」というキーボードで、動物の「Prairie Dog」から名前を取っています。
@@ -20,29 +20,29 @@ lang: jp
 
 * 全体
 
-![](/images/2018-12-18/overall.jpg)
+![自作キーボードPlairieの全体像](/images/2018-12-18/overall.jpg){: width="1600" height="1200" loading="lazy" decoding="async"}
 
 キーはCherry MXが利用可能
 
 * 右手
 
-![](/images/2018-12-18/left.jpg)
+![Plairieの右手側キーボード](/images/2018-12-18/right.jpg){: width="1200" height="1600" loading="lazy" decoding="async"}
 
 日本語配列にも対応できるようにキーが多め
 
 * 左手
 
-![](/images/2018-12-18/left.jpg)
+![Plairieの左手側キーボード](/images/2018-12-18/left.jpg){: width="1200" height="1600" loading="lazy" decoding="async"}
 
 * 親指キー
 
-![](/images/2018-12-18/switch.jpg)
+![Plairieの親指キー周辺のスイッチ配置](/images/2018-12-18/switch.jpg){: width="1200" height="1600" loading="lazy" decoding="async"}
 
 ここだけKailh Choc(ロープロファイルキー）を使用
 
 * 手を置いた感じ
 
-![](/images/2018-12-18/hand.jpg)
+![Plairieに手を置いたときのホームポジション](/images/2018-12-18/hand.jpg){: width="1600" height="1200" loading="lazy" decoding="async"}
 
 * 親指キーの打鍵動画
 
@@ -51,7 +51,7 @@ lang: jp
 
 自作キーボード界隈で最近流行っている、Column Staggeredや少くないキー数、薄型などの特徴は(今のところ)備えていません。
 
-# 改善点
+## 改善点
 試作は沢山作ったのですが、特にケースで失敗しているところがあります。
 
 * スペーサーを入れる幅が足りない
@@ -63,7 +63,7 @@ lang: jp
 * 中央のキーを重複させたい
   * 「T」を右手で打つことがあることに気付いた
 
-# 基板とパーツ、お譲りします
+## 基板とパーツ、お譲りします
 まだ試作段階の「Plairie」ですが、興味がある方がいれば基板をお譲りしますのでDMでご連絡下さい。（まだ試作段階であることをご理解ください）。
 
 お譲りできるのは、

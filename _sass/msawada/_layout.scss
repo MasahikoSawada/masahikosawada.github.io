@@ -323,3 +323,26 @@
     float: right;
   }
 }
+
+/**
+ * Related posts
+ */
+.related-posts {
+  margin-top: $spacing-unit;
+  padding-top: $spacing-unit / 2;
+  border-top: 1px solid $grey-color-light;
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: $spacing-unit / 4;
+  }
+
+  ul {
+    list-style: none;
+    margin-left: 0;
+  }
+
+  li {
+    margin-bottom: 4px;
+  }
+}

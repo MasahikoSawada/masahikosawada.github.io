@@ -69,7 +69,7 @@ if upper_dir != BASE_DIR or current_dir != UTIL_DIR then
 end
 
 # Collect all tags in existing posts
-Dir.glob("../_posts/*") do |file|
+Dir.glob("../_posts/**/*.md") do |file|
   File.open(file, "r") do |f|
     get_tags(f)
   end

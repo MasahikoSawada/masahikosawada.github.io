@@ -1,0 +1,30 @@
+{%- comment -%}
+  A Person node with a stable @id. jekyll-seo-tag emits the author as an inline Person with
+  no identifier, so nothing ties the byline on 56 posts to one entity; declaring the same
+  @id on every page lets a consumer merge them. sameAs lists profiles *of this person* only
+  - the postgresql.org contributor list is a directory, not a profile, so it stays a plain
+  link on the About page instead.
+{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "{{ '/about/#person' | absolute_url }}",
+  "name": "Masahiko Sawada",
+  "url": "{{ '/about/' | absolute_url }}",
+  "description": "PostgreSQL major contributor and committer.",
+  "knowsAbout": [
+    "PostgreSQL",
+    "Database internals",
+    "VACUUM",
+    "MVCC",
+    "Logical replication",
+    "Distributed transactions"
+  ],
+  "sameAs": [
+    "https://github.com/MasahikoSawada",
+    "https://x.com/masahiko_sawada",
+    "https://www.linkedin.com/in/masahikosawada"
+  ]
+}
+</script>

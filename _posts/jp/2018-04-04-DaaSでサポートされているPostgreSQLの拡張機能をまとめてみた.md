@@ -8,7 +8,7 @@ tags:
   - "Amazon RDS"
   - "Cloud SQL"
   - Extension
-lang: jp
+lang: ja
 ---
 
 PostgreSQLのDaaSを利用する時にどのような拡張機能が使えるかは重要で、少し気になったので現時点の状況を調べてみた。

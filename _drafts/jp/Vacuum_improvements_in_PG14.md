@@ -8,7 +8,7 @@ tags:
 
 PostgreSQL 14で導入されたVacuumに関する改善についていくつか紹介・解説します。
 
-# テーブル上のゴミがある程度集中していたらインデックスVacuumをスキップする
+## テーブル上のゴミがある程度集中していたらインデックスVacuumをスキップする
 
 > * Allow vacuum to skip index vacuuming when the number of removable index entries is insignificant (Masahiko Sawada, Peter Geoghegan)
 >
@@ -20,7 +20,7 @@ PostgreSQL 14で導入されたVacuumに関する改善についていくつか�
 
 インデックスVacuumをスキップした場合、もちろんインデックス上のゴミは回収されないまま（テーブル上のゴミは回収済み）ですが、これは大きな問題にはならないと思います。Vacuumがゴミ掃除と同時に行うVisibility Mapの更新にも、そこまで大きな悪影響は与えないと思います（更新できたとしても全体の2%以下のブロックしか更新できないため）。多くの場合で、これらの可能性のある副作用よりも、インデックスVacuumをスキップできるメリットの方が大きいと思います。
 
-# Failsafe modeの導入
+## Failsafe modeの導入
 
 > * Cause vacuum operations to be more aggressive if the table is near xid or multixact wraparound (Masahiko Sawada, Peter Geoghegan)
 >
@@ -40,15 +40,15 @@ Fail Safeモードで無効になる処理や機能は以下のとおりです�
 
 いつFail Safeモードに入るのかは、`vacuum_failsafe_age`や`vacuum_multixact_failsafe_age`で調整可能です。デフォルトは16億で、16億トランザクションの間Freezeができていなかった場合にFail Safeモードに入ります。
 
-# vacuum_cost_page_missのデフォルト値を小さくした
+## vacuum_cost_page_missのデフォルト値を小さくした
 
 > Reduce the default value of vacuum_cost_page_miss to better reflect current hardware capabilities (Peter Geoghegan)
 
-# VACUUM VERBOSEの改善
+## VACUUM VERBOSEの改善
 
-# autovacuum logの改善
+## autovacuum logの改善
 
 > * Add per-index information to autovacuum logging output (Masahiko Sawada)
 
-# lazy vacuumのリファクタリング
+## lazy vacuumのリファクタリング
 

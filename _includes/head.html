@@ -1,24 +1,53 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content"width=device-width, initialscale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  {% assign title = page.title | default: site.title | escape %}
-  {% assign canonical = page.url | replace:'index.html'.'' | absolute_url %}
-  {% assign description = page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | escape %}
-  <title>{{ title }}</title>
-  <meta name="description" content="{{ description }}">
-  {% if page.keywords %}
-    {% if page.keywords.first %}
-      {% assign keywords = page.keywords | join: ',' %}
-    {% else %}
-      {% assign keywords = page.keywords %}
-    {% endif %}
-  <meta name="keywwords" content="{{ keywords }}">
-  {% endif %}
+  {%- comment -%}
+    Polyglot renders every page under every language prefix. When the page has no
+    translation for the language being built, the body is the original-language
+    text served from a foreign URL, so keep it out of the index.
+  {%- endcomment -%}
+  {%- assign noindex = false -%}
+  {%- if page.lang and page.lang != site.active_lang -%}{%- assign noindex = true -%}{%- endif -%}
+  {%- if page.noindex -%}{%- assign noindex = true -%}{%- endif -%}
+  {%- comment -%} pagination pages 2..N are thin duplicates of the post list {%- endcomment -%}
+  {%- if paginator -%}{%- if paginator.page > 1 -%}{%- assign noindex = true -%}{%- endif -%}{%- endif -%}
+  {%- if noindex %}
+  <meta name="robots" content="noindex,follow">
+  {%- else %}
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  {%- endif %}
+
+  {%- comment -%}
+    hreflang. jekyll-polyglot is pinned to 1.5.1 by the github-pages gem, which has
+    neither page_id nor permalink_lang, so translated pairs are marked by hand with
+    "translated: true" in front matter. Both members carry the same permalink, so the
+    ja URL is page.url and the en URL is /en + page.url. Emitting the full set on both
+    members is what makes the annotations reciprocal, and static_href keeps polyglot
+    from rewriting these absolute URLs into the language it is currently building.
+    The href sits on its own line because polyglot's rewrite regexes carry a
+    (?<!hreflang="<default_lang>" ) lookbehind that would otherwise also skip the pass
+    that restores static_href's placeholder, leaving a literal ferh= in the output.
+  {%- endcomment -%}
+  {%- if page.translated %}
+  {%- assign ja_url = page.url | prepend: site.url -%}
+  {%- assign en_url = page.url | prepend: '/en' | prepend: site.url -%}
+  <link rel="alternate" hreflang="ja"
+        {% static_href %}href="{{ ja_url }}"{% endstatic_href %}>
+  <link rel="alternate" hreflang="en"
+        {% static_href %}href="{{ en_url }}"{% endstatic_href %}>
+  <link rel="alternate" hreflang="x-default"
+        {% static_href %}href="{{ ja_url }}"{% endstatic_href %}>
+  {%- endif %}
 
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
-  <link rel="canonical" href="{{ canonical }}">
+  {% feed_meta %}
   <link rel="shortcut icon" type="image/png" href="{{ "/assets/images/favicon.png" | absolute_url }}">
 
+  {%- include google-analytics.html %}
+
+  {%- comment -%} title, description, canonical, og:*, twitter:* and JSON-LD all come from here {%- endcomment -%}
+  {% seo %}
+  {%- include person-schema.html %}
 </head>

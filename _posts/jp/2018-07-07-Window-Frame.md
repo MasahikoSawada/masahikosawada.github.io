@@ -5,7 +5,7 @@ description: Window関数のフレームを徹底解説
 tags:
   - PostgreSQL
   - Window Function
-lang: jp
+lang: ja
 ---
 
 Window関数のパーティションは`PARTITION BY`句で指定するだけなのですが、フレームについては色々モードやオプションがあり細かく指定できます。
@@ -48,7 +48,7 @@ frame_exclusion:
 フレームの指定は、`RANGE`、`ROWS`、`GROUPS`の中から一つモードを選び、その後にフレームの境界を指定します。*frame_start*だけを指定した場合は、*frame_end*は`CURRENT ROW`になります。
 今回は、*frame_clause*と*frame_start*、*frame_end*について説明し、*frame_exclusion*についてはまた別途解説しようと思います。
 
-# モードの種類
+## モードの種類
 
 今年リリース予定のPostgreSQL 11では、フレーム指定のモードが3種類使えます。
 
@@ -70,7 +70,7 @@ frame_exclusion:
 
 各フレームオプションの意味や、モードによってどのように挙動が異なるかを解説します。
 
-# UBOUNDED PRECEDING, UNBOUNDED FOLLOWING
+## UBOUNDED PRECEDING, UNBOUNDED FOLLOWING
 この2つのフレームオプションはモードに関係なく動作します。
 
 `UNBOUNDED PRECEDING`を指定すると、フレーム開始とパーティション開始が一致し、`UNBOUNDED FOLLOWING`を指定するとフレーム終了とパーティション終了が一致します。
@@ -99,10 +99,10 @@ frame_exclusion:
 上記のように指定すると、フレームは常に(`color`列で分割している)パーティションと一致します。そのため、`string_agg()`関数の処理対象は常にパーティション全体となるので、パーティション内での結果が同じになります。これは簡単。
 上記の例では`ROWS`モードにしましたが、他のモードでもを変えても結果は同じです。
 
-# CURRNET ROW
+## CURRNET ROW
 `CURRENT ROW`はその意味の通り、「現在の行」をフレーム開始またはフレーム終了に指定しますが、`RANGE`、`GROUPS`、`ROWS`のそれぞれのモードで"現在の行"の判定が変わります。
 
-## ROWSモード
+### ROWSモード
 ROWSモードでの`CURRENT ROW`の考え方は非常に単純で、その名の通り「現在の行」がCURRENT ROWになります。
 
 **※わかりやすくするためにcolor列の'red'を'red(1)','red(2)'...に分けています。**
@@ -138,7 +138,7 @@ ROWSモードでの`CURRENT ROW`の考え方は非常に単純で、その名の
 
 全ての行がフレーム境界になるので、上記のように、現在行が進むに連れてフレームは行が進む毎に広がっていき、`string_agg()`の処理対象も広がっていきます。
 
-## RANGE, GROUPSモード
+### RANGE, GROUPSモード
 この2つのモードは、`CURRENT ROW`を使う上では実質同じ挙動をするので、まとめて解説します。
 
 `RANGE`、`GROUPS`モードでは、フレーム開始に`CURRENT ROW`を指定した場合は**一致する行のグループの先頭**、フレーム終了に`CURRENT ROW`を指定した場合は**一致するグループの末尾**になります。
@@ -173,7 +173,7 @@ ROWSモードでの`CURRENT ROW`の考え方は非常に単純で、その名の
 
 `RANGE`、`GROUPS`モードでの`CURRENT ROW`は、同じ値も含めたグループが`CURRENT ROW`としてみなされます。上記の例では、`blue(1)`と`blue(2)`は共にvalue = 130で、フレーム終点に`CURRENT_ROW`を指定しているので、`blue(1)`、`blue(2)`の時のフレーム(1)と(2)は同じフレームになります。
 
-# offset PRECEDING and offset FOLLOWING
+## offset PRECEDING and offset FOLLOWING
 `offset PRECEDING/FOLLOWING`は、フレーム境界を現在の行の**位置や値**を基準に`offset`分だけ後ろ、または前のデータをフレームに加えます。各モードでの基本的な考え方はこれまで解説したものとにています。
 
 * ROWSモード
@@ -183,7 +183,7 @@ ROWSモードでの`CURRENT ROW`の考え方は非常に単純で、その名の
 * RANGEモード
   - 現在の行の**値**を基準に、offset分だけ後ろ/前をフレームに含める
 
-## ROWSモード
+### ROWSモード
 
 ROWSモードはその名の通り、行をベースにしてオフセットを指定します。
 
@@ -219,7 +219,7 @@ ROWSモードはその名の通り、行をベースにしてオフセットを�
 
 フレームオプションが、`ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING`なので、「1つ前の行～1つ後ろの行」までをフレームに含めます。
 
-## GROUPSモード
+### GROUPSモード
 `GROUPS`モードでは、同一行を一つのグループとみなして、オフセットの指定も「1つ前のグループ」「2つ後のグループ」の用にグループが境界となります。
 
 ```
@@ -254,7 +254,7 @@ ROWSモードはその名の通り、行をベースにしてオフセットを�
 
 一見複雑でわかりにくいですが、どのフレームも3つのグループ（一つ前、現在、一つ後）を含んでいることがわかります。
 
-## RANGEモード
+### RANGEモード
 `RANGE`モードでは、**行の値**をオフセットとして指定します。ここまではTEXT型の列で解説しましたが、ここではDate型の列で解説します。(TEXT型列ではオフセットを指定できません)
 
 `RANGE`モードでのオフセット指定はSQL:2003の新機能ですが、PostgreSQL 10以前ではサポートされていません。PostgreSQL 11からはサポートされています。
@@ -280,10 +280,10 @@ ROWSモードはその名の通り、行をベースにしてオフセットを�
 ```
 上記の例では、`c`列をDate型にしたので、オフセットの指定を` '5 day' PRECEDING AND '5 day' FOLLOWING`にしました。これは、フレーム境界を「現在の５日前〜現在の５日後」に指定しています。`string_agg`関数の結果を見てみると、そのようになっていることがわかります。
 
-# まとめ
+## まとめ
 フレームの指定、モードについて解説しました。今回解説した内容で、Window関数を使うほとんどの用途はカバーできると思います。この他にも`frame_exclusion`と呼ばれるオプションもあるので、それはまた別途解説しようと思います。
 
-lang: jp
+lang: ja
 ---
 
 これまでにまとめた記事もあわせてどうぞ。

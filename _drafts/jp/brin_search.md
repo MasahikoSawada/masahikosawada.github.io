@@ -9,7 +9,7 @@ tags:
 
 BRINは一つのインデックスタプルが複数のブロックの束（ブロックのレンジ）に対応しているので、IndexScanには対応しておらず、BitmapIndexScanのみが可能。BRINを使って検索をして、スキャンする必要のあるブロックに対応するBitを立て、それを元にテーブルを検索（BitmapHeapScan）していくイメージ。
 
-# bringetbitmap()
+## bringetbitmap()
 
 検索時のエントリポイントなる関数。
 
@@ -166,7 +166,7 @@ revmapに対応するインデックスタプルがあり、scan keyがmin, max�
 
 次にconsistentFnの一例として、`brin_minmax_consistent()`を見ていく。
 
-# brin_minmax_consistent()
+## brin_minmax_consistent()
 
 最初に検索条件が`IS NULL`かどうかのチェックをする。このあたりはあとでチェックする。
 
@@ -236,7 +236,7 @@ revmapに対応するインデックスタプルがあり、scan keyがmin, max�
     }
 ```
 
-# minmax_consistent_key()
+## minmax_consistent_key()
 
 大きくない関数だったので全体を載せてみた。この関数で確認することは、あるレンジのmin, max(`column`)が検索条件(`key`)を満たすかどうか。`column->bv_values[0]`には最小値、`column->bv_values[1]`には最大値が入っている。
 
@@ -304,7 +304,7 @@ minmax_consistent_key(BrinDesc *bdesc, BrinValues *column, ScanKey key,
 }
 ```
 
-# 気になる点（調べならが埋めていく予定）
+## 気になる点（調べならが埋めていく予定）
 
 * NULLの扱い
   * レンジはNULLをどう扱う？

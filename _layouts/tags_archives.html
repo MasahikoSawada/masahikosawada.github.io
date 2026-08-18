@@ -8,7 +8,7 @@ layout: default
 <ul>
 {% for category in all_categories %}
  {% if site.tags[category].size > 0 %}
- <li><a href="/tag/{{ category }}">{{ category }}</a>({{ site.tags[category].size }})</li>
+ <li><a href="{{ category | uri_escape | prepend: '/tag/' | append: '/' | relative_url }}">{{ category }}</a>({{ site.tags[category].size }})</li>
  {% endif %}
 {% endfor %}
 </ul>

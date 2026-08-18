@@ -1,9 +1,11 @@
 ---
 layout: post
 title: ALTER TABLEの各コマンドのロックレベル
+description: >-
+  ALTER TABLEの各サブコマンドが取得するテーブルロックのレベルを一覧にまとめました。PostgreSQL 15のソースコード（tablecmds.c）ベースで、AccessExclusiveLockを取るコマンドとそうでないコマンドを整理しています。
 tags:
   - PostgreSQL
-lang: jp
+lang: ja
 ---
 
 `ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。[ソース](https://github.com/postgres/postgres/blob/REL_15_STABLE/src/backend/commands/tablecmds.c#L4161)を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。
@@ -18,7 +20,7 @@ PostgreSQLのロックレベルは[こちら](https://www.postgresql.jp/document
 
 基本的にテーブルの書き換えが必要なもの（例えば列のデータ型をINTからTEXTにするなど）は、`AccessExclusiveLock`が必要となります。ただ、一部`ShareRowExsluveLock`や`ShareUpdateExclusiveLock`などの弱いロックが使われていて、SELECTやINSERT、UPDATE、DELETEが同時に実行できる、というイメージ。
 
-## `ALTER TABLE`のサブコマンドとロックレベルの一覧（PostgreSQL 15版）
+### `ALTER TABLE`のサブコマンドとロックレベルの一覧（PostgreSQL 15版）
 
 | サブコマンド                               | ロックレベル                                                                              |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|

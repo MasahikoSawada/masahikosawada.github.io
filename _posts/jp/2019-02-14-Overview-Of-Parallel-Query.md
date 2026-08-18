@@ -5,15 +5,15 @@ description: PostgreSQLのパラレルクエリ(Parallel Query)について、�
 tags:
   - PostgreSQL
   - Parallel Query
-lang: jp
+lang: ja
 ---
 
 PostgreSQLでは、バージョン9.6からパラレルクエリが利用可能です。Oracle、DB2でもパラレルクエリは実装されていますが、PostgreSQLのパラレルクエリはどのような特徴があるのでしょうか。簡単にパラレルクエリの概要を紹介します。
 
-# パラレルクエリの目的
+## パラレルクエリの目的
 パラレルクエリは、複数のCPUを使ってクエリを並列(Parallel)に処理する機能です。そのため、クエリの実行時間の短縮が期待できます。並行(Concurrent)とは異なるので注意。
 
-# EXPLAIN(実行計画)の見方
+## EXPLAIN(実行計画)の見方
 パラレルクエリが使われた場合の実行計画の読み方は注意が必要です。
 
 まずは、パラレルクエリOFFの実行計画(ANALYZE, VERBOSE)。
@@ -67,19 +67,19 @@ PostgreSQLでは、バージョン9.6からパラレルクエリが利用可能�
 
 <center><iframe src="//www.slideshare.net/slideshow/embed_code/key/gsYirIoV8Trhrl?startSlide=30" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/masahikosawada98/postgresql11" title="今秋リリース予定のPostgreSQL11を徹底解説" target="_blank">今秋リリース予定のPostgreSQL11を徹底解説</a> </strong> from <strong><a href="//www.slideshare.net/masahikosawada98" target="_blank">Masahiko Sawada</a></strong> </div></center>
 
-# 対応している操作
-## 9.6
+## 対応している操作
+### 9.6
 * Seq Scan
 * Nested Loops Join
 * Hash Join
 
-## 10
+### 10
 * Merge Join(Gather Merge)
 * Index Scan
 * Index Only Scan
 * Bitmap Heap Scan
 
-## 11
+### 11
 * (Parallel-aware) Hash Join
 * Append
 * CREATE INDEX / REINDEX
@@ -87,7 +87,7 @@ PostgreSQLでは、バージョン9.6からパラレルクエリが利用可能�
 * SELECT INTO ...
 * CREATE MATERIALIZED VIEW
 
-# 対応していない操作
+## 対応していない操作
 * UPDATE
 * DELETE
 * CTE(WITH句)
@@ -97,10 +97,10 @@ PostgreSQLでは、バージョン9.6からパラレルクエリが利用可能�
 * トランザクション分離レベルがSerializable
 ほかにも色々あります。
 
-# 読み込み専用
+## 読み込み専用
 現在のパラレルクエリは読み込み操作のみがに対応しています。CRAETE INDEX、CREATE TABLE AS、CREATE MATERIALIZED VIEW等は書き込みを伴う処理ですが、一連の操作の中の読み込み処理のみ（例えば、CRAETE INDEXではテーブルをソートする処理）が並列に実行されます。各パラレルクエリの操作の詳細については後日まとめようと思います。
 
-# 参考資料
+## 参考資料
 本記事は以下の参考資料を元に執筆しました
 
 * [公式マニュアル](https://www.postgresql.jp/document/10/html/parallel-query.html)

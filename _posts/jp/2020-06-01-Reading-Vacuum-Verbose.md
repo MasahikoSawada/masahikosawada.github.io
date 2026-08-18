@@ -1,15 +1,17 @@
 ---
 layout: post
 title: VACUUMのログの読み方(VACUUM VERBOSE)
+description: >-
+  PostgreSQLのVACUUM VERBOSEが出力するログの読み方を、Scan／Vacuum index／Vacuum tableの3フェーズに分けて項目ごとに解説します。log_autovacuum_min_durationで出るautovacuumのログにもほぼそのまま使えます。
 tags:
   - PostgreSQL
   - Vacuum
-lang: jp
+lang: ja
 ---
 
 Vacuumとうまく付き合っていくために`VACUUM VERBOSE`ログの読み方を簡単に紹介します。また、`log_autovacuum_min_duration`で出力されるautovacuumのログも大体同じです。バージョンは12.2を使います。`VACUUM VERBOSE`の出力内容はバージョンによって異なる可能性があるのでご注意ください。
 
-# Vacuumのフェーズ
+## Vacuumのフェーズ
 
 Vacuumは細かく分けると[7個のフェーズに分かれています](https://www.postgresql.jp/document/9.6/html/progress-reporting.html)が、ざっくり3つのフェーズに分けて考えることができます。
 
@@ -24,7 +26,7 @@ Vacuumは細かく分けると[7個のフェーズに分かれています](http
 
 インデックスがないテーブルのVacuumは少し手順が異なります。テーブルを1ページずつ見ながらVacuumをします。`maintenance_work_mem`は使いません。
 
-# `VACUUM VERBOSE`
+## `VACUUM VERBOSE`
 
 2つのインデックス（`idx1`、`idx2`）を持つテーブル`tbl`を更新した後Vacuumをしたときのログです。
 
@@ -62,7 +64,7 @@ DETAIL:  CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
 VACUUM
 ```
 
-# `VACUUM VERBOSE`ログの読み方
+## `VACUUM VERBOSE`ログの読み方
 
 各ログの読み方を紹介します。
 
@@ -190,6 +192,6 @@ DETAIL:  CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
 
 この例では、元々17700ページあったのが、13275ページまで切り詰められたことがわかります。Vacuum中のテーブルの切り詰めは一長一短があります。テーブルやインデックスのVacuum中は`ShareUpdateExclusiveLock`という、SELECT/INSERT/UPDATE/DELETEとは競合しない[ロック](https://www.postgresql.jp/document/12/html/explicit-locking.html)を取得しますが、切り詰める時には一時的に`AccessExclusiveLock`というすべてのロックに競合するロック（排他ロック）取得します。これが同時実行中のプロセスやホットスタンバイに影響を与えることもあるので、それを避けるためにPostgreSQL 12以降では`TRUNCATE [on|off]`オプションで制御することが可能です。
 
-# 終わりに
+## 終わりに
 
 他にもこんな読み方があるよ、という場合はぜひコメントください。

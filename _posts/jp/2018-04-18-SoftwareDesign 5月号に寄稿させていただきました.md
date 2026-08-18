@@ -1,15 +1,17 @@
 ---
 layout: post
 title: "SoftwareDesign 5月号に寄稿させていただきました"
+description: >-
+  SoftwareDesign 2018年5月号の第3章「MySQLとPostgreSQL比較」を執筆させていただきました。寄稿の経緯と記事の内容について紹介します。
 tags:
   - PostgreSQL
   - MySQL
-lang: jp
+lang: ja
 ---
 
 本日発売の「SoftwareDesign 5月号」にて、「第3章 MySQLとPostgreSQL比較」を執筆させていただきました。
 
-[![](/assets/images/softwaredesign_201805.png)](http://amzn.asia/9tmerIW)
+[![SoftwareDesign 2018年5月号の表紙](/assets/images/softwaredesign_201805.png){: width="208" height="293" loading="lazy" decoding="async"}](http://amzn.asia/9tmerIW)
 
 ※画像をクリックするとAmazonに飛びます
 

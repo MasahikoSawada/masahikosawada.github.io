@@ -1,7 +1,10 @@
 ---
 layout: post
 title: Building PostgreSQL with musl libc
+description: >-
+  How to build PostgreSQL against musl libc instead of glibc: preparing the musl toolchain, the configure invocation, and the problems encountered along the way.
 lang: en
+translated: true
 tags:
   - PostgreSQL
 ---
@@ -12,7 +15,7 @@ A comparison with glibc can be found [here](https://www.musl-libc.org).
 
 This post is a note on how to build PostgreSQL using musl libc.
 
-# Preparing musl libc
+## Preparing musl libc
 
 The source code of musl libc can be downloaded [here](https://musl.libc.org/releases.html). It seems that there is also a place called [musl.cc](https://musl.cc/) where you can download pre-built binaries, but this time I built it from source code:
 
@@ -36,9 +39,9 @@ musl-gcc
 
 `musl-gcc` is a wrapper program (it's actually a shell script), and it seems that when you compile programs using this, they will be linked against musl libc.
 
-# Building PostgreSQL from source code
+## Building PostgreSQL from source code
 
-## Preparation
+### Preparation
 
 As preparation, include the `musl-gcc` installed above in the `PATH`:
 
@@ -57,7 +60,7 @@ $ cp -rs /usr/include/asm-generic asm-generic/
 
 The reason for doing this will be explained later.
 
-## Build
+### Build
 
 Download the PostgreSQL source code and built it:
 
@@ -69,11 +72,11 @@ $ make
 $ make install
 ```
 
-## About `CC=musl-cc`
+### About `CC=musl-cc`
 
 You can specify the compiler to use with `CC`.
 
-## About specifying `--without-XXX`
+### About specifying `--without-XXX`
 
 By default, PostgreSQL builds with readline, zlib, and icu enabled (in the case of using `configure` script). While the readline header files are in `usr/include/readline`, `/usr/include` also contains the header files of glibc. Therefore, if it's configured to search `/usr/include` directory when compiling programs, the build using `musl-gcc` wouldn't work. So I disabled these libraries for the build.
 
@@ -90,7 +93,7 @@ pg_combinebackup.c:24:10: fatal error: linux/fs.h: No such file or directory
       |          ^~~~~~~~~~~~
 ```
 
-## WARNINGs during build
+### WARNINGs during build
 
 In my environment, I got the following WARNING during the build, but the build itself succeeded, so no problem:
 
@@ -101,7 +104,7 @@ pg_get_line.c:129:27: warning: _({anonymous})_ may be used uninitialized [-Wmayb
       |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
-# Veficiation
+## Veficiation
 
 After building PostgreSQL from source code, verify that it is indeed linked against musl libc:
 

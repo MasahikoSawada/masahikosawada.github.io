@@ -1,9 +1,11 @@
 ---
 layout: post
 title: シーケンシャル・スキャンだからといってデータがテーブルの先頭から返ってくるとは限らない、という話
+description: >-
+  PostgreSQLのシーケンシャルスキャン（Seq Scan）は、必ずしもテーブルの先頭から行を返すとは限りません。synchronize_seqscansによる同期スキャンの挙動を、実際に手を動かして確認します。
 tags:
   - PostgreSQL
-lang: jp
+lang: ja
 ---
 
 この記事は[PostgreSQL Advent Calendar 2020](https://qiita.com/advent-calendar/2020/postgresql)の23日目の記事です。昨日は、[@hiro5963](https://qiita.com/hiro5963)さんによる「[pg_repackについて調べてみた](https://qiita.com/hiro5963/items/79e1f9c7db0362411793)」でした。
@@ -19,7 +21,7 @@ create table test as select generate_serires(1, 10000000) id;
 `test`テーブルには1000万件のデータが入りました。この時、これらのデータはテーブルの先頭から順番に1~10,000,000のデータが格納されています。
 
 
-# 返ってくるデータの順番を確認するための準備
+## 返ってくるデータの順番を確認するための準備
 
 `select * from test`で返ってきた行を見れば、どのような順番でSeq Scanが行を取り出したのかがわかるのですが、返ってくる行が大量で確認しづらいので、以下のような集約関数を作成します。
 
@@ -83,7 +85,7 @@ create or replace aggregate streamchk (int)
 (1 row)
 ```
 
-# 格納順で行が返ってくるケース
+## 格納順で行が返ってくるケース
 
 早速、先程作成したテーブルに使ってみます。
 
@@ -98,7 +100,7 @@ create or replace aggregate streamchk (int)
 
 結果が`1-100000`ということは、1から100000まで順番にデータを処理したということになります。これは予想通りですね。では、Seq Scanをしているのに順番に返ってこない場合を見てみます。
 
-# パラレルクエリが使われた場合は返ってくる行の順番はランダム
+## パラレルクエリが使われた場合は返ってくる行の順番はランダム
 
 `Parallel Seq Scan`が使われた場合、各パラレルワーカーが並列にスキャンし、行を返却するので、格納順に行は返ってきません。
 
@@ -116,7 +118,7 @@ SET
 
 最後に、パラレルクエリを使わなくても行がテーブルの先頭から返ってこないケースを見てみます。
 
-# Seq Scanはテーブルの途中からスキャンを開始する
+## Seq Scanはテーブルの途中からスキャンを開始する
 
 PostgreSQLでは、Seq Scan開始時にすでに同じテーブルに対するSeq Scanが走っている場合、テーブルの途中からSeq Scanを開始します。これは、すでに走っているSeq Scanが読んでいるデータはメモリ上にある可能性が高く、再度テーブルの先頭からスキャンを始めていくよりも効率的になるからです。2つのSeq Scanを時間差で開始し、結果を見てみます。
 
@@ -141,7 +143,7 @@ $ psql -d postgres -c "select '2nd seq scan', streamchk(id) from test;"
 
 このように、（テーブルが全く変更されておらず）Seq Scanをする場合でも、スキャンがテーブルの途中から始まる可能性があるので、`ORDER BY`をつけないクエリが返す行の順序は基本的に予測できません。必ず`ORDER BY`をつけるようにしましょう。
 
-# おまけ
+## おまけ
 
 この機能は**synchronize seq scan**と呼ばれていて、`SET synchronize_seqscans = off`とすることで無効にすることが可能です。
 

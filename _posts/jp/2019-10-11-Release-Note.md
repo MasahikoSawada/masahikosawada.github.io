@@ -1,15 +1,17 @@
 ---
 layout: post
 title: リリースノートからコミットログを調べる
+description: >-
+  PostgreSQLのリリースノートの各項目から、対応するコミットログを探す方法を紹介します。リリースノートのソースであるSGMLファイルを使うことで、機能の詳細を効率よく追跡できます。
 tags:
   - PostgreSQL
-lang: jp
+lang: ja
 ---
 
 先日リリースされたPostgreSQL 12のリリースノートは[こちら](https://www.postgresql.org/docs/12/release-12.html)です。
 
 <div align="center">
-<img src="/images/release-note-12.png">
+<img src="/images/release-note-12.png" alt="PostgreSQL 12のリリースノートの項目一覧のスクリーンショット" width="1268" height="520" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 リリースノートの項目から該当するコミットログを検索するにはリリースノートのソースファイル（SGMLファイル）を見ると楽です。

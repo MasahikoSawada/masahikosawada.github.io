@@ -5,12 +5,12 @@ description: DeadlockとDeadlock対策のメモ
 tags:
   - Database
   - Deadlock
-lang: jp
+lang: ja
 ---
 
 簡単に調べたのでメモ。「Deadlockとは？」は色んなところで解説されているのでここでは割愛。
 
-# Deadlockの必要条件(Coffman conditions)
+## Deadlockの必要条件(Coffman conditions)
 * Mutual Exclusion
   * 一度に1つのプロセスのみがリソースを使用できる
 * Hold and Wait
@@ -24,7 +24,7 @@ lang: jp
 
 ※Circular waitは他の3つの条件が満たされているときに「解消できなくなる」
 
-# Deadlock対策
+## Deadlock対策
 大きく分けて3つの対策がある。
 * Deadlock Prevention
 * Deadlock Avoidance
@@ -32,7 +32,7 @@ lang: jp
 
 以下1つずつ解説。
 
-# Deadlock Prevention
+## Deadlock Prevention
 Deadlock Preventionは、Deadlockの4つの必要条件をの内少なくとも1つが真でないことを保証することでDeadLockno発生自体を防ぐ事。
 * Mutual Exclusion
   * 排他制御をなくす
@@ -53,14 +53,14 @@ Deadlock Preventionは、Deadlockの4つの必要条件をの内少なくとも1
   * すべてのリソースに番号を付けて、番号が昇順になる順序でしかリソースを確保できないようにする。
     * 例えば、R3を一度取得してしまったら、R1, R2を取得することはできず、R4以上でないと取得できない。
 
-## Wait-die, Wound-wait、No-wait
+### Wait-die, Wound-wait、No-wait
 Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption」の条件を排除するスキーム
 
 基本的なアイディアは、「プロセスが他のプロセスが使用しているリソースの待機をブロックしようとしているとき、より大きなタイムスタンプ（つまり若い）を持つかどうかをチェックする」
 
 前提として、全てのプロセスはタイムスタンプはあるタイムスタンプを持っていて、低いタイムスタンプを持つプロセスのほうが優先度が高い（完了までの時間が短い可能性が高い）とする。
 
-### Wait-Die
+#### Wait-Die
 あるリソースを要求するプロセスPaと、すでにリソースを保持しているプロセスPbが存在したとき、
 * TS(Pa) < TS(Pb) : Paのほうが古い（優先度が高い）
   * PaはPbの開放を待つ(Wait)
@@ -71,7 +71,7 @@ Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption�
 
 つまり、Wait-Dieではより古いプロセスのみが**待つことができる**。
 
-### Wound-Wait
+#### Wound-Wait
 あるリソースを要求するプロセスPaと、すでにリソースを保持しているプロセスPbが存在したとき、
 * TS(Pa) < TS(Pb) : Paのほうが古い（優先度が高い）
   * PaはPbを終了させ、自分がリソースを取得する(Wound)
@@ -87,10 +87,10 @@ Wait-dieとWound-waitは、タイムスタンプをベースに「No preemption�
 
 [^spanner]:https://cloud.google.com/spanner/docs/whitepapers/life-of-reads-and-writes
 
-### No-wait
+#### No-wait
 ロックを取得した際にロックが取れなかったらアボートする。
 
-# Deadlock Avoidance
+## Deadlock Avoidance
 ロックを取得する前に、Deadlockが起こらない安全な状態であるかを検査する。つまり、deadlockを**起こすかもしれない**場合は、リソースの要求を拒絶するか遅延することでDeadlockを回避する。
 Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがある。
 安全な状態とは、ある順序で資源を確保すればDeadlockにならない、という状態。
@@ -99,7 +99,7 @@ Banker's Algorithm[^bankers_algorithm]という有名なアルゴリズムがあ
 
 [^bankers_algorithm]: https://ja.wikipedia.org/wiki/%E9%8A%80%E8%A1%8C%E5%AE%B6%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0
 
-# Deadlock Detection
+## Deadlock Detection
 Deadlockが発生するのは許容するがそれを検知する、という戦略。検知した後は、recovery algorithmを実行する。
 PostgreSQLやMySQLはDeadlock Detectionを採用[^deadlock_detection]。
 
@@ -119,7 +119,7 @@ Recovery algorithmも様々ある。
 
 [^deadlock_detection]: MySQLにはWFGの作成にはコストがかかるのでtimeoutを設定できる機能もあるとのことです（おそらくPostgreSQLでも同様の設定ができる）
 
-# 参考
+## 参考
 全部は見切れていないのであとで勉強する。
 * [System Deadlocks](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)
 * [Deadlock Prevention And Avoidance](https://www.geeksforgeeks.org/deadlock-prevention/)

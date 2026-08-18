@@ -11,7 +11,6 @@ layout: default
     <li>
       <span class="post-meta">
 	{{ post.date | date: "%Y/%m/%d" }}
-	{% include collecttags.html %}
 	{% include tags.html tags=post.tags %}
       </span>
 

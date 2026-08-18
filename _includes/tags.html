@@ -1,8 +1,9 @@
-{% for tag in include.tags %}
-  {% capture tag_name %}{{ tag }}{% endcapture %}
-  {% if forloop.last %}
-    <a href="/tag/{{ tag_name }}">{{ tag_name }}</a>
-  {% else %}
-    <a href="/tag/{{ tag_name }}">{{ tag_name }}</a>,
-  {% endif %}
-{% endfor %}
+{%- comment -%}
+  Tag names contain spaces (e.g. "Amazon RDS"), which the old template dropped straight
+  into the href. uri_escape percent-encodes them; cgi_escape/url_encode would turn the
+  space into +, which is wrong inside a path segment. Pages build as /tag/<Name>/index.html
+  under this permalink style, so the link has no .html suffix.
+{%- endcomment -%}
+{%- for tag in include.tags %}
+  <a class="post-tag" rel="tag" href="{{ tag | uri_escape | prepend: '/tag/' | append: '/' | relative_url }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+{%- endfor %}

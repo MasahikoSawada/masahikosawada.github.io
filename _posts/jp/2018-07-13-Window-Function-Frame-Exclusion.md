@@ -5,7 +5,7 @@ description: Window関数のフレームのEXCLUDEオプションを徹底解説
 tags:
   - PostgreSQL
   - Window Function
-lang: jp
+lang: ja
 ---
 
 [前回の記事]({% post_url 2018-07-07-Window-Frame %})では飛ばした、Window関数のEXCLUDEオプションについて解説します。
@@ -46,7 +46,7 @@ frame_exclusion:
 
 今回の範囲は、`frame_exclusion`の部分です。PostgreSQLでは、`EXCLUDE`オプションはPostgreSQL 11から使えるようになります。
 
-# EXCLUDEオプションの種類
+## EXCLUDEオプションの種類
 
 EXCLUDESオプションは全部で4つあります。デフォルトは、`EXCLUDE NO OTHERS`です。
 
@@ -61,11 +61,11 @@ EXCLUDESオプションは全部で4つあります。デフォルトは、`EXCL
 
 **行**や**グループ**の考え方は、これまでの記事を見ていただければ理解できると思います。
 
-# EXCLUDESオプションの違いを確認する
+## EXCLUDESオプションの違いを確認する
 
 EXCLUDESオプションを変えながら挙動の違いを見ていきます。以下の例では、フレームは`GROUPS`モードで`UNBOUNDED PRECEDING AND CURRENT ROW`です。テーブル全体が一つのパーティションとなり、フレームは少しずつ広がっていくように動作します。
 
-## `EXCLUDE NO OTHERS`
+### `EXCLUDE NO OTHERS`
 
 まずは`EXCLUDE NO OTHERS`を指定します。
 
@@ -94,7 +94,7 @@ EXCLUDESオプションを変えながら挙動の違いを見ていきます。
 
 デフォルトの動作なのでこれまでと同じです。
 
-## `EXCLUDE CURRENT ROW`
+### `EXCLUDE CURRENT ROW`
 
 次は`EXCLUDE CURRENT ROW`を指定します。このオプションは、現在行を除外します。
 
@@ -123,7 +123,7 @@ EXCLUDESオプションを変えながら挙動の違いを見ていきます。
 
 `EXCLUDE CURRENT ROW`では現在行を除外するため、各集約結果で自分自身の値が入っていないことがわかります。（例えば、`v = 'a'`の行では、`'a'`が入っていない。）
 
-## `EXCLUDE GROUP`
+### `EXCLUDE GROUP`
 
 次は、`EXCLUDE GROUP`です。このオプションでは、現在行を含むグループ（同じ行の集まり）が除外されます。
 
@@ -153,7 +153,7 @@ EXCLUDESオプションを変えながら挙動の違いを見ていきます。
 
 `EXCLUDE GROUP`では、同じグループ（同じ値の行）を除くので、各集約結果で自分の**グループ**が入っていないことがわかります。（例えば、`v = 'b'`では、`'b'`が2つとも入っていない)
 
-## `EXCLUDE TIES`
+### `EXCLUDE TIES`
 
 最後は、`EXCLUDE TIES`です。このオプションでは、`EXCLUDE GROUP`に似ていますが、除外するのは**現在の行以外のグループ中の行**です。
 
@@ -182,10 +182,10 @@ EXCLUDESオプションを変えながら挙動の違いを見ていきます。
 
 ちょっとわかりにくいですが、例えば`v = 'd'`の時、フレームには`'b'`が3つ入りますが、現在行以外の2つの`'b'`が除外されているため、`'b'`が1つしかありません。
 
-# まとめ
+## まとめ
 今回はEXCLUDEオプションについて解説しました。これまでの記事等でフレームが理解できていれば、簡単に理解できると思います。これでフレームに関するオプションは全部解説したので、マスターできれば自由自在にWindow関数を使うことができるようになるはずです。
 
-lang: jp
+lang: ja
 ---
 
 これまでにまとめた記事もあわせてどうぞ。

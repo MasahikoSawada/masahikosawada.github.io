@@ -1,10 +1,12 @@
 ---
 layout: post
 title: PostgreSQLのリカバリ周りのバグを修正してみた - 問題発見編 -
+description: >-
+  PostgreSQLのリカバリ機能にあったバグを、発見から原因特定、修正まで実際に行った過程を紹介します。問題発見編では、タイムラインIDの検証中にRECOVERYHISTORYファイルの残留を見つけるまでを扱います。
 tags:
   - PostgreSQL
   - Bug fixes
-lang: jp
+lang: ja
 ---
 
 私自身PostgreSQL本体の開発やバグ修正を何度か行っているのですが、最近リカバリ機能周りで面白いバグを修正したので、バグの発見から原因の特定、修正まで実際に行ったことを紹介しようと思います。これからPostgreSQLに貢献していきたい、開発を始めたいという方に参考になると嬉しいです。
@@ -13,7 +15,7 @@ lang: jp
 
 本記事ではPostgreSQLの開発用ブランチ(materブランチ)を使用しています。PostgreSQLのソースコードのダウンロードやビルドについては[こちら](https://qiita.com/sawada_masahiko/items/2fa99e422ec0eb35245c#%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E5%85%A5%E6%89%8B%E3%81%8B%E3%82%89%E8%B5%B7%E5%8B%95%E3%81%BE%E3%81%A7)の記事をご参照ください。
 
-# バグの発見
+## バグの発見
 
 Single Page Recovery[^pagerecovery]という技術をPostgreSQLに組み込むために開発していた所、PostgreSQLの[タイムラインID](https://www.postgresql.jp/document/11/html/continuous-archiving.html#BACKUP-TIMELINES)について理解を深めるために、色々な動作確認や実験をしていました。
 
@@ -70,7 +72,7 @@ pg_ctl start -D bkp2
 
 ここで注目するのは`RECOVERYHISTORY`ファイルです。このファイルはドキュメントを見てもなにも説明は載っておらず、中身を見てみると`00000002.history`と全く同じなので必要なさそうです。なのになぜかこのファイルが残っている、これが今回解決したい問題です。
 
-# 原因解析 - RECOVERYHISTORYファイルとはなにか？-
+## 原因解析 - RECOVERYHISTORYファイルとはなにか？-
 
 なぜか`pg_wal`ディレクトリに存在している`RECOVERYHISTORY`ファイルはどのようなファイルなのでしょうか？まずは、ソースコードで`RECOVERYHISTORY`ファイルを操作している箇所を見てみます。
 
@@ -121,7 +123,7 @@ RestoreArchivedFile(char *path, const char *xlogfname,
 
 `RestoreArchivedFile(path, histfname, "RECOVERYHISTORY", 0, false);`のようにこの関数を使っていることから、**`restore_command`によってhistoryファイルがリストアされ、リストアされたファイルが`RECOVERYHISTORY`という名前になっている、ことがわかります**
 
-## RECOVERYHITORYファイルのその後は？
+### RECOVERYHITORYファイルのその後は？
 
 `RECOVERYHISTORY`ファイルはその後どうなるのでしょうか？答えは`RestoreArchivedFile関数`が使われている周辺を見るとわかります。
 
@@ -172,13 +174,13 @@ exitArchiveRecovery(TimeLineID endTLI, XLogRecPtr endOfLog)
 
 やはり`RECOVERYHISTORY`(や`RECOVERYXLOG`)は不必要なファイルなようです。
 
-# まとめ
+## まとめ
 
 今回はバグの発見、問題の理解まで書いてみました。もしPostgreSQLのバグを見つけた場合は、自分で修正しなくても、この時点で再現手順を添えてPostgreSQLコミュニティに[報告](https://www.postgresql.org/account/submitbug/)しても良いと思います。コミュニティ上での議論を見たり、自分なりの調査を行うことでPostgreSQLの動作にソースコードレベルで詳しくなることができます。
 
 次回は原因究明、解決を紹介しようと思います。興味がある方はこれらの情報を元に、ぜひ自分で何が原因になっているのかを探してみてください！
 
-## 本バグの影響は？
+### 本バグの影響は？
 
 本バグの修正は次回にリリースされるバージョンに取り込まれる予定ですので、PostgreSQLコミュニティによる公式な見解はまだですが、個人的には本バグによる影響は大きくないと考えています。`RECOVERYHISTORY`ファイルは不必要なファイルではありますが、存在していてもPostgreSQLの動作に悪影響を及ぼすものではありません。ただし、お使いのバックアップ管理ツール等では`pg_wal`ディレクトリ内になにか不要なファイルがあることで問題を引き起こす可能性もあるかもしれないので、念の為確認することを推奨します。
 

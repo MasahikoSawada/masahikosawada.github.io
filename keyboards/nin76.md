@@ -7,7 +7,7 @@ permalink: /keyboards/nin76.html
 ~~試作機を[BOOTH](https://masahi-shop.booth.pm/items/1370844)にて頒布中です。~~ 現在売り切れ中です(2019/05/30)。
 
 <div align="center">
-<img src="/images/nin76/top.jpg">
+<img src="/images/nin76/top.jpg" alt="自作キーボードNin76を真上から見た全体像" width="1600" height="1200" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 自作キーボード「Nin76」の紹介です。
@@ -49,13 +49,13 @@ permalink: /keyboards/nin76.html
 両手の中央部分に余分なキー（黄色のキー）があるので、それを使ってキーボードの中央付近のキー（「T」、「Y」、「G」など）を重複させても良いですし、別のキーを割り当てる事も可能です。
 
 <div align="center">
-<img src="/images/nin76/layout_jis.png">
+<img src="/images/nin76/layout_jis.png" alt="Nin76で日本語配列を再現したときのキー配列図" width="992" height="290" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 これは自分で使っている配列です。
 
 <div align="center">
-<img src="/images/nin76/layout_own.png">
+<img src="/images/nin76/layout_own.png" alt="作者が実際に使っているNin76のキー配列図" width="992" height="290" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 # 側面のパーツ
@@ -63,13 +63,13 @@ permalink: /keyboards/nin76.html
 Nin76にはキーボード側面を覆うパーツが付いていて、キーボード内部へのゴミ、ほこりの侵入を防ぎます。
 
 <div align="center">
-<img src="/images/nin76/hight.jpg">
+<img src="/images/nin76/hight.jpg" alt="Nin76の側面カバーを横から見た様子" width="1600" height="943" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 側面のパーツは少し内側にあるため、キーボードが掴みやすくなっています。
 
 <div align="center">
-<img src="/images/nin76/hekomi.jpg">
+<img src="/images/nin76/hekomi.jpg" alt="側面パーツが少し内側に入っていて掴みやすくなっているNin76の側面" width="1600" height="1284" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 # 組み立て方法
@@ -123,23 +123,23 @@ Nin76に必要なキーキャップです。
 [Majestouch 日本語108キーの交換用キーキャップセット](https://www.diatec.co.jp/shop/det.php?prod_c=3716)に入っているキーも使えます。
 
 <div align="center">
-<img src="/images/nin76/black.jpg">
+<img src="/images/nin76/black.jpg" alt="Majestouch用の黒いキーキャップを装着したNin76" width="1600" height="946" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 # ギャラリー
 
 <div align="center">
-<img src="/images/nin76/leftside.png">
+<img src="/images/nin76/leftside.png" alt="Nin76を左斜め前から見たレンダリング画像" width="1600" height="1067" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 <div align="center">
-<img src="/images/nin76/incline.png">
+<img src="/images/nin76/incline.png" alt="Nin76のキーボード面の傾斜がわかる側面のレンダリング画像" width="1600" height="1067" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 <div align="center">
-<img src="/images/nin76/right_hand_close.jpg">
+<img src="/images/nin76/right_hand_close.jpg" alt="Nin76の右手側キーボードのクローズアップ" width="1600" height="1200" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
 
 <div align="center">
-<img src="/images/nin76/left_hand_close.jpg">
+<img src="/images/nin76/left_hand_close.jpg" alt="Nin76の左手側キーボードのクローズアップ" width="1600" height="1200" loading="lazy" decoding="async" style="max-width:100%;height:auto">
 </div>
