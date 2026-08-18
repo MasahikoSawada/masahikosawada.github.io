@@ -44,8 +44,9 @@ locale: ja_JP
 timezone: Asia/Tokyo
 
 # Measurement. Both are read by _includes/google-analytics.html and jekyll-seo-tag.
-# Fill these in once the GA4 property and the Search Console property exist.
-#google_analytics: G-XXXXXXXXXX
+# The GA4 tag only renders when JEKYLL_ENV is production, so local serves are not counted.
+google_analytics: G-WRE0D2HZJD
+# Fill in once the Search Console property is verified (HTML tag method, content value only).
 #webmaster_verifications:
 #  google: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
