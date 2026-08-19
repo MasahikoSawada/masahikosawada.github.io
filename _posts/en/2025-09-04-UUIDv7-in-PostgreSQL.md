@@ -4,6 +4,7 @@ title: PostgreSQL 18 supports UUIDv7
 description: >-
   PostgreSQL 18 supports UUIDv7 as defined in RFC 9562. Explains what makes UUIDv7 sortable, how the new uuidv7() function behaves, and how it compares with UUIDv4 in practice.
 lang: en
+image: /assets/images/og/en/uuidv7-in-postgresql.png
 translated: true
 tags:
   - PostgreSQL

@@ -8,6 +8,7 @@ tags:
   - Foreign Data Wrapper
   - Transaction
 lang: ja
+image: /assets/images/og/ja/fdw-transaction-d6d8af93.png
 ---
 
 Merry Christmas 🎄

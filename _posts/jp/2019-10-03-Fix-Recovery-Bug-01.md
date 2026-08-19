@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Bug fixes
 lang: ja
+image: /assets/images/og/ja/fix-recovery-bug-01.png
 ---
 
 私自身PostgreSQL本体の開発やバグ修正を何度か行っているのですが、最近リカバリ機能周りで面白いバグを修正したので、バグの発見から原因の特定、修正まで実際に行ったことを紹介しようと思います。これからPostgreSQLに貢献していきたい、開発を始めたいという方に参考になると嬉しいです。

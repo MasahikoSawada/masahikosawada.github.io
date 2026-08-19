@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Replication
 lang: ja
+image: /assets/images/og/ja/streaming-replication-protocol.png
 ---
 
 PostgreSQLには物理レプリケーションと論理レプリケーションの2種類のレプリケーションがありますが、どちらもサーバ間の通信にはストリーミングレプリケーションプロトロル（以下、長いのでレプリケーションプロトロルとします）を使用して、データを送っています。

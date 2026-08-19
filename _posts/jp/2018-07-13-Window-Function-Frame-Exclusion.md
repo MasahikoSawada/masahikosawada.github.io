@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Window Function
 lang: ja
+image: /assets/images/og/ja/window-function-frame-exclusion.png
 ---
 
 [前回の記事]({% post_url 2018-07-07-Window-Frame %})では飛ばした、Window関数のEXCLUDEオプションについて解説します。

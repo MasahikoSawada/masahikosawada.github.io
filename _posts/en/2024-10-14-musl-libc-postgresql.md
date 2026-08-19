@@ -4,6 +4,7 @@ title: Building PostgreSQL with musl libc
 description: >-
   How to build PostgreSQL against musl libc instead of glibc: preparing the musl toolchain, the configure invocation, and the problems encountered along the way.
 lang: en
+image: /assets/images/og/en/musl-libc-postgresql.png
 translated: true
 tags:
   - PostgreSQL

@@ -4,6 +4,7 @@ title: テキサス大学オースティン校のオンラインCS修士課程�
 description: >-
   テキサス大学オースティン校（UT Austin）のオンラインCS修士課程（MSCSO）に社会人エンジニアとして入学した話です。出願の経緯、費用、働きながら通うことにした理由をまとめています。
 lang: ja
+image: /assets/images/og/ja/ut-austin-mscs-277b83af.png
 tags:
   - Diary
 ---

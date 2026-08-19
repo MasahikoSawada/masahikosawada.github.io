@@ -6,6 +6,7 @@ description: >-
   同じXIDのレコードをグラフ線で繋いで表示するので、絞り込まずに特定のトランザクションを
   目で追えます。画面の構成と使い方を紹介します。
 lang: ja
+image: /assets/images/og/ja/pg-walview-ed6e5f59.png
 translated: true
 tags:
   - PostgreSQL

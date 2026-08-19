@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Commitfest
 lang: ja
+image: /assets/images/og/ja/cf-patches-for-beginners.png
 ---
 
 昨年9月にPostgreSQL 13がリリースされましたが、PostgreSQL開発コミュニティでは現在PostgreSQL 14の開発を行っています。PostgreSQLの開発は[Commitfest](https://commitfest.postgresql.org/)と呼ばれるWebページにパッチを登録し、みんなで1ヶ月間レビューする、という形で行われます。PostgreSQL 14に向けたCommitfestはすでに3回行われていて、2021年1月1日から第4回が始まりました（3月から始まる第5回が最後）。

@@ -6,6 +6,7 @@ tags:
   - Database
   - Deadlock
 lang: ja
+image: /assets/images/og/ja/deadlock-and-deadlock-handling.png
 ---
 
 簡単に調べたのでメモ。「Deadlockとは？」は色んなところで解説されているのでここでは割愛。

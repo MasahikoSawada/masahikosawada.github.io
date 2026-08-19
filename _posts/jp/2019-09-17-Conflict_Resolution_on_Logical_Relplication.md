@@ -9,6 +9,7 @@ tags:
   - Logical Replication
   - Conflict Resolution
 lang: ja
+image: /assets/images/og/ja/conflict-resolution-on-logical-relplication-c31235d5.png
 ---
 
 今回解決したいのは、以下で説明されているような事象。

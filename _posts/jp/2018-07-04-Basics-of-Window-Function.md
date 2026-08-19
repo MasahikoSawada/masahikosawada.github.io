@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Window Function
 lang: ja
+image: /assets/images/og/ja/basics-of-window-function.png
 ---
 
 最近久しぶりにWindow関数を詳しく見てみたので、何回かに分けて解説しようと思います。以降、PostgreSQLを例にして解説しますが、PostgreSQLのWindow関数はSQL標準に対応している部分が多いので、他のDBMSでも同じよう使える部分が多いと思います。

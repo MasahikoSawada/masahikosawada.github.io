@@ -7,6 +7,7 @@ tags:
   - Plairie
   - DIY
 lang: ja
+image: /assets/images/og/ja/introduction-to-plairie.png
 ---
 
 自作キーボードを作ってみました。回路設計から、基板発注、ケース設計等全部やってみました。名前は「Plairie」というキーボードで、動物の「Prairie Dog」から名前を取っています。

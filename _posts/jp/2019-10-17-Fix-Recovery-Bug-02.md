@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Bug fixes
 lang: ja
+image: /assets/images/og/ja/fix-recovery-bug-02.png
 ---
 
 PostgreSQLのリカバリ周りにあったバグ修正について、発見から修正までに実際に行ったことを紹介しています。今回は原因究明編です。前回をまだ読んでいない方は[前回の記事]({% post_url 2019-10-03-Fix-Recovery-Bug-01 %})を先に読むことをおすすめします。

@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+image: /assets/images/og/ja/lock-levels-of-alter-table.png
 ---
 
 `ALTER TABLE`コマンドは各サブコマンドによってテーブルへのロックレベルが異なります。[ソース](https://github.com/postgres/postgres/blob/REL_15_STABLE/src/backend/commands/tablecmds.c#L4161)を見るのが一番正確なのですが、いつも確認するのが面倒なのでまとめてみました。

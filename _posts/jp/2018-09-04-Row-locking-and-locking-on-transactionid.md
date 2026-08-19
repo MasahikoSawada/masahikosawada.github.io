@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Lock
 lang: ja
+image: /assets/images/og/ja/row-locking-and-locking-on-transactionid.png
 ---
 
 PostgreSQLが持つpg\_lockシステムビューを使うと、PostgreSQLのロックマネージャが管理している情報を見ることができ、誰がどのようなオブジェクトに対し、どの種類のロックを取得しているのか、または取得できずに待っているのかを確認することができます。

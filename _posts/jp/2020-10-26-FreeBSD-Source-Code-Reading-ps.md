@@ -7,6 +7,7 @@ tags:
   - FreeBSD
   - Source Code Reading
 lang: ja
+image: /assets/images/og/ja/freebsd-source-code-reading-ps.png
 ---
 
 気になったので読んでみた。`bin/ps`にあるコードが対象。

@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Parallel Query
 lang: ja
+image: /assets/images/og/ja/overview-of-parallel-query.png
 ---
 
 PostgreSQLでは、バージョン9.6からパラレルクエリが利用可能です。Oracle、DB2でもパラレルクエリは実装されていますが、PostgreSQLのパラレルクエリはどのような特徴があるのでしょうか。簡単にパラレルクエリの概要を紹介します。

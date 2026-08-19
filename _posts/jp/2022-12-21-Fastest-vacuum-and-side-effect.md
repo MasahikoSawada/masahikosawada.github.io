@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Vacuum
 lang: ja
+image: /assets/images/og/ja/fastest-vacuum-and-side-effect.png
 ---
 
 これは[PostgreSQL Advavent Calendar 2022](https://qiita.com/advent-calendar/2022/postgresql)の21日目のエントリです。昨日は、[@tom-sato](https://qiita.com/tom-sato)さんによる[PostgreSQL でページの中身を視覚的に表示してみる](https://qiita.com/tom-sato/items/e91c7cd816bf3464a417)でした。

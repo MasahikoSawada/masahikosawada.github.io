@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Source Code Reading
 lang: ja
+image: /assets/images/og/ja/postgresql-source-code-directories-75b1c0f8.png
 ---
 
 先日の[PostgreSQLアンカンファレンス](https://pgunconf.connpass.com/event/194291/)でPostgreSQLのソースコードのディレクトリ構成や読み方について簡単に紹介しました。

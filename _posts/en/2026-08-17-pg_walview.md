@@ -6,6 +6,7 @@ description: >-
   line through the records that share a transaction ID, so a single transaction can be
   followed without filtering the surrounding records away.
 lang: en
+image: /assets/images/og/en/pg-walview-ed6e5f59.png
 translated: true
 tags:
   - PostgreSQL

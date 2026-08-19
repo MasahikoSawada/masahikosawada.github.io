@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+image: /assets/images/og/ja/release-note.png
 ---
 
 先日リリースされたPostgreSQL 12のリリースノートは[こちら](https://www.postgresql.org/docs/12/release-12.html)です。

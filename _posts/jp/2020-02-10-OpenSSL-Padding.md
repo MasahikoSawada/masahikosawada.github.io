@@ -7,6 +7,7 @@ tags:
   - AES
   - OpenSSL
 lang: ja
+image: /assets/images/og/ja/openssl-padding.png
 ---
 
 OpenSSLのPaddingではまったので覚書。

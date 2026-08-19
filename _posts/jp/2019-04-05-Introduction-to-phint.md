@@ -8,6 +8,7 @@ tags:
   - Planner
   - Planner Hints
 lang: ja
+image: /assets/images/og/ja/introduction-to-phint.png
 ---
 
 タイトルの通り、SQLからHINT句を生成するツールを作ってみました。正確に言うと、 **SQLを実行して実行計画の代わりに、その実行計画を再現するためのHINT句を生成する** ツールです。

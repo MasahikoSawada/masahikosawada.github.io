@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Window Function
 lang: ja
+image: /assets/images/og/ja/window-frame.png
 ---
 
 Window関数のパーティションは`PARTITION BY`句で指定するだけなのですが、フレームについては色々モードやオプションがあり細かく指定できます。

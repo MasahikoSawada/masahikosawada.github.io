@@ -6,6 +6,7 @@ description: >-
 tags:
   - Diary
 lang: ja
+image: /assets/images/og/ja/join-2ndquadrant.png
 ---
 
 7年半勤めたNTTデータを退職し、11月1日から2ndQuadrantで働いています。

@@ -8,6 +8,7 @@ tags:
   - MVCC
   - Vacuum
 lang: ja
+image: /assets/images/og/ja/mvcc-and-gc-in-postgresql.png
 ---
 
 このエントリは[PostgreSQL Advent Calender 2021](https://qiita.com/advent-calendar/2021/postgresql)の22日目の記事です。

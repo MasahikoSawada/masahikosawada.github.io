@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Window Function
 lang: ja
+image: /assets/images/og/ja/window-function-filter-clause.png
 ---
 
 この記事は、[PostgreSQL Advent Calendar 2018](https://qiita.com/advent-calendar/2018/postgresql)の17日目の記事です。

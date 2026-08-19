@@ -4,6 +4,7 @@ title: PostgreSQL 18がUUIDv7をサポート
 description: >-
   PostgreSQL 18がRFC 9562のUUIDv7をサポートしました。タイムスタンプを先頭に持つためソート可能というUUIDv7の特徴と、uuidv7()関数の使い方、UUIDv4との違いを実際のSQLで比較しながら解説します。
 lang: ja
+image: /assets/images/og/ja/uuidv7-in-postgresql.png
 translated: true
 tags:
   - PostgreSQL

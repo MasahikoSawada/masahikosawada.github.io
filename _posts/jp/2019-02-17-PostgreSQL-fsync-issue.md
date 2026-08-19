@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Bugs
 lang: ja
+image: /assets/images/og/ja/postgresql-fsync-issue.png
 ---
 
 先日PostgreSQLの新しいマイナーバージョンが[リリースされました](https://www.postgresql.org/about/news/1920/)。このマイナーリリースでメインとなる修正は「fsync周りのバグ修正」で、このバグは**間違ったfsyncに対する間違った認識から約20年間存在してたバグ**ということで注目されていました。

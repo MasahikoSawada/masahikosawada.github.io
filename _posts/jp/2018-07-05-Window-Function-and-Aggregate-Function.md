@@ -6,6 +6,7 @@ tags:
   - PostgreSQL
   - Window Function
 lang: ja
+image: /assets/images/og/ja/window-function-and-aggregate-function.png
 ---
 
 

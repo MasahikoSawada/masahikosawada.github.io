@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+image: /assets/images/og/ja/postgresql-inserts.png
 ---
 
 ## 使用するテーブル

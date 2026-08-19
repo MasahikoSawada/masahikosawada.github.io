@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Vacuum
 lang: ja
+image: /assets/images/og/ja/reading-vacuum-verbose.png
 ---
 
 Vacuumとうまく付き合っていくために`VACUUM VERBOSE`ログの読み方を簡単に紹介します。また、`log_autovacuum_min_duration`で出力されるautovacuumのログも大体同じです。バージョンは12.2を使います。`VACUUM VERBOSE`の出力内容はバージョンによって異なる可能性があるのでご注意ください。

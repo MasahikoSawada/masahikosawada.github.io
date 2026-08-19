@@ -8,6 +8,7 @@ tags:
   - pgindent
   - OS X
 lang: ja
+image: /assets/images/og/ja/pgindent-on-os-x-5009a2ca.png
 ---
 
 外部ツールや開発中のコードについてpgindentを走らせたい時のメモ[^pgindent]。

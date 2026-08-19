@@ -8,6 +8,7 @@ tags:
   - Vacuum
   - Btree Indexes
 lang: ja
+image: /assets/images/og/ja/btree-vacuum-improvements-in-pg14-07b462ff.png
 ---
 
 Vacuum（とautovacuum）は、テーブルとインデックスのゴミ掃除をした後に[index cleanup](https://www.postgresql.jp/document/12/html/progress-reporting.html#VACUUM-PROGRESS-REPORTING)と呼ばれる「インデックスVacuumの後処理」のようなものを実行します。実際の処理内容はインデックスの種類によって異なりますが、index cleanupの主な目的はインデックスの統計情報（ページ数、タプル数）を取得することです（インデックスによっては、削除済みページの回収など、他の処理を行う場合もあります）。インデックスのゴミ掃除をした場合（つまりテーブルにゴミがある状態でVacuumが実行された場合）は、インデックスの統計情報はすでに取得済みなので、index cleanupでは何もしません。一方、テーブルにゴミがない状態でVacuumが実行された場合[^insert_vacuum]は、index cleanupはVacuumにとってこれが初めてのインデックスに対する処理となります。

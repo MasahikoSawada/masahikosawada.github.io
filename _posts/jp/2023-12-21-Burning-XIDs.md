@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Vacuum
 lang: ja
+image: /assets/images/og/ja/burning-xids.png
 translated: true
 ---
 

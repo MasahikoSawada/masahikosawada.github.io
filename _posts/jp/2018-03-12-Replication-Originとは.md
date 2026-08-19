@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Replication
 lang: ja
+image: /assets/images/og/ja/replication-origin-bc344521.png
 ---
 
 PostgreSQLのLogical Replicationはいくつかのコンポーネントから実現されていており、その一つが **Replication Origin** です。PostgreSQLの日本語マニュアルだとReplication Originは「レプリケーション起点」と訳されていますが、名前だけみてもあまりぱっとイメージが付かなくて気になったので、少し調べた結果をまとめます。

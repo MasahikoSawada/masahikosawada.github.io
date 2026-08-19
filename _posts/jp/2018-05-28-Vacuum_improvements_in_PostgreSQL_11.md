@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Vacuum
 lang: ja
+image: /assets/images/og/ja/vacuum-improvements-in-postgresql-11-1b6097f3.png
 ---
 
 [PGCon](https://www.pgcon.org/2018/)に向う途中です。

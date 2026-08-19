@@ -4,6 +4,7 @@ title: 論理レプリケーションでのレプリケーションラグの原�
 description: >-
   PostgreSQLの論理レプリケーションでレプリケーションラグが大きくなる原因を調べました。synchronous_commitを変えながら物理レプリケーションと比較し、サブスクライバがデフォルトで非同期コミットを使う点に行き着きます。
 lang: ja
+image: /assets/images/og/ja/logical-replication-lags.png
 tags:
   - PostgreSQL
   - Logical Replication

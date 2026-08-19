@@ -4,6 +4,7 @@ title: UUIDの生成速度を上げる取り組み
 description: >-
   PostgreSQLのUUIDv7の生成速度を上げるための改善について、その背景と検証内容を紹介します。C実装のuuidv7()とRust（pgrx）実装の性能を比較し、どこがボトルネックになっているかを掘り下げます。
 lang: ja
+image: /assets/images/og/ja/uuid-performance.png
 tags:
   - PostgreSQL
   - UUID

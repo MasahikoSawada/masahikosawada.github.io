@@ -4,6 +4,7 @@ title: PostgreSQLでmusl libcを使う方法
 description: >-
   標準Cライブラリにglibcではなくmusl libcを使ってPostgreSQLをビルドする方法のメモです。musl libcの準備からconfigureのオプション指定、ビルド時にはまった点までを紹介します。
 lang: ja
+image: /assets/images/og/ja/musl-libc-postgresql.png
 translated: true
 tags:
   - PostgreSQL

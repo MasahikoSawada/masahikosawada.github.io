@@ -4,6 +4,7 @@ title: PostgreSQLで「圧縮＋読み取り専用テーブル」をテーブル
 description: >-
   PostgreSQLのTable Access Method（Table AM）を使って、圧縮された読み取り専用テーブルを追加する拡張機能 pgroad を自作しました。Table AMのコールバック実装と、アーカイブ用途での使い方を解説します。
 lang: ja
+image: /assets/images/og/ja/implementing-table-am-for-archving-tables-5598a211.png
 translated: true
 tags:
   - PostgreSQL

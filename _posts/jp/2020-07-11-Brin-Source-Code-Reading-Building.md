@@ -8,6 +8,7 @@ tags:
   - BRIN
   - Source Code Reading
 lang: ja
+image: /assets/images/og/ja/brin-source-code-reading-building.png
 ---
 
 BRINのソースコードの構築周り（CREATE INDEX）を見たのでその時のメモ。

@@ -7,6 +7,7 @@ tags:
   - Linux
   - io_uring
 lang: ja
+image: /assets/images/og/ja/using-io-uring-7a781c79.png
 ---
 
 Liunxカーネル 5.1から入ったio_uringに興味があったので実際に使ってみました

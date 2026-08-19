@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+image: /assets/images/og/ja/the-order-of-rows-by-seqscan-6798d687.png
 ---
 
 この記事は[PostgreSQL Advent Calendar 2020](https://qiita.com/advent-calendar/2020/postgresql)の23日目の記事です。昨日は、[@hiro5963](https://qiita.com/hiro5963)さんによる「[pg_repackについて調べてみた](https://qiita.com/hiro5963/items/79e1f9c7db0362411793)」でした。

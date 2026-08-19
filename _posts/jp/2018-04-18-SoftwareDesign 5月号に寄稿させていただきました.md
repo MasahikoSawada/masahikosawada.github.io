@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - MySQL
 lang: ja
+image: /assets/images/og/ja/softwaredesign-5-5579bf79.png
 ---
 
 本日発売の「SoftwareDesign 5月号」にて、「第3章 MySQLとPostgreSQL比較」を執筆させていただきました。

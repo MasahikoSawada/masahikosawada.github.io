@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+image: /assets/images/og/ja/pg-block-banner.png
 ---
 
 これは[PostgreSQL Advent calendar 2023](https://qiita.com/advent-calendar/2023/postgresql)シリーズ2の8日目の記事です。

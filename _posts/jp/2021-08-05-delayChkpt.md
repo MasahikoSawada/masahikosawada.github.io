@@ -7,6 +7,7 @@ tags:
   - PostgreSQL
   - Source Code Reading
 lang: ja
+image: /assets/images/og/ja/delaychkpt.png
 ---
 
 PostgreSQLのコードを読んでいるとたまに`MyProc->delayChkpt`と一旦`true`にして、いくつか処理をしたあとに再び`false`に戻す、という処理を見ることがあります。

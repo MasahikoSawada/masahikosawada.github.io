@@ -4,6 +4,7 @@ title: Implementing a new PostgreSQL Table AM for archiving tables
 description: >-
   Implementing pgroad, a PostgreSQL Table Access Method that converts existing tables into compact read-only archived tables. Covers the Table AM callbacks involved and how the road format works.
 lang: en
+image: /assets/images/og/en/implementing-table-am-for-archving-tables-5598a211.png
 translated: true
 tags:
   - PostgreSQL

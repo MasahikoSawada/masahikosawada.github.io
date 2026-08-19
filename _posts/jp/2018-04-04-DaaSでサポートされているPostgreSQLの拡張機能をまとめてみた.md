@@ -9,6 +9,7 @@ tags:
   - "Cloud SQL"
   - Extension
 lang: ja
+image: /assets/images/og/ja/daas-postgresql-a63bf8d2.png
 ---
 
 PostgreSQLのDaaSを利用する時にどのような拡張機能が使えるかは重要で、少し気になったので現時点の状況を調べてみた。

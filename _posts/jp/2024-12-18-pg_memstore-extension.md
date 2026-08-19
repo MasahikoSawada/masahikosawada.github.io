@@ -4,6 +4,7 @@ title: PostgreSQL 17で新しく実装されたradix treeを使ってインメ�
 description: >-
   PostgreSQL 17で新しく実装されたradix tree（radixtree.h）を使って、インメモリのキーバリューストア拡張 pg_memstore を作ってみました。Vacuumの高速化を支えたradix treeの使い方を実例で解説します。
 lang: ja
+image: /assets/images/og/ja/pg-memstore-extension-34a5320c.png
 tags:
   - PostgreSQL
   - radixtree
