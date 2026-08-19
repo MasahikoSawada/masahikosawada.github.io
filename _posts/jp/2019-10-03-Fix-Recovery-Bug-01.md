@@ -4,6 +4,7 @@ title: PostgreSQLのリカバリ周りのバグを修正してみた - 問題発
 description: >-
   PostgreSQLのリカバリ機能にあったバグを、発見から原因特定、修正まで実際に行った過程を紹介します。問題発見編では、タイムラインIDの検証中にRECOVERYHISTORYファイルの残留を見つけるまでを扱います。
 tags:
+  - WAL
   - PostgreSQL
   - Bug fixes
 lang: ja

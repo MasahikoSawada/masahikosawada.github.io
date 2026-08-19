@@ -4,6 +4,7 @@ title: PostgreSQLのリカバリ周りのバグを修正してみた - 原因究
 description: >-
   PostgreSQLのリカバリ周りのバグ修正の原因究明編です。RECOVERYHISTORYファイルがなぜ残るのか、KeepFileRestoredFromArchive関数とexitArchiveRecovery関数を追いながら仮説と検証を繰り返して原因を特定します。
 tags:
+  - WAL
   - PostgreSQL
   - Bug fixes
 lang: ja

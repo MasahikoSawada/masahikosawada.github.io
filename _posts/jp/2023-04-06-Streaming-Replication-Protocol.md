@@ -4,6 +4,7 @@ title: ストリーミングレプリケーションプロトロルで遊ぶ
 description: >-
   PostgreSQLの物理レプリケーションと論理レプリケーションが共通で使うストリーミングレプリケーションプロトコルを、実際に手で喋って動かしてみます。レプリケーション接続の確立からWALの受信までの流れを解説します。
 tags:
+  - WAL
   - PostgreSQL
   - Replication
 lang: ja

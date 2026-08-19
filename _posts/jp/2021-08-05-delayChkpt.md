@@ -4,6 +4,7 @@ title: MyProc->delayChkptについての理解と覚書
 description: >-
   PostgreSQLのソースコードに出てくるMyProc->delayChkptが何のためにあるのかを解説します。コミットのWAL書き込みとpg_xactの更新の間でチェックポイントを遅延させる必要がある理由を、クラッシュリカバリの観点から整理します。
 tags:
+  - WAL
   - PostgreSQL
   - Source Code Reading
 lang: ja
