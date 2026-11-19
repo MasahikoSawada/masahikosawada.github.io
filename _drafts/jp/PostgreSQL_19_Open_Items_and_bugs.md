@@ -6,6 +6,7 @@ description: >-
 tags:
   - PostgreSQL
 lang: ja
+translated: true
 ---
 
 2026年11月19日に[PostgreSQL 19](https://www.postgresql.org/about/news/postgresql-19-released-3449/)がリリースされました！PostgreSQL 16〜18は9月中旬から下旬（PostgreSQL 15は10月）にリリースされていたので、今年は約2か月遅れたことになります。
