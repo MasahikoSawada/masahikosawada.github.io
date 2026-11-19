@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" font-family="Noto Sans JP, Hiragino Sans, Meiryo, sans-serif" role="img" aria-label="Feature FreezeからGAまでのバージョン固有の修正commit数（期間別）">
+<rect width="600" height="400" fill="#fcfcfb"/>
+<text x="48" y="24" font-size="15" fill="#0b0b0b" font-weight="600">バージョン固有のcommit数（FF〜GA、Revertを除く）</text>
+<rect x="48" y="40" width="12" height="12" rx="2" fill="#86b6ef"/><text x="65" y="50.5" font-size="12" fill="#0b0b0b">FF → Beta1</text>
+<rect x="166" y="40" width="12" height="12" rx="2" fill="#2a78d6"/><text x="183" y="50.5" font-size="12" fill="#0b0b0b">Beta1 → RC1</text>
+<rect x="284" y="40" width="12" height="12" rx="2" fill="#104281"/><text x="301" y="50.5" font-size="12" fill="#0b0b0b">RC1 → GA</text>
+<line x1="48" x2="576" y1="352.0" y2="352.0" stroke="#e1e0d9"/><text x="40" y="356.0" font-size="11" fill="#898781" text-anchor="end">0</text>
+<line x1="48" x2="576" y1="298.4" y2="298.4" stroke="#e1e0d9"/><text x="40" y="302.4" font-size="11" fill="#898781" text-anchor="end">200</text>
+<line x1="48" x2="576" y1="244.8" y2="244.8" stroke="#e1e0d9"/><text x="40" y="248.8" font-size="11" fill="#898781" text-anchor="end">400</text>
+<line x1="48" x2="576" y1="191.2" y2="191.2" stroke="#e1e0d9"/><text x="40" y="195.2" font-size="11" fill="#898781" text-anchor="end">600</text>
+<line x1="48" x2="576" y1="137.6" y2="137.6" stroke="#e1e0d9"/><text x="40" y="141.6" font-size="11" fill="#898781" text-anchor="end">800</text>
+<line x1="48" x2="576" y1="84.0" y2="84.0" stroke="#e1e0d9"/><text x="40" y="88.0" font-size="11" fill="#898781" text-anchor="end">1000</text>
+<rect x="72.8" y="303.2" width="56" height="48.8" fill="#86b6ef"/>
+<rect x="72.8" y="236.2" width="56" height="65.0" fill="#2a78d6"/>
+<path d="M72.8,234.22400000000002 L72.8,235.13199999999998 Q72.8,231.13199999999998 76.8,231.13199999999998 L124.80000000000001,231.13199999999998 Q128.8,231.13199999999998 128.8,235.13199999999998 L128.8,234.22400000000002 Z" fill="#104281"/>
+<text x="100.8" y="223.1" font-size="13" fill="#0b0b0b" font-weight="600" text-anchor="middle">451</text>
+<text x="100.8" y="370" font-size="12.5" fill="#0b0b0b" text-anchor="middle">PG15</text>
+<text x="100.8" y="386" font-size="11" fill="#898781" text-anchor="middle">185日</text>
+<rect x="178.39999999999998" y="304.3" width="56" height="47.7" fill="#86b6ef"/>
+<rect x="178.39999999999998" y="257.7" width="56" height="44.6" fill="#2a78d6"/>
+<path d="M178.39999999999998,255.664 L178.39999999999998,259.252 Q178.39999999999998,255.252 182.39999999999998,255.252 L230.39999999999998,255.252 Q234.39999999999998,255.252 234.39999999999998,259.252 L234.39999999999998,255.664 Z" fill="#104281"/>
+<text x="206.39999999999998" y="247.3" font-size="13" fill="#0b0b0b" font-weight="600" text-anchor="middle">361</text>
+<text x="206.39999999999998" y="370" font-size="12.5" fill="#0b0b0b" text-anchor="middle">PG16</text>
+<text x="206.39999999999998" y="386" font-size="11" fill="#898781" text-anchor="middle">156日</text>
+<rect x="284.0" y="289.6" width="56" height="62.4" fill="#86b6ef"/>
+<rect x="284.0" y="229.0" width="56" height="58.6" fill="#2a78d6"/>
+<path d="M284.0,226.98799999999997 L284.0,224.412 Q284.0,220.412 288.0,220.412 L336.0,220.412 Q340.0,220.412 340.0,224.412 L340.0,226.98799999999997 Z" fill="#104281"/>
+<text x="312.0" y="212.4" font-size="13" fill="#0b0b0b" font-weight="600" text-anchor="middle">491</text>
+<text x="312.0" y="370" font-size="12.5" fill="#0b0b0b" text-anchor="middle">PG17</text>
+<text x="312.0" y="386" font-size="11" fill="#898781" text-anchor="middle">168日</text>
+<rect x="389.59999999999997" y="309.9" width="56" height="42.1" fill="#86b6ef"/>
+<rect x="389.59999999999997" y="237.8" width="56" height="70.1" fill="#2a78d6"/>
+<path d="M389.59999999999997,235.83200000000002 L389.59999999999997,235.936 Q389.59999999999997,231.936 393.59999999999997,231.936 L441.59999999999997,231.936 Q445.59999999999997,231.936 445.59999999999997,235.936 L445.59999999999997,235.83200000000002 Z" fill="#104281"/>
+<text x="417.59999999999997" y="223.9" font-size="13" fill="#0b0b0b" font-weight="600" text-anchor="middle">448</text>
+<text x="417.59999999999997" y="370" font-size="12.5" fill="#0b0b0b" text-anchor="middle">PG18</text>
+<text x="417.59999999999997" y="386" font-size="11" fill="#898781" text-anchor="middle">167日</text>
+<rect x="495.2" y="280.7" width="56" height="71.3" fill="#86b6ef"/>
+<rect x="495.2" y="143.5" width="56" height="135.2" fill="#2a78d6"/>
+<path d="M495.2,141.49599999999998 L495.2,122.036 Q495.2,118.036 499.2,118.036 L547.2,118.036 Q551.2,118.036 551.2,122.036 L551.2,141.49599999999998 Z" fill="#104281"/>
+<text x="523.2" y="110.0" font-size="13" fill="#0b0b0b" font-weight="600" text-anchor="middle">873</text>
+<text x="523.2" y="370" font-size="12.5" fill="#0b0b0b" text-anchor="middle">PG19</text>
+<text x="523.2" y="386" font-size="11" fill="#898781" text-anchor="middle">222日</text>
+<line x1="48" x2="576" y1="352.0" y2="352.0" stroke="#c3c2b7"/>
+</svg>
