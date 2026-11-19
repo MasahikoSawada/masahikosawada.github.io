@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" font-family="Noto Sans JP, Hiragino Sans, Meiryo, sans-serif" role="img" aria-label="ブランチ作成後にmasterだけに入ったcommit数の累計">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" font-family="Noto Sans, Helvetica, Arial, sans-serif" role="img" aria-label="Cumulative commits only on master after the branch point">
 <rect width="760" height="440" fill="#fcfcfb"/>
-<text x="52" y="24" font-size="15" fill="#0b0b0b" font-weight="600">次のバージョンの開発（masterだけに入ったcommit数の累計）</text>
-<text x="52" y="42" font-size="11.5" fill="#52514e">横軸: 前のバージョンのブランチ作成（6月末〜7月初め）からの週数。PG15〜19はFeature Freezeまで、PG20は現在まで。Revertは除く</text>
+<text x="52" y="24" font-size="15" fill="#0b0b0b" font-weight="600">Next-version development (cumulative commits only on master)</text>
+<text x="52" y="42" font-size="11.5" fill="#52514e">Weeks since the previous branch (late June/early July). PG15–19 up to feature freeze, PG20 up to now. Reverts excluded</text>
 <line x1="52" x2="590" y1="388.0" y2="388.0" stroke="#e1e0d9"/><text x="44" y="392.0" font-size="11" fill="#898781" text-anchor="end">0</text>
 <line x1="52" x2="590" y1="306.0" y2="306.0" stroke="#e1e0d9"/><text x="44" y="310.0" font-size="11" fill="#898781" text-anchor="end">500</text>
 <line x1="52" x2="590" y1="224.0" y2="224.0" stroke="#e1e0d9"/><text x="44" y="228.0" font-size="11" fill="#898781" text-anchor="end">1000</text>
@@ -19,9 +19,9 @@
 <text x="513.1" y="406" font-size="11" fill="#898781" text-anchor="middle">36</text>
 <text x="564.4" y="406" font-size="11" fill="#898781" text-anchor="middle">40</text>
 <line x1="52" x2="590" y1="388.0" y2="388.0" stroke="#c3c2b7"/>
-<text x="321.0" y="428" font-size="11.5" fill="#52514e" text-anchor="middle">ブランチ作成からの週数</text>
+<text x="321.0" y="428" font-size="11.5" fill="#52514e" text-anchor="middle">Weeks since branch point</text>
 <line x1="313.4" x2="313.4" y1="60" y2="388.0" stroke="#898781" stroke-dasharray="3 3"/>
-<text x="317.4" y="70" font-size="11" fill="#52514e">現在（11月中旬）</text>
+<text x="317.4" y="70" font-size="11" fill="#52514e">Now (mid-November)</text>
 <path d="M52.0,388.0 L77.6,379.5 L103.2,372.4 L128.9,360.8 L154.5,356.3 L180.1,350.3 L205.7,343.4 L231.3,338.1 L257.0,331.9 L282.6,325.0 L308.2,314.9 L333.8,309.1 L359.4,299.8 L385.0,293.5 L410.7,287.8 L436.3,277.1 L461.9,268.6 L487.5,252.0 L513.1,243.4 L538.8,229.4 L564.4,205.3 L571.4,191.4" fill="none" stroke="#e87ba4" stroke-width="2" stroke-linejoin="round"/>
 <circle cx="571.4" cy="191.4" r="4" fill="#e87ba4" stroke="#fcfcfb" stroke-width="2"/>
 <path d="M52.0,388.0 L77.6,372.1 L103.2,358.6 L128.9,347.5 L154.5,335.0 L180.1,323.5 L205.7,311.4 L231.3,298.3 L257.0,287.8 L282.6,280.9 L308.2,269.4 L333.8,257.9 L359.4,245.8 L385.0,235.0 L410.7,222.7 L436.3,208.7 L461.9,198.3 L487.5,188.4 L513.1,175.8 L538.8,161.4 L564.4,137.6 L567.8,129.4" fill="none" stroke="#eda100" stroke-width="2" stroke-linejoin="round"/>
@@ -35,10 +35,10 @@
 <path d="M52.0,388.0 L77.6,375.0 L103.2,369.6 L128.9,363.2 L154.5,352.9 L180.1,346.5 L205.7,337.8 L231.3,331.7 L257.0,324.7 L282.6,319.1 L308.2,313.1 L313.4,311.4" fill="none" stroke="#008300" stroke-width="2.5" stroke-linejoin="round"/>
 <circle cx="313.4" cy="311.4" r="4" fill="#008300" stroke="#fcfcfb" stroke-width="2"/>
 <text x="321.4" y="315.4" font-size="12" fill="#0b0b0b" font-weight="600">PG20 467</text>
-<line x1="604" x2="622" y1="76" y2="76" stroke="#008300" stroke-width="2.5"/><text x="628" y="80" font-size="12" fill="#0b0b0b">PG20開発（2026〜）</text>
-<line x1="604" x2="622" y1="98" y2="98" stroke="#2a78d6" stroke-width="2.5"/><text x="628" y="102" font-size="12" fill="#0b0b0b">PG19開発（2025〜26）</text>
-<line x1="604" x2="622" y1="120" y2="120" stroke="#eb6834" stroke-width="2.5"/><text x="628" y="124" font-size="12" fill="#0b0b0b">PG18開発（2024〜25）</text>
-<line x1="604" x2="622" y1="142" y2="142" stroke="#1baf7a" stroke-width="2.5"/><text x="628" y="146" font-size="12" fill="#0b0b0b">PG17開発（2023〜24）</text>
-<line x1="604" x2="622" y1="164" y2="164" stroke="#eda100" stroke-width="2.5"/><text x="628" y="168" font-size="12" fill="#0b0b0b">PG16開発（2022〜23）</text>
-<line x1="604" x2="622" y1="186" y2="186" stroke="#e87ba4" stroke-width="2.5"/><text x="628" y="190" font-size="12" fill="#0b0b0b">PG15開発（2021〜22）</text>
+<line x1="604" x2="622" y1="76" y2="76" stroke="#008300" stroke-width="2.5"/><text x="628" y="80" font-size="12" fill="#0b0b0b">PG20 dev (2026–)</text>
+<line x1="604" x2="622" y1="98" y2="98" stroke="#2a78d6" stroke-width="2.5"/><text x="628" y="102" font-size="12" fill="#0b0b0b">PG19 dev (2025–26)</text>
+<line x1="604" x2="622" y1="120" y2="120" stroke="#eb6834" stroke-width="2.5"/><text x="628" y="124" font-size="12" fill="#0b0b0b">PG18 dev (2024–25)</text>
+<line x1="604" x2="622" y1="142" y2="142" stroke="#1baf7a" stroke-width="2.5"/><text x="628" y="146" font-size="12" fill="#0b0b0b">PG17 dev (2023–24)</text>
+<line x1="604" x2="622" y1="164" y2="164" stroke="#eda100" stroke-width="2.5"/><text x="628" y="168" font-size="12" fill="#0b0b0b">PG16 dev (2022–23)</text>
+<line x1="604" x2="622" y1="186" y2="186" stroke="#e87ba4" stroke-width="2.5"/><text x="628" y="190" font-size="12" fill="#0b0b0b">PG15 dev (2021–22)</text>
 </svg>
