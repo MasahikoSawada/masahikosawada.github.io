@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" font-family="Noto Sans JP, Hiragino Sans, Meiryo, sans-serif" role="img" aria-label="ブランチ作成後にmasterだけに入ったcommit数の累計">
 <rect width="760" height="440" fill="#fcfcfb"/>
 <text x="52" y="24" font-size="15" fill="#0b0b0b" font-weight="600">次のバージョンの開発（masterだけに入ったcommit数の累計）</text>
-<text x="52" y="42" font-size="11.5" fill="#52514e">横軸: 前のバージョンのブランチ作成（7月初め）からの週数。PG15〜19はFeature Freezeまで、PG20は現在まで。Revertは除く</text>
+<text x="52" y="42" font-size="11.5" fill="#52514e">横軸: 前のバージョンのブランチ作成（6月末〜7月初め）からの週数。PG15〜19はFeature Freezeまで、PG20は現在まで。Revertは除く</text>
 <line x1="52" x2="590" y1="388.0" y2="388.0" stroke="#e1e0d9"/><text x="44" y="392.0" font-size="11" fill="#898781" text-anchor="end">0</text>
 <line x1="52" x2="590" y1="306.0" y2="306.0" stroke="#e1e0d9"/><text x="44" y="310.0" font-size="11" fill="#898781" text-anchor="end">500</text>
 <line x1="52" x2="590" y1="224.0" y2="224.0" stroke="#e1e0d9"/><text x="44" y="228.0" font-size="11" fill="#898781" text-anchor="end">1000</text>
@@ -22,19 +22,19 @@
 <text x="321.0" y="428" font-size="11.5" fill="#52514e" text-anchor="middle">ブランチ作成からの週数</text>
 <line x1="313.4" x2="313.4" y1="60" y2="388.0" stroke="#898781" stroke-dasharray="3 3"/>
 <text x="317.4" y="70" font-size="11" fill="#52514e">現在（11月中旬）</text>
-<path d="M52.0,388.0 L77.6,380.5 L103.2,373.7 L128.9,362.3 L154.5,357.8 L180.1,351.8 L205.7,344.9 L231.3,339.6 L257.0,333.7 L282.6,326.8 L308.2,316.7 L333.8,310.9 L359.4,301.9 L385.0,295.7 L410.7,290.3 L436.3,279.9 L461.9,271.4 L487.5,255.0 L513.1,246.5 L538.8,232.5 L564.4,208.4 L571.4,194.5" fill="none" stroke="#e87ba4" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="571.4" cy="194.5" r="4" fill="#e87ba4" stroke="#fcfcfb" stroke-width="2"/>
-<path d="M52.0,388.0 L77.6,372.3 L103.2,359.0 L128.9,348.3 L154.5,335.8 L180.1,324.4 L205.7,312.2 L231.3,299.6 L257.0,289.3 L282.6,282.9 L308.2,271.4 L333.8,260.2 L359.4,248.4 L385.0,237.8 L410.7,225.6 L436.3,212.0 L461.9,201.5 L487.5,191.7 L513.1,179.1 L538.8,164.8 L564.4,141.0 L567.8,132.8" fill="none" stroke="#eda100" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="567.8" cy="132.8" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"/>
-<path d="M52.0,388.0 L77.6,377.2 L103.2,370.8 L128.9,366.2 L154.5,360.6 L180.1,351.9 L205.7,347.0 L231.3,336.5 L257.0,326.7 L282.6,316.2 L308.2,305.3 L333.8,292.9 L359.4,284.8 L385.0,274.8 L410.7,264.2 L436.3,248.3 L461.9,237.8 L487.5,227.3 L513.1,211.5 L538.8,188.9 L564.4,166.4 L570.9,151.8" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="570.9" cy="151.8" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
-<path d="M52.0,388.0 L77.6,374.7 L103.2,365.4 L128.9,350.3 L154.5,337.7 L180.1,329.6 L205.7,317.8 L231.3,307.3 L257.0,293.0 L282.6,278.9 L308.2,268.9 L333.8,258.6 L359.4,248.8 L385.0,236.3 L410.7,227.9 L436.3,211.7 L461.9,202.4 L487.5,185.0 L513.1,164.5 L538.8,141.5 L564.4,106.4 L567.2,101.5" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="567.2" cy="101.5" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
-<path d="M52.0,388.0 L77.6,374.9 L103.2,367.7 L128.9,359.6 L154.5,352.1 L180.1,345.5 L205.7,335.0 L231.3,325.5 L257.0,310.6 L282.6,299.3 L308.2,284.4 L333.8,270.4 L359.4,249.1 L385.0,239.6 L410.7,227.6 L436.3,214.2 L461.9,203.8 L487.5,192.3 L513.1,175.5 L538.8,147.1 L564.4,108.9 L568.9,96.6" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="568.9" cy="96.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
-<path d="M52.0,388.0 L77.6,375.0 L103.2,369.6 L128.9,363.2 L154.5,353.1 L180.1,346.7 L205.7,338.0 L231.3,331.9 L257.0,324.9 L282.6,319.3 L308.2,313.2 L313.4,311.6" fill="none" stroke="#008300" stroke-width="2.5" stroke-linejoin="round"/>
-<circle cx="313.4" cy="311.6" r="4" fill="#008300" stroke="#fcfcfb" stroke-width="2"/>
-<text x="321.4" y="315.6" font-size="12" fill="#0b0b0b" font-weight="600">PG20 466</text>
+<path d="M52.0,388.0 L77.6,379.5 L103.2,372.4 L128.9,360.8 L154.5,356.3 L180.1,350.3 L205.7,343.4 L231.3,338.1 L257.0,331.9 L282.6,325.0 L308.2,314.9 L333.8,309.1 L359.4,299.8 L385.0,293.5 L410.7,287.8 L436.3,277.1 L461.9,268.6 L487.5,252.0 L513.1,243.4 L538.8,229.4 L564.4,205.3 L571.4,191.4" fill="none" stroke="#e87ba4" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="571.4" cy="191.4" r="4" fill="#e87ba4" stroke="#fcfcfb" stroke-width="2"/>
+<path d="M52.0,388.0 L77.6,372.1 L103.2,358.6 L128.9,347.5 L154.5,335.0 L180.1,323.5 L205.7,311.4 L231.3,298.3 L257.0,287.8 L282.6,280.9 L308.2,269.4 L333.8,257.9 L359.4,245.8 L385.0,235.0 L410.7,222.7 L436.3,208.7 L461.9,198.3 L487.5,188.4 L513.1,175.8 L538.8,161.4 L564.4,137.6 L567.8,129.4" fill="none" stroke="#eda100" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="567.8" cy="129.4" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"/>
+<path d="M52.0,388.0 L77.6,377.2 L103.2,370.6 L128.9,366.0 L154.5,360.4 L180.1,351.8 L205.7,346.8 L231.3,336.3 L257.0,326.5 L282.6,316.0 L308.2,304.9 L333.8,292.4 L359.4,284.4 L385.0,274.3 L410.7,263.5 L436.3,247.3 L461.9,236.8 L487.5,226.1 L513.1,210.4 L538.8,187.8 L564.4,165.0 L570.9,150.4" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="570.9" cy="150.4" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<path d="M52.0,388.0 L77.6,374.7 L103.2,365.4 L128.9,350.1 L154.5,337.3 L180.1,329.3 L205.7,317.3 L231.3,306.8 L257.0,292.6 L282.6,278.3 L308.2,268.1 L333.8,257.8 L359.4,247.6 L385.0,235.2 L410.7,226.6 L436.3,210.4 L461.9,201.0 L487.5,183.7 L513.1,163.0 L538.8,139.9 L564.4,104.3 L567.2,99.4" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="567.2" cy="99.4" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<path d="M52.0,388.0 L77.6,374.9 L103.2,367.7 L128.9,359.5 L154.5,351.9 L180.1,345.2 L205.7,334.7 L231.3,325.2 L257.0,310.3 L282.6,298.9 L308.2,284.0 L333.8,269.9 L359.4,248.1 L385.0,238.4 L410.7,226.3 L436.3,212.8 L461.9,202.4 L487.5,190.9 L513.1,174.0 L538.8,145.6 L564.4,107.2 L568.9,94.9" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="568.9" cy="94.9" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<path d="M52.0,388.0 L77.6,375.0 L103.2,369.6 L128.9,363.2 L154.5,352.9 L180.1,346.5 L205.7,337.8 L231.3,331.7 L257.0,324.7 L282.6,319.1 L308.2,313.1 L313.4,311.4" fill="none" stroke="#008300" stroke-width="2.5" stroke-linejoin="round"/>
+<circle cx="313.4" cy="311.4" r="4" fill="#008300" stroke="#fcfcfb" stroke-width="2"/>
+<text x="321.4" y="315.4" font-size="12" fill="#0b0b0b" font-weight="600">PG20 467</text>
 <line x1="604" x2="622" y1="76" y2="76" stroke="#008300" stroke-width="2.5"/><text x="628" y="80" font-size="12" fill="#0b0b0b">PG20開発（2026〜）</text>
 <line x1="604" x2="622" y1="98" y2="98" stroke="#2a78d6" stroke-width="2.5"/><text x="628" y="102" font-size="12" fill="#0b0b0b">PG19開発（2025〜26）</text>
 <line x1="604" x2="622" y1="120" y2="120" stroke="#eb6834" stroke-width="2.5"/><text x="628" y="124" font-size="12" fill="#0b0b0b">PG18開発（2024〜25）</text>
